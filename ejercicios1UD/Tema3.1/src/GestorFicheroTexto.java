@@ -30,19 +30,16 @@ public class GestorFicheroTexto {
     }
 }
 
-
-
 //1. ¿Qué ocurre si se vuelve a ejecutar el programa sin cambiar el nombre del archivo?
 //Que se sobrescribe lo que hay escrito cada vez que se ejecuta
-
 
 
 //2. ¿Cómo podrías añadir texto sin borrar el contenido anterior?
 // Creando un bucle while donde lea primero y cuando la linea = null entonces escribe
 
+
 //3. ¿Qué diferencias observas si eliminas el BufferedWriter y usas solo FileWriter ?
 // Que no tienes el salto de linea
-
 
 
 //4. ¿Por qué es importante cerrar los buffers después de usarlos?

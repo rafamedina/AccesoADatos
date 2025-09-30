@@ -1,8 +1,6 @@
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.File;
 
-public class Prueba {
+public class RutasEjemplo {
     public static void main(String[] args) {
             String base = System.getProperty("user.dir");
             String sep = File.separator;
