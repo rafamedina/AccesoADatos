@@ -1,0 +1,10 @@
+<libros>
+    <libro>
+        <titulo>Java Avanzado</titulo>
+        <autor>Juan Pérez</autor>
+    </libro>
+    <libro>
+        <titulo>XML en Java</titulo>
+        <autor>Ana Gómez</autor>
+    </libro>
+</libros>
