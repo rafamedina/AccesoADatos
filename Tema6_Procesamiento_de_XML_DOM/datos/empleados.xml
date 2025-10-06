@@ -1,0 +1,14 @@
+<empleados>
+    <empleado id="1">
+        <nombre>Ana Pérez</nombre>
+        <puesto>Desarrolladora</puesto>
+    </empleado>
+    <empleado id="2">
+        <nombre>Carlos López</nombre>
+        <puesto>Analista</puesto>
+    </empleado>
+    <empleado id="3">
+        <nombre>Lucía García</nombre>
+        <puesto>Jefa de Proyecto</puesto>
+    </empleado>
+</empleados>
