@@ -31,6 +31,10 @@ public class Cliente {
     }
 
     public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public void cambiarSaldo(double saldo) {
         this.saldo += saldo;
     }
 }
