@@ -37,13 +37,6 @@ public class GestionMenu {
     }
 
 
-
-
-
-
-
-
-
     public int soutsMenu(){
         System.out.println("=== GESTIÓN DE CUENTA BANCARIA ===");
         System.out.println("1. Consultar saldo");

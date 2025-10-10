@@ -38,6 +38,7 @@ public class GestionCuenta {
             System.out.println("Error creando archivos: " + e.getMessage());
         }
     }
+
     public void comprobarCuenta() {
         // Comprobar si la cuenta existe leyendo el fichero
         try (BufferedReader Leertitular = new BufferedReader(new FileReader("datos/titular.txt"))) {
