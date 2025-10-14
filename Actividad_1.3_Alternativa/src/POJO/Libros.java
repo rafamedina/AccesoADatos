@@ -263,7 +263,7 @@ public class Libros {
     public void buscar5Libros(){
         try(BufferedReader bf = new BufferedReader(new FileReader(archivo))){
             String linea;
-            while((linea = bf.readLine())!=null)){
+            while((linea = bf.readLine())!=null){
             String[] partes = linea.split(";");
             if(partes.length==6){
                 int cantidad = Integer.parseInt(partes[3]);
