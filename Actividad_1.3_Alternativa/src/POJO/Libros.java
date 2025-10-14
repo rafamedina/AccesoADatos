@@ -267,7 +267,7 @@ public class Libros {
             String[] partes = linea.split(";");
             if(partes.length==6){
                 int cantidad = Integer.parseInt(partes[3]);
-            if(cantidad<=5){
+            if(cantidad<5){
                 System.out.println(partes[0] + " / " + partes[1] + " / " + partes[2] + " / " + partes[3] + " / " + partes[4] + " / " + partes[5]);
             }
             }
