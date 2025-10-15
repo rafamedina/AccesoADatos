@@ -121,9 +121,6 @@ public class Libros {
                 if(partes.length==6){
                     if(partes[0].equalsIgnoreCase(isbn)){
                         return false;
-
-                    } else {
-                        return  true;
                     }
                 }
             }
@@ -211,21 +208,26 @@ public class Libros {
         }
     }
 
-    public void actualizarStock(int unidadesNuevas) {
+    public void actualizarStock() {
         // archivo original donde están guardados los libros
         // archivo temporal que usaremos para reescribir con el stock actualizado
         File archivin = new File(archivo);
-        File temp = new File("datos_librerias/libros_temp.txt");
+        File temp = new File("datos_libreria/libros_temp.txt");
+
         try (BufferedReader br = new BufferedReader(new FileReader(archivo));
              BufferedWriter bw = new BufferedWriter(new FileWriter(temp))) {
             // pedimos el isbn del libro al usuario
+
             System.out.println("Dime el ISBN del libro que quieres actualizar el stock: ");
             String ISBN = sc.nextLine();
             // usamos tu método validarISBN()
             // si devuelve true → el ISBN no existe
             // si devuelve false → el libro sí existe
+            System.out.println("Dime cuanto quieres añadir: ");
+            int unidadesNuevas = sc.nextInt();
+            sc.nextLine();
             if (validarLibro(ISBN)) {
-                System.out.println("❌ Este libro no está registrado en la librería.");
+                System.out.println("Este libro no está registrado en la librería.");
                 return; // salimos del método
             }
             String linea;
@@ -266,12 +268,13 @@ public class Libros {
             while((linea = bf.readLine())!=null){
             String[] partes = linea.split(";");
             if(partes.length==6){
-                int cantidad = Integer.parseInt(partes[3]);
+                int cantidad = Integer.parseInt(partes[5]);
             if(cantidad<5){
                 System.out.println(partes[0] + " / " + partes[1] + " / " + partes[2] + " / " + partes[3] + " / " + partes[4] + " / " + partes[5]);
             }
             }
             }
+            System.out.println("Ya no hay mas libros");
         } catch (IOException e){
             e.getMessage();
         }
