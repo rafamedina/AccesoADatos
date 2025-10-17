@@ -99,6 +99,7 @@ public class Ventas {
                     venta.getPrecio_Total() + ";" ;
             if(actualizarStock(venta.getISBN(), venta.getUnidades()) && actualizarCantidad(venta.getDNI(), venta.getUnidades()) ){
                     bf.write(linea);
+                    bf.newLine();
             } else {
                 System.out.println("La venta no se pudo completar");
             }
@@ -130,13 +131,14 @@ public class Ventas {
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            if (temp.exists()) {
-                archivin.delete();
-                temp.renameTo(archivin);
-            }
+
         }
         if (!actualizado) {
             System.out.println("El cliente no existe");
+        }
+        if (temp.exists()) {
+            archivin.delete();
+            temp.renameTo(archivin);
         }
         return actualizado;
 
@@ -162,8 +164,9 @@ public class Ventas {
                     }
                 }
             }
-            bf.write(linea);
             bf.newLine();
+            bf.write(linea);
+
         }
     }
      catch (IOException e) {

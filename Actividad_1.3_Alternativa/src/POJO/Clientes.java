@@ -106,8 +106,9 @@ public class Clientes {
                         cliente.getNumero() + ";" +
                         cliente.getCantidad() + ";"
                 );
-                bf.write(linea);
                 bf.newLine();
+                bf.write(linea);
+
             } else {
                 System.out.println("Error al insertar cliente: ");
             }
