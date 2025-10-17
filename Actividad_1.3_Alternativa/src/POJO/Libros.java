@@ -97,12 +97,7 @@ public class Libros {
                 double precio = libro.getPrecio();
                 int stock = libro.getStock();
                 if(validarLibro(isbn)){
-                    String  linea = (isbn + ";" +
-                            Titulo + ";" +
-                            autor + ";" +
-                            categoria + ";" +
-                            precio + ";" +
-                            stock + ";");
+                    String  linea = (isbn + ";" + Titulo + ";" + autor + ";" + categoria + ";" + precio + ";" + stock + ";");
                     bflibro.write(linea);
                 } else {
                     System.out.println("El libro ya existe");

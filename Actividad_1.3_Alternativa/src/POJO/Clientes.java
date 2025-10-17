@@ -206,59 +206,6 @@ public class Clientes {
         }
     }
 
-
-   /* public void actualizarCliente() {
-        File temp = new File("datos_libreria/Clientestemp.txt");
-        File archivin = new File(archivo);
-        try(BufferedWriter bf = new BufferedWriter(new FileWriter(temp));
-        BufferedReader bfr = new BufferedReader(new FileReader(archivin) )){
-            System.out.println("de que Dni quieres actualizar: ");
-            String dni = sc.nextLine();
-            if(validarDNI(dni)){
-                System.out.println("Ese cliente no existe");
-            } else {
-                String linea;
-                while((linea = bfr.readLine())!=null){
-                    String[] partes = linea.split(";");
-                    if(partes.length==5){
-                        if(partes[0].equalsIgnoreCase(dni)){
-                            System.out.println("Que quieres cambiar, el correo o el telefono");
-                            String eleccion = sc.nextLine();
-                            while(true){
-                                if(eleccion.equalsIgnoreCase("correo")){
-                                    System.out.println("que correo es el nuevo: ");
-                                    String correo = sc.nextLine();
-                                    linea =( partes[0] + ";" + partes[1] + ";" + correo + ";" + partes[3] + ";" + partes[4] );
-                                    break;
-                                } else if (eleccion.equalsIgnoreCase("telefono")) {
-                                    System.out.println("que telefono es el nuevo: ");
-                                    String tlf = sc.nextLine();
-                                    linea =( partes[0] + ";" + partes[1] + ";" + partes[2] + ";" + tlf + ";" + partes[4] );
-                                    break;
-                                } else {
-                                    System.out.println("esa opcion no se puede cambiar todavia");
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    bf.write(linea);
-                    bf.newLine();
-                }
-                }
-            if (temp.exists()) {
-                archivin.delete();   // borramos el archivo original
-                temp.renameTo(archivin); // renombramos el temporal con el nombre original
-            }
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-
-        }
-        /*
-        if(temp.exists()){
-            temp.delete();
-        }
-        */
    public void actualizarCliente() {
        File temp = new File("datos_libreria/Clientestemp.txt");
        File archivin = new File(archivo);

@@ -4,15 +4,18 @@ import java.util.Scanner;
 
 public class Utils {
     Scanner sc = new Scanner(System.in);
-    public int eleccion(){
-        while(true){
-
+    public int eleccion() {
+        while (true) {
             System.out.println("Que vas a elegir: ");
-            int numero = sc.nextInt();
-            sc.nextLine();
-            return numero;
+            if (sc.hasNextInt()) {
+                int numero = sc.nextInt();
+                sc.nextLine();
+                return numero;
+            } else {
+                System.out.println("Por favor, introduce un número válido.");
+                sc.nextLine();
+            }
         }
-
     }
 
     public int MenuLibros(){
@@ -38,6 +41,24 @@ public class Utils {
         return eleccion();
     }
 
+    public int MenuVentas(){
+        System.out.println("1. Registrar una nueva Venta: ");
+        System.out.println("2. Ver Ventas por fecha: ");
+        System.out.println("3. Ver Ventas por DNI: ");
+        System.out.println("4. Ver Ventas por ISBN: ");
+        System.out.println("5. Ver Dinero Total generado: ");
+        System.out.println("6. Volver. ");
+
+        return eleccion();
+    }
+    public int Menu(){
+        System.out.println("1. Gestionar Libros: ");
+        System.out.println("2. Gestionar Clientes: ");
+        System.out.println("3. Gestionar Ventas: ");
+        System.out.println("4. Salir. ");
+
+        return eleccion();
+    }
 
 
 }
