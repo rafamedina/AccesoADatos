@@ -239,7 +239,7 @@ public class Libros {
                         // actualizamos el valor en el array
                         partes[5] = String.valueOf(nuevoStock);
 
-                        System.out.println("✅ Stock actualizado correctamente. Nuevo stock: " + nuevoStock);
+                        System.out.println("Stock actualizado correctamente. Nuevo stock: " + nuevoStock);
                     }
                     // reconstruimos la línea (actualizada o no)
                     linea = String.join(";", partes);
