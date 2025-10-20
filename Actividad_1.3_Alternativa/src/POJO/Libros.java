@@ -5,16 +5,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase Libros
+ * - Representa operaciones sobre los libros almacenados en el archivo
+ *   "datos_libreria/Libros.txt".
+ * - Cada libro se almacena en una línea con formato: ISBN;Titulo;Autor;Categoria;Precio;Stock;
+ *
+ * Notas:
+ * - La clase mezcla la representación del modelo (campos) con operaciones de
+ *   E/S y lectura desde consola. Para aplicaciones más grandes conviene separar
+ *   responsabilidades.
+ */
 public class Libros {
-    private String ISBN;
-    private String Titulo;
-    private String Autor;
-    private String Categoria;
-    private double Precio;
-    private int Stock;
-    static Scanner sc = new Scanner(System.in);
-    String archivo = "datos_libreria/Libros.txt";
+    // Campos que describen un libro
+    private String ISBN;       // Identificador único del libro
+    private String Titulo;     // Título del libro
+    private String Autor;      // Autor
+    private String Categoria;  // Categoría o género
+    private double Precio;     // Precio por unidad
+    private int Stock;         // Unidades disponibles en stock
+    static Scanner sc = new Scanner(System.in); // Scanner compartido para entrada por consola
+    String archivo = "datos_libreria/Libros.txt"; // Ruta del fichero de datos
 
+    // Getters y setters estándar
     public String getISBN() {
         return ISBN;
     }
@@ -63,6 +76,7 @@ public class Libros {
         Stock = stock;
     }
 
+    // Constructores
     public Libros(String ISBN, String libro, String autor, String categoria, double precio, int stock) {
         this.ISBN = ISBN;
         Titulo = libro;
@@ -73,6 +87,10 @@ public class Libros {
     }
     public Libros(){};
 
+    /**
+     * crearArchivosLibro
+     * - Crea la carpeta "datos_libreria" y el archivo "Libros.txt" si no existen.
+     */
     public void crearArchivosLibro(){
         File datos_libreria = new File("datos_libreria");
         if(!datos_libreria.exists()){
@@ -84,9 +102,18 @@ public class Libros {
                 arli.createNewFile();
             }
         } catch (IOException e){
+            // Aquí sólo se llama a e.getMessage(); sería mejor imprimir la excepción
             e.getMessage();
         }
     }
+
+    /**
+     * guardarLibro
+     * - Añade un nuevo libro al final del archivo si el ISBN no existe.
+     * - Construye la línea separada por ';' y escribe una nueva línea.
+     * - Nota: se añade un ';' final en la línea, que es consistente con el resto del
+     *   proyecto pero puede dejar campos vacíos al final si se procesa estrictamente.
+     */
     public void guardarLibro(Libros libro){
             try(BufferedWriter bflibro = new BufferedWriter(new FileWriter(archivo,true))){
 
@@ -105,10 +132,17 @@ public class Libros {
                 }
 
             } catch (IOException e){
+                // De nuevo, sería mejor hacer e.printStackTrace() o un log.
                 e.getMessage();
             }
     }
 
+    /**
+     * validarLibro
+     * - Comprueba si un ISBN ya está en el archivo. Devuelve false si el ISBN existe,
+     *   true si no existe.
+     * - Asume que cada línea tiene 6 campos separados por ';'.
+     */
     public boolean validarLibro(String isbn){
         try(BufferedReader bfLibro = new BufferedReader(new FileReader(archivo))){
             String linea;
@@ -126,6 +160,11 @@ public class Libros {
         return true;
     }
 
+    /**
+     * anadirNuevoLibro
+     * - Interactúa por consola para pedir datos del libro y lo guarda si el ISBN es nuevo.
+     * - Valida la entrada y convierte precio/stock a tipos numéricos.
+     */
     public void anadirNuevoLibro(){
         try{
             System.out.println("Vamos a añadir un libro: ");
@@ -153,6 +192,11 @@ public class Libros {
         }
     }
 
+    /**
+     * mostrarLibros
+     * - Muestra por consola todos los libros presentes en el archivo.
+     * - Imprime una línea por cada entrada válida (6 campos).
+     */
     public  void mostrarLibros(){
         try(BufferedReader bf = new BufferedReader(new FileReader(archivo))){
             String linea;
@@ -170,6 +214,12 @@ public class Libros {
         }
     }
 
+    /**
+     * buscarISBN
+     * - Pide un ISBN por consola y comprueba si existe usando validarLibro().
+     * - Nota: validarLibro devuelve false cuando el libro existe, por eso la
+     *   lógica invierte el mensaje.
+     */
     public void buscarISBN() {
         try {
             System.out.println("Dime que isbn quieres buscar: ");
@@ -185,6 +235,11 @@ public class Libros {
         }
     }
 
+    /**
+     * buscarCategoria
+     * - Muestra por consola todos los libros cuya categoria coincide con la
+     *   solicitada (comparación case-insensitive).
+     */
     public void buscarCategoria(){
         try(BufferedReader bf = new BufferedReader(new FileReader(archivo))){
             System.out.println( "Que categoria quieres buscar :" );
@@ -204,6 +259,13 @@ public class Libros {
         }
     }
 
+    /**
+     * actualizarStock
+     * - Pide un ISBN y una cantidad a añadir. Crea un archivo temporal, actualiza
+     *   la línea correspondiente y reemplaza el archivo original.
+     * - Comprueba que el ISBN exista antes de intentar actualizar.
+     * - Nota: el método escribe todas las líneas en el temporal y luego renombra.
+     */
     public void actualizarStock() {
         // archivo original donde están guardados los libros
         // archivo temporal que usaremos para reescribir con el stock actualizado
@@ -258,6 +320,10 @@ public class Libros {
             temp.renameTo(archivin); // renombramos el temporal con el nombre original
         }
     }
+    /**
+     * buscar5Libros
+     * - Muestra libros con stock menor a 5 (posible aviso para reposición).
+     */
     public void buscar5Libros(){
         try(BufferedReader bf = new BufferedReader(new FileReader(archivo))){
             String linea;

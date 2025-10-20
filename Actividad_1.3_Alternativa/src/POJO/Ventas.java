@@ -5,18 +5,32 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+/**
+ * Clase Ventas
+ * - Gestiona las operaciones relacionadas con las ventas de la librería.
+ * - Almacena las ventas en "datos_libreria/Ventas.txt" con el formato:
+ *   DNI;ISBN;Fecha;Unidades;PrecioTotal;
+ *
+ * Notas:
+ * - Al igual que las otras clases POJO del proyecto, mezcla representación de datos
+ *   con operaciones de E/S y entrada por consola. En una aplicación más grande
+ *   convendría separar modelo, acceso a datos y capa de interacción.
+ */
 public class Ventas {
-    private String DNI;
-    private String ISBN;
-    private String Fecha;
-    private int Unidades;
-    private double Precio_Total;
-    String archivo = "datos_libreria/Ventas.txt";
-    static Scanner sc = new Scanner(System.in);
+    // Campos que describen una venta
+    private String DNI;            // DNI del cliente que realiza la compra
+    private String ISBN;           // ISBN del libro vendido
+    private String Fecha;          // Fecha de la venta (cadena)
+    private int Unidades;          // Cantidad de unidades vendidas
+    private double Precio_Total;   // Precio total de la venta
+    String archivo = "datos_libreria/Ventas.txt"; // Ruta del archivo de ventas
+    static Scanner sc = new Scanner(System.in);     // Scanner compartido para entrada por consola
 
+    // Constructores
     public Ventas() {
     }
 
+    // Constructor con fecha explícita
     public Ventas(String DNI, String ISBN, String fecha, int unidades, double precio_Total) {
         this.DNI = DNI;
         this.ISBN = ISBN;
@@ -24,6 +38,7 @@ public class Ventas {
         Unidades = unidades;
         Precio_Total = precio_Total;
     }
+    // Constructor que dejará que el método que escribe la venta ponga la fecha actual
     public Ventas(String DNI, String ISBN, int unidades, double precio_Total) {
         this.DNI = DNI;
         this.ISBN = ISBN;
@@ -31,6 +46,7 @@ public class Ventas {
         Precio_Total = precio_Total;
     }
 
+    // Getters y setters
     public String getDNI() {
         return DNI;
     }
@@ -71,6 +87,10 @@ public class Ventas {
         Unidades = unidades;
     }
 
+    /**
+     * crearArchivosVentas
+     * - Crea el directorio "datos_libreria" y el archivo de ventas si no existen.
+     */
     public void crearArchivosVentas(){
         File carpeta = new File("datos_libreria");
         if(!carpeta.exists()){
@@ -87,7 +107,13 @@ public class Ventas {
         }
     }
 
-
+    /**
+     * escribirVenta
+     * - Escribe una venta en el archivo con la fecha actual.
+     * - Antes de escribir actualiza el stock del libro y la cantidad del cliente
+     *   (llama a `actualizarStock` y `actualizarCantidad`). Si alguna de esas
+     *   operaciones falla, no registra la venta.
+     */
     public void escribirVenta(Ventas venta){
         try(BufferedWriter bf = new BufferedWriter(new FileWriter(archivo,true))){
             Date fechaActual = new Date();
@@ -97,6 +123,7 @@ public class Ventas {
                     formato.format(fechaActual) + ";" +
                     venta.getUnidades() + ";" +
                     venta.getPrecio_Total() + ";" ;
+            // Actualizar stock y cantidad en ficheros relacionados antes de escribir
             if(actualizarStock(venta.getISBN(), venta.getUnidades()) && actualizarCantidad(venta.getDNI(), venta.getUnidades()) ){
                     bf.write(linea);
                     bf.newLine();
@@ -108,7 +135,12 @@ public class Ventas {
         }
     }
 
-
+    /**
+     * actualizarCantidad
+     * - Incrementa la 'cantidad' asociada a un cliente en "Clientes.txt".
+     * - Reescribe el archivo mediante un temporal. Devuelve true si se actualizó.
+     * - Si el cliente no existe devuelve false.
+     */
     public boolean actualizarCantidad(String dni, int unidades) {
         File temp = new File("datos_libreria/Clientestemp.txt");
         File archivin = new File("datos_libreria/Clientes.txt");
@@ -122,6 +154,7 @@ public class Ventas {
                     if (dni.equalsIgnoreCase(partes[0])) {
                         int cantidadVieja = Integer.parseInt(partes[4]);
                         int nuevaCantidad = cantidadVieja + unidades;
+                        // Reconstruir la línea con la cantidad actualizada
                         linea = partes[0] + ";" + partes[1] + ";" + partes[2] + ";" + partes[3] + ";" + nuevaCantidad;
                         actualizado = true;
                     }
@@ -136,6 +169,7 @@ public class Ventas {
         if (!actualizado) {
             System.out.println("El cliente no existe");
         }
+        // Si se escribió el temporal, reemplazamos el original
         if (temp.exists()) {
             archivin.delete();
             temp.renameTo(archivin);
@@ -144,6 +178,12 @@ public class Ventas {
 
     }
 
+    /**
+     * actualizarStock
+     * - Resta 'unidades' al stock del libro con el ISBN dado en "Libros.txt".
+     * - Reescribe el archivo mediante un temporal. Devuelve true si la operación se realizó
+     *   (es decir, si había suficiente stock y se actualizó), false en caso contrario.
+     */
     public boolean actualizarStock(String isbn, int unidades){
         File temp = new File("datos_libreria/Librostemp.txt");
         File archivin = new File("datos_libreria/Libros.txt");
@@ -164,6 +204,7 @@ public class Ventas {
                     }
                 }
             }
+            // Escribir la línea (modificada o no) en el temporal
             bf.newLine();
             bf.write(linea);
 
@@ -181,6 +222,12 @@ public class Ventas {
     return actualizado;
     }
 
+    /**
+     * calcularPrecioTotal
+     * - Busca el precio unitario del libro en "Libros.txt" y calcula el total
+     *   multiplicando por el número de unidades solicitadas.
+     * - Si no encuentra el libro devuelve 0.
+     */
     public double calcularPrecioTotal(String isbn, int unidades){
         double precio = 0;
         try(BufferedReader bf = new BufferedReader(new FileReader("datos_libreria/Libros.txt"))){
@@ -202,6 +249,11 @@ public class Ventas {
 
     }
 
+    /**
+     * registrarUnaVenta
+     * - Interactúa con el usuario para pedir ISBN, DNI y unidades; calcula el precio y
+     *   trata de registrar la venta usando `escribirVenta`.
+     */
     public void registrarUnaVenta(){
     try{
         System.out.println("Procedemos a registrar la venta: " );
@@ -224,6 +276,11 @@ public class Ventas {
     }
     }
 
+    /**
+     * mostrarFechas
+     * - Muestra todas las ventas que ocurren en la fecha indicada por el usuario.
+     * - Lee el archivo de ventas y compara el campo fecha (índice 2 en la línea).
+     */
     public void mostrarFechas(){
         boolean fechas = false;
         try(BufferedReader bf = new BufferedReader(new FileReader(archivo))){
@@ -232,8 +289,10 @@ public class Ventas {
             String date = sc.nextLine();
             while((linea = bf.readLine())!= null){
                 String[] partes = linea.split(";");
-                if(partes.length==5){
-                    if(date.equalsIgnoreCase(partes[3])){
+                // Aceptamos líneas con al menos 5 campos: DNI;ISBN;Fecha;Unidades;Precio
+                if(partes.length >= 5){
+                    // Fecha está en la posición 2
+                    if(date.equalsIgnoreCase(partes[2])){
                         System.out.println(" DNI: " + partes[0] + " ISBN: " + partes[1] + " Fecha: " + partes[2] + " Unidades: " + partes[3] + " Precio Total: " + partes[4]);
                         fechas = true;
                     }
@@ -248,6 +307,10 @@ public class Ventas {
 
     }
 
+    /**
+     * mostrarVentasporDNI
+     * - Muestra todas las ventas realizadas por el DNI indicado por el usuario.
+     */
     public void mostrarVentasporDNI(){
         boolean d = false;
         try(BufferedReader bf = new BufferedReader(new FileReader(archivo))){
@@ -256,7 +319,7 @@ public class Ventas {
             String dni = sc.nextLine();
             while((linea = bf.readLine())!= null){
                 String[] partes = linea.split(";");
-                if(partes.length==5){
+                if(partes.length >= 5){
                     if(dni.equalsIgnoreCase(partes[0])){
                         System.out.println(" DNI: " + partes[0] + " ISBN: " + partes[1] + " Fecha: " + partes[2] + " Unidades: " + partes[3] + " Precio Total: " + partes[4]);
                         d = true;
@@ -272,6 +335,10 @@ public class Ventas {
 
     }
 
+    /**
+     * mostrarVentasporISBN
+     * - Muestra todas las ventas de un libro (ISBN) indicado por el usuario.
+     */
     public void mostrarVentasporISBN(){
         boolean d = false;
         try(BufferedReader bf = new BufferedReader(new FileReader(archivo))){
@@ -280,7 +347,7 @@ public class Ventas {
             String isbn = sc.nextLine();
             while((linea = bf.readLine())!= null){
                 String[] partes = linea.split(";");
-                if(partes.length==5){
+                if(partes.length >= 5){
                     if(isbn.equalsIgnoreCase(partes[1])){
                         System.out.println(" DNI: " + partes[0] + " ISBN: " + partes[1] + " Fecha: " + partes[2] + " Unidades: " + partes[3] + " Precio Total: " + partes[4]);
                         d = true;
@@ -296,14 +363,23 @@ public class Ventas {
 
     }
 
+    /**
+     * calcularTotalGanado
+     * - Suma el campo Precio Total de todas las ventas y muestra el total.
+     */
     public void calcularTotalGanado(){
         double total=0;
         try(BufferedReader bf = new BufferedReader(new FileReader(archivo))){
             String linea;
             while((linea = bf.readLine())!= null){
                 String[] partes = linea.split(";");
-                if(partes.length==5){
-                        total = total + Double.parseDouble(partes[5]);
+                // Aceptar líneas con al menos 5 campos (índice 4 contiene el precio)
+                if(partes.length >= 5){
+                        try{
+                            total = total + Double.parseDouble(partes[4]);
+                        } catch(NumberFormatException ex){
+                            // Ignorar líneas con formato numérico inválido
+                        }
                     }
             }
             System.out.println("El total ganado es de: " + total + "euros");
@@ -312,4 +388,3 @@ public class Ventas {
         }
     }
 }
-
