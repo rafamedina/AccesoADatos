@@ -5,15 +5,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase Clientes
+ * - Representa operaciones sobre los clientes almacenados en el archivo
+ *   "datos_libreria/Clientes.txt".
+ * - Cada cliente se almacena en una línea con formato: DNI;Nombre;Email;Telefono;Cantidad;
+ *
+ * Notas:
+ * - La clase mezcla responsabilidades de modelo (POJO) con operaciones de E/S y
+ *   de interacción por consola. En aplicaciones mayores conviene separar estas capas.
+ */
 public class Clientes {
-    private String Dni;
-    private String Nombre;
-    private String Email;
-    private int Numero;
-    private int Cantidad;
-    static Scanner sc = new Scanner(System.in);
-    String archivo = "datos_libreria/Clientes.txt";
+    // Campos que representan la información de un cliente
+    private String Dni;      // DNI del cliente (identificador)
+    private String Nombre;   // Nombre completo
+    private String Email;    // Correo electrónico
+    private int Numero;      // Teléfono (almacenado como int en este proyecto)
+    private int Cantidad;    // Cantidad total de compras (o unidades)
+    static Scanner sc = new Scanner(System.in); // Scanner compartido para lectura desde consola
+    String archivo = "datos_libreria/Clientes.txt"; // Ruta relativa al archivo de datos
 
+    // Getters y setters (métodos simples para acceder y modificar campos)
     public String getDni() {
         return Dni;
     }
@@ -54,6 +66,7 @@ public class Clientes {
         Numero = numero;
     }
 
+    // Constructores
     public Clientes(String dni, String nombre, String email, int cantidad, int numero) {
         Dni = dni;
         Nombre = nombre;
@@ -65,6 +78,11 @@ public class Clientes {
     public Clientes() {
     }
 
+    /**
+     * Crear el directorio y el archivo si no existen.
+     * - Crea la carpeta "datos_libreria" si no existe.
+     * - Crea el archivo "Clientes.txt" si no existe.
+     */
     public void crearArchivosClientes() {
         File carpeta = new File("datos_libreria");
         if (!carpeta.exists()) {
@@ -76,10 +94,19 @@ public class Clientes {
                 archivoCliente.createNewFile();
             }
         } catch (IOException e) {
+            // Mostrar el mensaje de error en caso de fallo de I/O
             System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * validarDNI
+     * - Lee el archivo de clientes línea a línea y comprueba si el DNI ya existe.
+     * - Devuelve false si encuentra el DNI (no válido para insertar), true si no existe.
+     *
+     * Observación: el método asume que cada línea está en formato con 5 campos separados
+     * por ';'. Si una línea no tiene 5 campos la ignora.
+     */
     public boolean validarDNI(String dni) {
         try (BufferedReader bf = new BufferedReader(new FileReader(archivo))) {
             String linea;
@@ -87,16 +114,21 @@ public class Clientes {
                 String[] partes = linea.split(";");
                 if (partes.length == 5) {
                     if (partes[0].equalsIgnoreCase(dni)) {
-                        return false;
+                        return false; // DNI ya existe
                     }
                 }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        return true;
+        return true; // DNI no encontrado
     }
 
+    /**
+     * escribirClientes
+     * - Añade un cliente al final del archivo si el DNI es válido (no existe).
+     * - Forma la línea con los campos separados por ';' y escribe una nueva línea.
+     */
     public void escribirClientes(Clientes cliente) {
         try (BufferedWriter bf = new BufferedWriter(new FileWriter(archivo,true))) {
             if (validarDNI(cliente.getDni())) {
@@ -113,10 +145,17 @@ public class Clientes {
                 System.out.println("Error al insertar cliente: ");
             }
         } catch (IOException e) {
+            // Se captura la excepción pero sólo se llama a getMessage();
+            // sería mejor imprimirla o manejarla de forma más explícita.
             e.getMessage();
         }
     }
 
+    /**
+     * altaCliente
+     * - Pide por consola los datos del cliente y lo escribe en el archivo.
+     * - Comprueba primero que el DNI no exista para evitar duplicados.
+     */
     public void altaCliente() {
         try {
             System.out.println("Dime el Dni que quieras añadir: ");
@@ -131,7 +170,7 @@ public class Clientes {
                 System.out.println("Dime el numero: ");
                 int tlf = sc.nextInt();
                 sc.nextLine();
-                int cantidad = 0;
+                int cantidad = 0; // nuevo cliente empieza con cantidad 0
                 escribirClientes(new Clientes(dni, nombre, email, cantidad,tlf));
             }
         } catch (Exception e) {
@@ -139,6 +178,11 @@ public class Clientes {
         }
     }
 
+    /**
+     * mostrarClientes
+     * - Lee todas las líneas del archivo e imprime los clientes en consola.
+     * - Ignora líneas que no tengan exactamente 5 campos.
+     */
     public void mostrarClientes() {
         try (BufferedReader bf = new BufferedReader(new FileReader(archivo))) {
             String linea;
@@ -154,6 +198,11 @@ public class Clientes {
         }
     }
 
+    /**
+     * buscarClienteDni
+     * - Pide un DNI por consola y busca el cliente correspondiente en el archivo.
+     * - Usa validarDNI para comprobar existencia: si validarDNI devuelve true -> no existe.
+     */
     public void buscarClienteDni() {
         try (BufferedReader bf = new BufferedReader(new FileReader(archivo))) {
             System.out.println("Que cliente quieres buscar(Dime el dni): ");
@@ -176,6 +225,15 @@ public class Clientes {
         }
     }
 
+    /**
+     * mejores5Clientes
+     * - Carga todos los clientes en una lista (siempre que la línea tenga 5 campos y
+     *   los campos numéricos se puedan parsear), ordena por Cantidad y muestra los 5
+     *   primeros.
+     *
+     * Nota: la línea que ordena contiene una multiplicación por -1 que podría estar
+     * invirtiendo el criterio de orden. Observación añadida sin cambiar la lógica.
+     */
     public void mejores5Clientes() {
         List<Clientes> clientes = new ArrayList<>();
         try (BufferedReader bf = new BufferedReader(new FileReader(archivo))) {
@@ -197,6 +255,7 @@ public class Clientes {
         }
 
         // Ordenar por cantidad descendente
+        // OBS: el uso de * -1 podría invertir el orden esperado; revisar si se desea
         clientes.sort((a, b) -> Integer.compare(b.getCantidad(), a.getCantidad()) * -1);
 
         // Mostrar los mejores 5
@@ -207,6 +266,12 @@ public class Clientes {
         }
     }
 
+   /**
+    * actualizarCliente
+    * - Genera un archivo temporal y reescribe todas las líneas, actualizando el
+    *   correo o teléfono del cliente cuyo DNI indique el usuario.
+    * - Si se produce una actualización, reemplaza el archivo original por el temporal.
+    */
    public void actualizarCliente() {
        File temp = new File("datos_libreria/Clientestemp.txt");
        File archivin = new File(archivo);
@@ -269,9 +334,3 @@ public class Clientes {
        }
    }
         }
-
-
-
-
-
-
