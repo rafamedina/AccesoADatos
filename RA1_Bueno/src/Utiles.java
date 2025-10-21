@@ -8,7 +8,7 @@ public class Utiles implements Serializable {
     // Identificador de versión para la serialización
     private static final long serialVersionUID = 1L;
     // Ruta del archivo donde se guarda la cuenta
-    final String archivo = "datos/cuenta.dat";
+    private final String archivo = "datos/cuenta.dat";
     // Instancia de Movimiento para operaciones
     Movimiento mov = new Movimiento();
     // Scanner para entrada de datos por consola (no se serializa)
@@ -16,7 +16,7 @@ public class Utiles implements Serializable {
 
     // Constructor por defecto
     public Utiles(){
-        Scanner sc = new Scanner(System.in);
+         sc = new Scanner(System.in);
     }
 
     // Método para crear la carpeta y el archivo de datos si no existen

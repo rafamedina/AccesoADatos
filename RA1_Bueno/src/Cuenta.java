@@ -29,8 +29,8 @@ public class Cuenta implements Serializable {
 
     // Constructor por defecto
     public Cuenta(){
-        Scanner sc = new Scanner(System.in);
-        Utiles ut = new Utiles();
+         sc = new Scanner(System.in);
+         ut = new Utiles();
     }
 
     // Getter del cliente

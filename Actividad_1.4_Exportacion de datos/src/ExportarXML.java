@@ -1,10 +1,6 @@
 import java.io.*;
 import java.util.List;
 
-/**
- * Clase responsable de exportar la lista de estudiantes a un archivo XML.
- * Versión simplificada y comentada en español.
- */
 public class ExportarXML {
     // Ruta del archivo XML
     private static final String ARCHIVO = "datos/estudiantes.xml";

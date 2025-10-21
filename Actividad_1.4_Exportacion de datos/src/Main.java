@@ -1,7 +1,5 @@
 import java.util.List;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         List<Estudiante> estudiantes = List.of(
@@ -14,6 +12,6 @@ public class Main {
         ExportarCSV csv = new ExportarCSV();
     ExportarXML xml = new ExportarXML();
     csv.exportarCSV(estudiantes);
-    ExportarXML.escribirXmlExacto(estudiantes,"20/10/2025");
+    ExportarXML.escribirXmlExacto(estudiantes,"21/10/2025");
     }
     }

@@ -5,7 +5,7 @@ public class ExportarCSV {
 
 final String archivo = "datos/estudiantes.csv";
 
-
+private static final String separador = ";";
 
     public void Creacion(){
         try{
@@ -26,7 +26,7 @@ final String archivo = "datos/estudiantes.csv";
             throw new RuntimeException(e);
         }
         try
-        (BufferedWriter bf = new BufferedWriter(new FileWriter(archivo,true))){
+        (BufferedWriter bf = new BufferedWriter(new FileWriter(archivo))){
             BufferedReader br = new BufferedReader(new FileReader(archivo));
             String linea;
             while((linea = br.readLine())==null){
@@ -51,7 +51,7 @@ final String archivo = "datos/estudiantes.csv";
             String linea;
             for(Estudiante estu : estudiantes){
             contador += 1;
-            linea = estu.getId()+";"+ estu.getNombre()+";"+ estu.getApellido()+";"+ estu.getEdad()+";"+ estu.getNota();
+            linea = estu.getId()+separador+ estu.getNombre()+separador+ estu.getApellido()+separador+ estu.getEdad()+separador+ estu.getNota();
             bf.write(linea);
             bf.newLine();
 
