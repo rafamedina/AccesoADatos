@@ -66,20 +66,28 @@ public class Utiles implements Serializable {
     // Método para pedir un número decimal positivo por consola
     public double pedirDouble() {
         double numero = 0;
-        try {
-            while (true) {
-                 numero = sc.nextDouble(); // Solicita número decimal
+        boolean valido = false;
+
+        while (!valido) {
+            System.out.print("Introduce un número positivo: ");
+            try {
+                numero = sc.nextDouble();
+
                 if (numero >= 0) {
-                    break;
+                    valido = true;
                 } else {
-                    System.out.println("El numero que has introducido no es valido, solo numeros positivos");
+                    System.out.println("El número que has introducido no es válido. Solo números positivos.");
                 }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Debes introducir un número decimal.");
+                sc.nextLine(); // limpia el buffer si se introduce texto
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
-    return numero;
+
+        sc.nextLine(); // limpia el salto de línea pendiente
+        return numero;
     }
+
 
     // Método para pedir un número entero positivo por consola
     public int pedirInt() {
@@ -103,8 +111,9 @@ public class Utiles implements Serializable {
     }
 
     // Método para pausar la ejecución hasta que el usuario pulse una tecla
-    public void saltoLinea(){
-        System.out.println("Pulsa espacio para continuar");
-        String salto = sc.nextLine();
+    public void saltoLinea() {
+        System.out.println("Pulsa ENTER para continuar...");
+        new java.util.Scanner(System.in).nextLine();
     }
+
 }
