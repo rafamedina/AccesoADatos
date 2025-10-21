@@ -3,14 +3,23 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import POJO.Movimiento;
 
+// Clase de utilidades para operaciones de entrada/salida y gestión de archivos
 public class Utiles implements Serializable {
+    // Identificador de versión para la serialización
     private static final long serialVersionUID = 1L;
+    // Ruta del archivo donde se guarda la cuenta
     final String archivo = "datos/cuenta.dat";
+    // Instancia de Movimiento para operaciones
     Movimiento mov = new Movimiento();
+    // Scanner para entrada de datos por consola (no se serializa)
     transient Scanner sc = new Scanner(System.in);
+
+    // Constructor por defecto
     public Utiles(){
         Scanner sc = new Scanner(System.in);
     }
+
+    // Método para crear la carpeta y el archivo de datos si no existen
     public void crearArchivos() {
         boolean creado = false;
         File carpeta = new File("datos");
@@ -30,6 +39,8 @@ public class Utiles implements Serializable {
             }
         }
     }
+
+    // Método para guardar una cuenta en el archivo
     public void guardarCuenta(Cuenta cuenta){
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
             oos.writeObject(cuenta);
@@ -40,24 +51,24 @@ public class Utiles implements Serializable {
         }
     }
 
+    // Método para cargar una cuenta desde el archivo
     public Cuenta cargarCuenta(){
-
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))){
             Cuenta cuentaCargada = (Cuenta) ois.readObject();
             System.out.println("Cuenta cargada correctamente.");
             return cuentaCargada;
-
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error al cargar la cuenta: " + e.getMessage());
             return new Cuenta(); // si hay error, devolvemos cuenta vacía
         }
     }
 
+    // Método para pedir un número decimal positivo por consola
     public double pedirDouble() {
         double numero = 0;
         try {
             while (true) {
-                 numero = sc.nextDouble();
+                 numero = sc.nextDouble(); // Solicita número decimal
                 if (numero >= 0) {
                     break;
                 } else {
@@ -70,18 +81,14 @@ public class Utiles implements Serializable {
     return numero;
     }
 
-
-
+    // Método para pedir un número entero positivo por consola
     public int pedirInt() {
         int num = -1;
         boolean valido = false;
-
-
         while (!valido) {
             try {
                 System.out.print("Introduce un número: ");
-                num = sc.nextInt();
-
+                num = sc.nextInt(); // Solicita número entero
                 if (num >= 0) {
                     valido = true;
                 } else {
@@ -90,21 +97,14 @@ public class Utiles implements Serializable {
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Debes ingresar un número entero.");
                 sc.nextLine(); // limpia el buffer
-
             }
         }
-
         return num;
     }
 
-
-
-
+    // Método para pausar la ejecución hasta que el usuario pulse una tecla
     public void saltoLinea(){
         System.out.println("Pulsa espacio para continuar");
         String salto = sc.nextLine();
-
     }
-
-
 }
