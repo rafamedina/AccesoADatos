@@ -3,6 +3,7 @@ package POJO;
 import java.io.Serializable;
 
 public class Movimiento implements Serializable {
+    private static final long serialVersionUID = 1L;
     private boolean Tipo;
     private double Cantidad;
     private String Concepto;

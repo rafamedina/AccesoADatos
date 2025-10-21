@@ -10,10 +10,11 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class Cuenta implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Cliente cliente;
     Utiles ut = new Utiles();
     final String archivo = "datos/cuenta.dat";
-    static Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
     private ArrayList<Movimiento> lista = new ArrayList<>();
 
     public Cuenta(Cliente cliente) {
@@ -21,6 +22,14 @@ public class Cuenta implements Serializable {
     }
     public Cuenta(){
 
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public void ingresarDinero() {

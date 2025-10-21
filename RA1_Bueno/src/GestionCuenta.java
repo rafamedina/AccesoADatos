@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 public class GestionCuenta implements Serializable {
+    private static final long serialVersionUID = 1L;
     Utiles ut = new Utiles();
     Cuenta cuenta;
-    transient Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
 
 
 
@@ -18,17 +19,22 @@ public class GestionCuenta implements Serializable {
         switch (eleccion){
             case 1:
                 cuenta.ingresarDinero();
+                ut.saltoLinea();
                 break;
             case 2:
                 cuenta.retirarDinero();
+                ut.saltoLinea();
                 break;
             case 3:
                 cuenta.consultarSaldo();
+                ut.saltoLinea();
                 break;
             case 4:
                 cuenta.mostrarMovimientos();
+                ut.saltoLinea();
                 break;
             case 0:
+                guardarCuenta();
                 guardarCuenta();
                 break;
             default:
@@ -50,14 +56,15 @@ public class GestionCuenta implements Serializable {
     }
 
 
-    public boolean iniciarSesion(){
-        try{
-            cuenta = ut.cargarCuenta();
-            return  true;
-        } catch (Exception e ){
-            System.out.println(e.getMessage());
+    public boolean iniciarSesion() {
+        cuenta = ut.cargarCuenta();
+        if (cuenta != null && cuenta.getCliente() != null) {
+            System.out.println("Sesión iniciada correctamente.");
+            return true;
+        } else {
+            System.out.println("No se encontró ninguna cuenta registrada.");
+            return false;
         }
-        return false;
     }
     public void guardarCuenta(){
         try{
@@ -74,7 +81,8 @@ public class GestionCuenta implements Serializable {
             System.out.println(e.getMessage());
         }
         try{
-            if(cuenta != null){
+
+            if(iniciarSesion()){
                 System.out.println("Iniciando Sesión....");
             } else {
                 System.out.println("Dime un DNI para la cuenta: ");

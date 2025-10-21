@@ -1,11 +1,13 @@
 import java.io.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import POJO.Movimiento;
 
 public class Utiles implements Serializable {
-    transient Scanner sc = new Scanner(System.in);
+    private static final long serialVersionUID = 1L;
     final String archivo = "datos/cuenta.dat";
     Movimiento mov = new Movimiento();
+    Scanner sc = new Scanner(System.in);
     public void crearArchivos() {
         boolean creado = false;
         File carpeta = new File("datos");
@@ -50,27 +52,56 @@ public class Utiles implements Serializable {
         }
     }
 
-    public double pedirDouble(){
-        while(true){
-            double numero = sc.nextDouble();
-            if(numero >= 0){
-              return numero;
-            } else {
-                System.out.println("El numero que has introducido no es valido, solo numeros positivos");
+    public double pedirDouble() {
+        double numero = 0;
+        try {
+            while (true) {
+                 numero = sc.nextDouble();
+                if (numero >= 0) {
+                    break;
+                } else {
+                    System.out.println("El numero que has introducido no es valido, solo numeros positivos");
+                }
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
+    return numero;
     }
 
-    public int pedirInt(){
-        while(true){
-            int num = sc.nextInt();
-            if(num >= 0){
-                return num;
-            }
-            System.out.println("Numero no válido");
 
+
+    public int pedirInt() {
+        int num = -1;
+        boolean valido = false;
+
+
+        while (!valido) {
+            try {
+                System.out.print("Introduce un número entero positivo: ");
+                num = sc.nextInt();
+
+                if (num >= 0) {
+                    valido = true;
+                } else {
+                    System.out.println("Número no válido. Debe ser mayor o igual a 0.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Debes ingresar un número entero.");
+                sc.nextLine(); // limpia el buffer
+
+            }
         }
+
+        return num;
+    }
+
+
+
+
+    public void saltoLinea(){
+        System.out.println("Pulsa espacio para continuar");
+        String salto = sc.nextLine();
     }
 
 
