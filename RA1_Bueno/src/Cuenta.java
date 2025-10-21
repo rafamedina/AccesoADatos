@@ -12,17 +12,19 @@ import java.util.Scanner;
 public class Cuenta implements Serializable {
     private static final long serialVersionUID = 1L;
     private Cliente cliente;
-    Utiles ut = new Utiles();
-    final String archivo = "datos/cuenta.dat";
-    Scanner sc = new Scanner(System.in);
+    transient Utiles ut = new Utiles();
+    transient Scanner sc = new Scanner(System.in);
     private ArrayList<Movimiento> lista = new ArrayList<>();
 
     public Cuenta(Cliente cliente) {
         this.cliente = cliente;
     }
-    public Cuenta(){
 
+    public Cuenta(){
+        Scanner sc = new Scanner(System.in);
+        Utiles ut = new Utiles();
     }
+
 
     public Cliente getCliente() {
         return cliente;

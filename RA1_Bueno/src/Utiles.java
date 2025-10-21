@@ -7,7 +7,10 @@ public class Utiles implements Serializable {
     private static final long serialVersionUID = 1L;
     final String archivo = "datos/cuenta.dat";
     Movimiento mov = new Movimiento();
-    Scanner sc = new Scanner(System.in);
+    transient Scanner sc = new Scanner(System.in);
+    public Utiles(){
+        Scanner sc = new Scanner(System.in);
+    }
     public void crearArchivos() {
         boolean creado = false;
         File carpeta = new File("datos");
@@ -15,9 +18,7 @@ public class Utiles implements Serializable {
             creado = carpeta.mkdir();
             System.out.println("Carpeta creada");
         }
-        if (!creado) {
-            System.out.println("La carpeta no se ha podido crear");
-        } else {
+        if (creado) {
             try {
                 File ar = new File(archivo);
                 if (!ar.exists()) {
@@ -78,7 +79,7 @@ public class Utiles implements Serializable {
 
         while (!valido) {
             try {
-                System.out.print("Introduce un número entero positivo: ");
+                System.out.print("Introduce un número: ");
                 num = sc.nextInt();
 
                 if (num >= 0) {
@@ -102,6 +103,7 @@ public class Utiles implements Serializable {
     public void saltoLinea(){
         System.out.println("Pulsa espacio para continuar");
         String salto = sc.nextLine();
+
     }
 
 
