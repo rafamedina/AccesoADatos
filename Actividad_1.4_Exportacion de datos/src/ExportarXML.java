@@ -1,9 +1,11 @@
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ExportarXML {
     // Ruta del archivo XML
-    private static final String ARCHIVO = "datos/estudiantes.xml";
+    private static final String ARCHIVO = "xml/estudiantes_";
 
     /**
      * Escapa caracteres especiales que tienen significado en XML para evitar
@@ -47,9 +49,9 @@ public class ExportarXML {
      * Lanza IOException si no puede crear el directorio.
      */
     private static void crearArchivos() throws IOException {
-        File dir = new File("datos");
+        File dir = new File("xml");
         if (!dir.exists() && !dir.mkdirs()) {
-            throw new IOException("No se pudo crear el directorio: datos");
+            throw new IOException("No se pudo crear el directorio: xml");
         }
     }
 
@@ -58,18 +60,21 @@ public class ExportarXML {
      * Sobrescribe el archivo con una estructura XML bien formada y un resumen de notas.
      *
      * @param estudiantes lista de objetos Estudiante (debe existir la clase Estudiante con getters usados)
-     * @param fecha       fecha en formato texto que se incluirá en el metadata
      */
-    public static void escribirXmlExacto(List<Estudiante> estudiantes, String fecha) {
+    public static void escribirXmlExacto(List<Estudiante> estudiantes) {
         try {
             crearArchivos();
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            String timestamp = LocalDateTime.now().format(formatter);
+            String nombreArchivo = ARCHIVO+timestamp+".xml";
 
             double suma = estudiantes.stream().mapToDouble(Estudiante::getNota).sum();
             double media = estudiantes.isEmpty() ? 0.0 : suma / estudiantes.size();
             double maxima = estudiantes.stream().mapToDouble(Estudiante::getNota).max().orElse(0.0);
             double minima = estudiantes.stream().mapToDouble(Estudiante::getNota).min().orElse(0.0);
 
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO))) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
                 // Declaración XML y elemento raíz
                 bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
                 bw.newLine();
@@ -79,7 +84,7 @@ public class ExportarXML {
                 // Metadata
                 bw.write("  <metadata>");
                 bw.newLine();
-                bw.write("    <fecha>" + escapeXml(fecha) + "</fecha>");
+                bw.write("    <fecha>" + escapeXml(timestamp) + "</fecha>");
                 bw.newLine();
                 bw.write("    <totalEstudiantes>" + estudiantes.size() + "</totalEstudiantes>");
                 bw.newLine();

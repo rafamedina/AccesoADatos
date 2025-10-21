@@ -1,50 +1,39 @@
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 public class ExportarCSV {
 
-final String archivo = "datos/estudiantes.csv";
+final String archivo = "csv/estudiantes_";
 
 private static final String separador = ";";
 
     public void Creacion(){
         try{
-            File carpeta = new File("datos");
+            File carpeta = new File("csv");
             if(!carpeta.exists()){
                 carpeta.mkdir();
             }
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
-
-        try{
-             File archi = new File(archivo);
-             if(!archi.exists()){
-                 archi.createNewFile();
-             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        try
-        (BufferedWriter bf = new BufferedWriter(new FileWriter(archivo))){
-            BufferedReader br = new BufferedReader(new FileReader(archivo));
-            String linea;
-            while((linea = br.readLine())==null){
-                bf.write("ID;Nombre;Apellidos;Edad;Nota");
-                bf.newLine();
-                break;
-            }
-            br.close();
-
-        } catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-
     }
 
     public void exportarCSV(List<Estudiante> estudiantes) {
         Creacion();
-        try (BufferedWriter bf = new BufferedWriter(new FileWriter(archivo, true))) {
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+        String timestamp = LocalDateTime.now().format(formatter);
+        String nombreArchivo = archivo+timestamp+".csv";
+        try (BufferedWriter bf = new BufferedWriter(new FileWriter(nombreArchivo))){
+            String header = String.join(separador, "ID", "Nombre", "Apellidos", "Edad", "Nota");
+            bf.write(header);
+            bf.newLine();
+
+
             double nota = 0;
             int contador = 0;
             double notaFinal = 0;

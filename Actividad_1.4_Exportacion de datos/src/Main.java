@@ -10,8 +10,9 @@ public class Main {
                 new Estudiante(5, "Carlos", "Sánchez", 22, 6.5));
 
         ExportarCSV csv = new ExportarCSV();
+        // csv.exportarCSV(estudiantes);
+
     ExportarXML xml = new ExportarXML();
-    csv.exportarCSV(estudiantes);
-    ExportarXML.escribirXmlExacto(estudiantes,"21/10/2025");
+    ExportarXML.escribirXmlExacto(estudiantes);
     }
     }
