@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class GestionCuenta implements Serializable {
     private static final long serialVersionUID = 1L;
     Cuenta cuenta;
-    Scanner sc = new Scanner(System.in);
 
 
 
