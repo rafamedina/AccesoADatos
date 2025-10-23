@@ -1,15 +1,15 @@
-import POJO.*;
+package POJO;
 
-import java.io.File;
-import java.io.IOException;
+import Utiles.Utiles;
+
 import java.io.Serializable;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
+import static Utiles.Utiles.*;
 
-// Clase Cuenta que representa una cuenta bancaria asociada a un cliente
+
+// Clase POJO.Cuenta que representa una cuenta bancaria asociada a un cliente
 public class Cuenta implements Serializable {
     // Identificador de versión para la serialización
     private static final long serialVersionUID = 1L;
@@ -17,8 +17,7 @@ public class Cuenta implements Serializable {
     private Cliente cliente;
     // Utilidad para operaciones varias (no se serializa)
     transient Utiles ut = new Utiles();
-    // Scanner para entrada de datos por consola (no se serializa)
-    transient Scanner sc = new Scanner(System.in);
+
     // Lista de movimientos realizados en la cuenta
     private ArrayList<Movimiento> lista = new ArrayList<>();
 
@@ -29,7 +28,7 @@ public class Cuenta implements Serializable {
 
     // Constructor por defecto
     public Cuenta(){
-         sc = new Scanner(System.in);
+
          ut = new Utiles();
     }
 

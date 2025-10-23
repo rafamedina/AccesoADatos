@@ -1,7 +1,10 @@
+package Utiles;
+
 import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import POJO.Movimiento;
+import POJO.*;
 
 // Clase de utilidades para operaciones de entrada/salida y gestión de archivos
 public class Utiles implements Serializable {
@@ -12,12 +15,8 @@ public class Utiles implements Serializable {
     // Instancia de Movimiento para operaciones
     Movimiento mov = new Movimiento();
     // Scanner para entrada de datos por consola (no se serializa)
-    transient Scanner sc = new Scanner(System.in);
+    public static Scanner sc = new Scanner(System.in);
 
-    // Constructor por defecto
-    public Utiles(){
-         sc = new Scanner(System.in);
-    }
 
     // Método para crear la carpeta y el archivo de datos si no existen
     public void crearArchivos() {
@@ -44,7 +43,7 @@ public class Utiles implements Serializable {
     public void guardarCuenta(Cuenta cuenta){
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
             oos.writeObject(cuenta);
-            System.out.println("Cuenta guardada correctamente.");
+            System.out.println("POJO.Cuenta guardada correctamente.");
         } catch (IOException e) {
             // Capturamos cualquier error de escritura
             System.out.println("Error al guardar la cuenta: " + e.getMessage());
@@ -55,7 +54,7 @@ public class Utiles implements Serializable {
     public Cuenta cargarCuenta(){
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))){
             Cuenta cuentaCargada = (Cuenta) ois.readObject();
-            System.out.println("Cuenta cargada correctamente.");
+            System.out.println("POJO.Cuenta cargada correctamente.");
             return cuentaCargada;
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error al cargar la cuenta: " + e.getMessage());

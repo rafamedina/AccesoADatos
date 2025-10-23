@@ -5,7 +5,24 @@ import java.util.List;
 
 public class ExportarXML {
     // Ruta del archivo XML
+    static String fecha;
     private static final String ARCHIVO = "xml/estudiantes_";
+    private static final String NODOPADRE = "clase";
+    private static final String NODOHIJO = "estudiantes";
+
+
+
+
+
+
+    private static final String INDENTACION =  "    ";
+    private static final String INDENTACION2 = "        ";
+    private static final String INDENTACION3 = "            ";
+
+
+
+    private static final String CARPETA = "XML"; // NOMBRE CARPETA
+    private static final String EXTENSION = ".xml"; // NOMBRE CARPETA
 
     /**
      * Escapa caracteres especiales que tienen significado en XML para evitar
@@ -48,8 +65,8 @@ public class ExportarXML {
      * Asegura que exista el directorio donde se guardará el archivo.
      * Lanza IOException si no puede crear el directorio.
      */
-    private static void crearArchivos() throws IOException {
-        File dir = new File("xml");
+    private static void crearCarpeta() throws IOException {
+        File dir = new File(CARPETA);
         if (!dir.exists() && !dir.mkdirs()) {
             throw new IOException("No se pudo crear el directorio: xml");
         }
@@ -59,76 +76,105 @@ public class ExportarXML {
      * Escribe la lista completa de estudiantes en `datos/estudiantes.xml`.
      * Sobrescribe el archivo con una estructura XML bien formada y un resumen de notas.
      *
-     * @param estudiantes lista de objetos Estudiante (debe existir la clase Estudiante con getters usados)
+     * estudiantes lista de objetos Estudiante (debe existir la clase Estudiante con getters usados)
      */
+
+    public static String crearNombreArchivo(){
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+        fecha = LocalDateTime.now().format(formatter);
+        return ARCHIVO+ fecha +EXTENSION;
+    }
+
     public static void escribirXmlExacto(List<Estudiante> estudiantes) {
         try {
-            crearArchivos();
-            DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-            String timestamp = LocalDateTime.now().format(formatter);
-            String nombreArchivo = ARCHIVO+timestamp+".xml";
+            crearCarpeta();
+
+            String nombreArchivo = crearNombreArchivo();
 
             double suma = estudiantes.stream().mapToDouble(Estudiante::getNota).sum();
             double media = estudiantes.isEmpty() ? 0.0 : suma / estudiantes.size();
             double maxima = estudiantes.stream().mapToDouble(Estudiante::getNota).max().orElse(0.0);
             double minima = estudiantes.stream().mapToDouble(Estudiante::getNota).min().orElse(0.0);
 
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
-                // Declaración XML y elemento raíz
-                bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-                bw.newLine();
-                bw.write("<clase>");
-                bw.newLine();
 
-                // Metadata
-                bw.write("  <metadata>");
-                bw.newLine();
-                bw.write("    <fecha>" + escapeXml(timestamp) + "</fecha>");
-                bw.newLine();
-                bw.write("    <totalEstudiantes>" + estudiantes.size() + "</totalEstudiantes>");
-                bw.newLine();
-                bw.write("  </metadata>");
-                bw.newLine();
+                File archivo;
+                archivo = new File(nombreArchivo);
+                boolean creado = archivo.createNewFile();
+                if(creado){
 
-                // Lista de estudiantes
-                bw.write("  <estudiantes>");
-                bw.newLine();
-                for (Estudiante e : estudiantes) {
-                    bw.write("    <estudiante id=\"" + escapeXml(String.valueOf(e.getId())) + "\">");
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(archivo,true));
+
+
+
+                    // Declaración XML y elemento raíz
+                    bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
                     bw.newLine();
-                    bw.write("      <nombre>" + escapeXml(e.getNombre()) + "</nombre>");
+                    bw.write("<" + NODOPADRE +  ">");
                     bw.newLine();
-                    bw.write("      <apellidos>" + escapeXml(e.getApellido()) + "</apellidos>");
+
+
+
+
+                    // Metadata
+                    bw.write(INDENTACION +"<metadata>");
                     bw.newLine();
-                    bw.write("      <edad>" + e.getEdad() + "</edad>");
+                    bw.write(INDENTACION2+"<fecha>" + escapeXml(fecha) + "</fecha>");
                     bw.newLine();
-                    bw.write("      <nota>" + String.format("%.1f", e.getNota()) + "</nota>");
+                    bw.write(INDENTACION2+"<totalEstudiantes>" + estudiantes.size() + "</totalEstudiantes>");
                     bw.newLine();
-                    bw.write("    </estudiante>");
+                    bw.write(INDENTACION +"</metadata>");
                     bw.newLine();
+
+
+
+
+                    // Lista de estudiantes
+                    bw.write(INDENTACION +"<" + NODOHIJO + ">");
+                    bw.newLine();
+                    for (Estudiante e : estudiantes) {
+                        bw.write(INDENTACION2+"<estudiante id=\"" + escapeXml(String.valueOf(e.getId())) + "\">");
+                        bw.newLine();
+                        bw.write(INDENTACION3+"<nombre>" + escapeXml(e.getNombre()) + "</nombre>");
+                        bw.newLine();
+                        bw.write(INDENTACION3+"<apellidos>" + escapeXml(e.getApellido()) + "</apellidos>");
+                        bw.newLine();
+                        bw.write(INDENTACION3+"<edad>" + e.getEdad() + "</edad>");
+                        bw.newLine();                                  // Decimales a mostrar
+                        bw.write(INDENTACION3+"<nota>" + String.format("%.1f", e.getNota()) + "</nota>");
+                        bw.newLine();
+                        bw.write(INDENTACION2+"</estudiante>");
+                        bw.newLine();
+                    }
+                    bw.write(INDENTACION +"</"+ NODOHIJO +">");
+                    bw.newLine();
+
+
+
+
+                    // Resumen de notas
+                    bw.write(INDENTACION+"<resumen>");
+                    bw.newLine();
+                    bw.write(INDENTACION2+"<notaMedia>" + String.format("%.2f", media) + "</notaMedia>");
+                    bw.newLine();
+                    bw.write(INDENTACION2+"<notaMaxima>" + String.format("%.1f", maxima) + "</notaMaxima>");
+                    bw.newLine();
+                    bw.write(INDENTACION2+"<notaMinima>" + String.format("%.1f", minima) + "</notaMinima>");
+                    bw.newLine();
+                    bw.write(INDENTACION+"</resumen>");
+                    bw.newLine();
+
+                    bw.write("</" + NODOPADRE +">");
+                    bw.newLine();
+                    bw.close();
+                } else {
+                    System.out.println("El archivo no se ha podido crear");
                 }
-                bw.write("  </estudiantes>");
-                bw.newLine();
 
-                // Resumen de notas
-                bw.write("  <resumen>");
-                bw.newLine();
-                bw.write("    <notaMedia>" + String.format("%.2f", media) + "</notaMedia>");
-                bw.newLine();
-                bw.write("    <notaMaxima>" + String.format("%.1f", maxima) + "</notaMaxima>");
-                bw.newLine();
-                bw.write("    <notaMinima>" + String.format("%.1f", minima) + "</notaMinima>");
-                bw.newLine();
-                bw.write("  </resumen>");
-                bw.newLine();
 
-                bw.write("</clase>");
-                bw.newLine();
-            }
-        } catch (IOException ex) {
+        } catch (IOException e) {
             // Mensaje de error claro en español
-            System.err.println("Error escribiendo XML: " + ex.getMessage());
+            System.err.println("Error escribiendo XML: " + e.getMessage());
         }
     }
 }

@@ -11,7 +11,7 @@ final String archivo = "csv/estudiantes_";
 
 private static final String separador = ";";
 
-    public void Creacion(){
+    public void creacion(){
         try{
             File carpeta = new File("csv");
             if(!carpeta.exists()){
@@ -23,7 +23,7 @@ private static final String separador = ";";
     }
 
     public void exportarCSV(List<Estudiante> estudiantes) {
-        Creacion();
+        creacion();
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String timestamp = LocalDateTime.now().format(formatter);
