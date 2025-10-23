@@ -1,13 +1,12 @@
 import POJO.Cliente;
 import POJO.Cuenta;
-import Utiles.Utiles;
+import static Utiles.Utiles.*;
 
 import java.io.Serializable;
 import java.util.Scanner;
 
 public class GestionCuenta implements Serializable {
     private static final long serialVersionUID = 1L;
-    Utiles ut = new Utiles();
     Cuenta cuenta;
     Scanner sc = new Scanner(System.in);
 
@@ -21,23 +20,22 @@ public class GestionCuenta implements Serializable {
         switch (eleccion){
             case 1:
                 cuenta.ingresarDinero();
-                ut.saltoLinea();
+                saltoLinea();
                 break;
             case 2:
                 cuenta.retirarDinero();
-                ut.saltoLinea();
+                saltoLinea();
                 break;
             case 3:
                 cuenta.consultarSaldo();
-                ut.saltoLinea();
+                saltoLinea();
                 break;
             case 4:
                 cuenta.mostrarMovimientos();
-                ut.saltoLinea();
+                saltoLinea();
                 break;
             case 0:
-                guardarCuenta();
-                guardarCuenta();
+                guardarCuenta(cuenta);
                 break;
             default:
                 System.out.println("Opción no válida");
@@ -55,12 +53,12 @@ public class GestionCuenta implements Serializable {
         System.out.println("3. Mostrar Saldo");
         System.out.println("4. Mostrar Movimientos");
         System.out.println("0. Salir");
-        return ut.pedirInt();
+        return pedirInt();
     }
 
 
     public boolean iniciarSesion() {
-        cuenta = ut.cargarCuenta();
+        cuenta = cargarCuenta();
         if (cuenta != null && cuenta.getCliente() != null) {
             System.out.println("Sesión iniciada correctamente.");
             return true;
@@ -69,17 +67,10 @@ public class GestionCuenta implements Serializable {
             return false;
         }
     }
-    public void guardarCuenta(){
-        try{
-            ut.guardarCuenta(cuenta);
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
     public void iniciarCuenta(){
         double saldo = 0;
         try{
-            ut.crearArchivos();
+            crearArchivos();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -101,7 +92,7 @@ public class GestionCuenta implements Serializable {
                 String sino = sc.nextLine();
                 if(sino.equalsIgnoreCase("S")){
                     System.out.println("Cuanto quieres ingresar: ");
-                    saldo = ut.pedirDouble();
+                    saldo = pedirDouble();
                 }
                 Cliente newcliente = new Cliente(dni,nombre,apellido,Ncuenta,saldo);
                 cuenta = new Cuenta(newcliente);

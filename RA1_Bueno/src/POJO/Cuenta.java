@@ -15,8 +15,6 @@ public class Cuenta implements Serializable {
     private static final long serialVersionUID = 1L;
     // Cliente asociado a la cuenta
     private Cliente cliente;
-    // Utilidad para operaciones varias (no se serializa)
-    transient Utiles ut = new Utiles();
 
     // Lista de movimientos realizados en la cuenta
     private ArrayList<Movimiento> lista = new ArrayList<>();
@@ -28,8 +26,6 @@ public class Cuenta implements Serializable {
 
     // Constructor por defecto
     public Cuenta(){
-
-         ut = new Utiles();
     }
 
     // Getter del cliente
@@ -48,7 +44,7 @@ public class Cuenta implements Serializable {
         SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy"); // Formato de fecha
         try{
             System.out.println("Cuanto dinero quieres ingresar: ");
-            double ingreso = ut.pedirDouble(); // Solicita cantidad a ingresar
+            double ingreso = pedirDouble(); // Solicita cantidad a ingresar
             cliente.actualizarSaldo(ingreso); // Actualiza saldo del cliente
             System.out.println("Dime el concepto para esta acción: ");
             String concepto = sc.nextLine(); // Solicita concepto
@@ -65,7 +61,7 @@ public class Cuenta implements Serializable {
         SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy"); // Formato de fecha
         try{
             System.out.println("Cuanto dinero quieres Retirar: ");
-            double ingreso = ut.pedirDouble(); // Solicita cantidad a retirar
+            double ingreso = pedirDouble(); // Solicita cantidad a retirar
             if(ingreso<= cliente.getSaldo()){
                 cliente.actualizarSaldo(-ingreso); // Actualiza saldo del cliente
                 System.out.println("Dime el concepto para esta acción: ");
