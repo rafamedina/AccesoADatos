@@ -1,10 +1,13 @@
+import Exportadores.ExportadorCSV;
 import POJO.Cliente;
 import POJO.Cuenta;
-import static Utiles.Utiles.*;
 
 import java.io.Serializable;
 
-
+import static Utiles.Utiles.*;
+import static  Exportadores.ExportadorCSV.*;
+import static  Exportadores.ExportarXML.*;
+import static  Exportadores.ExportarJSON.*;
 public class GestionCuenta implements Serializable {
     private static final long serialVersionUID = 1L;
     Cuenta cuenta;
@@ -33,6 +36,17 @@ public class GestionCuenta implements Serializable {
                 cuenta.mostrarMovimientos();
                 saltoLinea();
                 break;
+
+
+            case 5:
+                exportarCSV(cuenta);
+
+            case 6:
+                escribirXmlExacto(cuenta);
+
+            case 7:
+                escribirJsonExacto(cuenta);
+
             case 0:
                 guardarCuenta(cuenta);
                 break;
@@ -93,6 +107,7 @@ public class GestionCuenta implements Serializable {
                     System.out.println("Cuanto quieres ingresar: ");
                     saldo = pedirDouble();
                 }
+
                 Cliente newcliente = new Cliente(dni,nombre,apellido,Ncuenta,saldo);
                 cuenta = new Cuenta(newcliente);
             }
