@@ -143,7 +143,9 @@ public class ExportarXML {
                     bw.newLine();
 
 
-                    // Lista de estudiantes
+                    // SE COPIA ESTO HASTA SIGUIENTE COMENTARIO
+
+
                     bw.write(INDENTACION + "<" + NODOHIJO + ">");
                     bw.newLine();
                     for (Estudiante e : estudiantes) {
@@ -162,6 +164,9 @@ public class ExportarXML {
                     }
                     bw.write(INDENTACION + "</" + NODOHIJO + ">");
                     bw.newLine();
+                    // SE COPIA HASTA AQUI
+
+
 
 
                     // Resumen de notas

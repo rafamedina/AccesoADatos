@@ -122,6 +122,10 @@ public class ExportarJSON {
                         bw.newLine();
 
 
+                        // SE COPIA DESDE AQUI
+
+
+
                         // Lista de estudiantes
                         bw.write(INDENTACION2 + "\"" + NODOHIJO + "\": [");
                         bw.newLine();
@@ -152,6 +156,13 @@ public class ExportarJSON {
 
                         bw.write(INDENTACION2 + "],");
                         bw.newLine();
+
+
+
+                        // HASTA AQUI
+
+
+
 
                         // Resumen de notas
                         bw.write(INDENTACION2 + "\"resumen\": {");
