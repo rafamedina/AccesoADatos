@@ -142,7 +142,7 @@ public class ExportarJSON {
                             bw.newLine();
                         }
 
-                        bw.write(INDENTACION2 + "],");
+                        bw.write(INDENTACION2 + "]");
                         bw.newLine();
 
 
