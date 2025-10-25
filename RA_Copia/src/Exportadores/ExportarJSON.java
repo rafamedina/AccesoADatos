@@ -1,5 +1,5 @@
 package Exportadores;
-
+import static Exportadores.UtilesExport.*;
 import POJO.Cliente;
 import POJO.Cuenta;
 import POJO.Movimiento;
@@ -13,7 +13,6 @@ import java.util.List;
 
 public class ExportarJSON {
     // Ruta del archivo JSON
-    static String fecha;
     private static final String ARCHIVO = "exportaciones/estudiantes_";
     private static final String NODOHIJO = "propietarios";
     private static final String NODOHIJO2 = "movimientos";
@@ -25,59 +24,10 @@ public class ExportarJSON {
     private static final String CARPETA = "exportaciones"; // NOMBRE CARPETA
     private static final String EXTENSION = ".json";
 
-    /**
-     * Escapa caracteres especiales para JSON.
-     * Reemplaza comillas, barra invertida y caracteres de control por sus
-     * secuencias de escape JSON. Si la entrada es null devuelve cadena vacía.
-     */
 
-    private static String escapeJson(String texto) {
-        if (texto == null || texto.isEmpty()) {
-            return "";
-        }
-
-        // IMPORTANTE: El orden importa - escapar \ primero
-        return texto.replace("\\", "\\\\")   // Barra invertida primero
-                .replace("\"", "\\\"")    // Comillas dobles
-                .replace("\n", "\\n")     // Nueva línea
-                .replace("\r", "\\r")     // Retorno de carro
-                .replace("\t", "\\t");    // Tabulador
-    }
-
-    /**
-     * Asegura que exista el directorio donde se guardará el archivo.
-     * Lanza IOException si no puede crear el directorio.
-     */
-    private static boolean crearCarpeta() {
-        try {
-            File dir = new File(CARPETA);
-            if (!dir.exists() && !dir.mkdirs()) {
-                return false;
-
-            }
-            return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public static String crearNombreArchivo() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-        fecha = LocalDateTime.now().format(formatter);
-        return ARCHIVO + fecha + EXTENSION;
-    }
-
-    /**
-     * Escribe la lista completa de estudiantes en json/estudiantes_YYYYMMDD_HHMMSS.json.
-     * Sobrescribe el archivo recién creado (se crea con timestamp) con una estructura JSON
-     * bien formada que incluye metadata, la lista de estudiantes y un resumen de notas.
-     * <p>
-     * estudiantes: lista de objetos Estudiante (debe existir la clase Estudiante con getters usados)
-     */
     public static void escribirJsonExacto(Cuenta cuenta) {
         try {
-            String nombreArchivo = crearNombreArchivo();
+            String nombreArchivo = crearNombreArchivo(ARCHIVO,EXTENSION);
 
             // PASO 1: VALIDACIONES
 
@@ -92,7 +42,7 @@ public class ExportarJSON {
             }
 
 
-            if (crearCarpeta()) {
+            if (crearCarpeta(CARPETA)) {
 
 
                 File archivo = new File(nombreArchivo);

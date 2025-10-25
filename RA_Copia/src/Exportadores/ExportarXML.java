@@ -1,5 +1,5 @@
 package Exportadores;
-
+import static Exportadores.UtilesExport.*;
 import POJO.Cliente;
 import POJO.Cuenta;
 import POJO.Movimiento;
@@ -17,7 +17,6 @@ import java.util.List;
 
 public class ExportarXML {
     // Ruta del archivo XML
-    static String fecha;
     private static final String ARCHIVO = "exportaciones/cuenta_";
     private static final String NODOPADRE = "cuenta";
     private static final String NODOHIJO = "Propietarios";
@@ -32,64 +31,8 @@ public class ExportarXML {
     private static final String CARPETA = "exportaciones"; // NOMBRE CARPETA
     private static final String EXTENSION = ".xml"; // NOMBRE CARPETA
 
-    /**
-     * Escapa caracteres especiales que tienen significado en XML para evitar
-     * romper la estructura del documento o introducir vulnerabilidades.
-     * <p>
-     * Convierte:
-     * &  -> &amp;
-     * <  -> &lt;
-     * >  -> &gt;
-     * "  -> &quot;
-     * '  -> &apos;
-     * <p>
-     * Importante: el orden de reemplazo importa (primero '&') cuando se
-     * hace con reemplazos en cadena; aquí procesamos carácter a carácter
-     * para evitar dobles escapes.
-     * <p>
-     * Si la entrada es null se devuelve cadena vacía.
-     * <p>
-     * Ejemplo:
-     * entrada:  Tom & Jerry <3
-     * salida:   Tom &amp; Jerry &lt;3
-     * <p>
-     * Uso: llamar antes de insertar valores de texto dentro de elementos o
-     * atributos XML.
-     *
-     * @param texto texto sin escapar
-     * @return texto con los caracteres XML especiales escapados
-     */
 
-    private static String escapeXml(String texto) {
-        if (texto == null || texto.isEmpty()) {
-            return "";
-        }
 
-        // IMPORTANTE: El orden importa - escapar & primero
-        return texto.replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace("\"", "&quot;")
-                .replace("'", "&apos;");
-    }
-
-    /**
-     * Asegura que exista el directorio donde se guardará el archivo.
-     * Lanza IOException si no puede crear el directorio.
-     */
-    private static boolean crearCarpeta() {
-        try {
-            File dir = new File(CARPETA);
-            if (!dir.exists() && !dir.mkdirs()) {
-                return false;
-
-            }
-            return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
 
     /**
      * Escribe la lista completa de estudiantes en `datos/estudiantes.xml`.
@@ -98,18 +41,13 @@ public class ExportarXML {
      * estudiantes lista de objetos Estudiante (debe existir la clase Estudiante con getters usados)
      */
 
-    public static String crearNombreArchivo() {
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-        fecha = LocalDateTime.now().format(formatter);
-        return ARCHIVO + fecha + EXTENSION;
-    }
+
 
     public static void escribirXmlExacto(Cuenta cuen) {
         try {
 
 
-            String nombreArchivo = crearNombreArchivo();
+            String nombreArchivo = crearNombreArchivo(ARCHIVO,EXTENSION);
 
             if (cuen == null) {
                 System.out.println("ERROR: No hay productos para exportar.");
@@ -122,7 +60,7 @@ public class ExportarXML {
             }
 
 
-            if (crearCarpeta()) {
+            if (crearCarpeta(CARPETA)) {
 
 //                double suma = estudiantes.stream().mapToDouble(Estudiante::getNota).sum();
 //                double media = estudiantes.isEmpty() ? 0.0 : suma / estudiantes.size();

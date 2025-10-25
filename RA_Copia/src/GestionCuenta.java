@@ -36,16 +36,11 @@ public class GestionCuenta implements Serializable {
                 cuenta.mostrarMovimientos();
                 saltoLinea();
                 break;
-
-
             case 5:
                 exportarCSV(cuenta);
-
-            case 6:
-                escribirXmlExacto(cuenta);
-
-            case 7:
                 escribirJsonExacto(cuenta);
+                escribirXmlExacto(cuenta);
+                break;
 
             case 0:
                 guardarCuenta(cuenta);

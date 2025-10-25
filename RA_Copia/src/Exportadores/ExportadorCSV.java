@@ -1,5 +1,5 @@
 package Exportadores;
-
+import static Exportadores.UtilesExport.*;
 import POJO.Cliente;
 import POJO.Cuenta;
 import POJO.Movimiento;
@@ -17,46 +17,19 @@ public class ExportadorCSV
 {
 
 
-    static final String archivo = "exportaciones/cuenta_";
+    static final String ARCHIVO = "exportaciones/cuenta_";
 
     private static final String separador = ";";
     private static final String CARPETA = "exportaciones"; // NOMBRE CARPETA
+    private static final String EXTENSION = ".csv";
 
 
-    private static boolean crearCarpeta() {
-        try {
-            File dir = new File(CARPETA);
-            if (!dir.exists() && !dir.mkdirs()) {
-                return false;
 
-            }
-            return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    private static String escaparCSV(String texto) {
-        if (texto == null || texto.isEmpty()) {
-            return "";
-        }
-
-        // Si contiene el separador, comillas o saltos de línea, debemos escapar
-        if (texto.contains(separador) || texto.contains("\"") || texto.contains("\n")) {
-            // Duplicamos las comillas y encerramos todo entre comillas
-            return "\"" + texto.replace("\"", "\"\"") + "\"";
-        }
-
-        return texto;
-    }
 
     public static void exportarCSV(Cuenta cuen) {
 
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-        String timestamp = LocalDateTime.now().format(formatter);
-        String nombreArchivo = archivo + timestamp + ".csv";
+
+        String nombreArchivo = crearNombreArchivo(ARCHIVO,EXTENSION);
 
         if (cuen == null ) {
             System.out.println("ERROR: No hay productos para exportar.");
@@ -69,7 +42,7 @@ public class ExportadorCSV
             return;
         }
 
-        if(crearCarpeta()){
+        if(crearCarpeta(CARPETA)){
             try (BufferedWriter bf = new BufferedWriter(new FileWriter(nombreArchivo))) {
                 String header = String.join(separador, "DNI", "Nombre", "Apellidos", "Numero Cuenta", "Saldo");
                 String headerMov = String.join(separador, "Tipo", "Fecha", "Cantidad", "Concepto");
