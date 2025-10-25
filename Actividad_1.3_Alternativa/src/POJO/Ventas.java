@@ -279,7 +279,7 @@ public class Ventas {
     /**
      * mostrarFechas
      * - Muestra todas las ventas que ocurren en la fecha indicada por el usuario.
-     * - Lee el archivo de ventas y compara el campo fecha (índice 2 en la línea).
+     * - Lee el archivo de ventas y compara el campo fecha.
      */
     public void mostrarFechas(){
         boolean fechas = false;
@@ -289,10 +289,8 @@ public class Ventas {
             String date = sc.nextLine();
             while((linea = bf.readLine())!= null){
                 String[] partes = linea.split(";");
-                // Aceptamos líneas con al menos 5 campos: DNI;ISBN;Fecha;Unidades;Precio
-                if(partes.length >= 5){
-                    // Fecha está en la posición 2
-                    if(date.equalsIgnoreCase(partes[2])){
+                if(partes.length==5){
+                    if(date.equalsIgnoreCase(partes[3])){
                         System.out.println(" DNI: " + partes[0] + " ISBN: " + partes[1] + " Fecha: " + partes[2] + " Unidades: " + partes[3] + " Precio Total: " + partes[4]);
                         fechas = true;
                     }
@@ -319,7 +317,7 @@ public class Ventas {
             String dni = sc.nextLine();
             while((linea = bf.readLine())!= null){
                 String[] partes = linea.split(";");
-                if(partes.length >= 5){
+                if(partes.length==5){
                     if(dni.equalsIgnoreCase(partes[0])){
                         System.out.println(" DNI: " + partes[0] + " ISBN: " + partes[1] + " Fecha: " + partes[2] + " Unidades: " + partes[3] + " Precio Total: " + partes[4]);
                         d = true;
@@ -347,7 +345,7 @@ public class Ventas {
             String isbn = sc.nextLine();
             while((linea = bf.readLine())!= null){
                 String[] partes = linea.split(";");
-                if(partes.length >= 5){
+                if(partes.length==5){
                     if(isbn.equalsIgnoreCase(partes[1])){
                         System.out.println(" DNI: " + partes[0] + " ISBN: " + partes[1] + " Fecha: " + partes[2] + " Unidades: " + partes[3] + " Precio Total: " + partes[4]);
                         d = true;
@@ -373,13 +371,8 @@ public class Ventas {
             String linea;
             while((linea = bf.readLine())!= null){
                 String[] partes = linea.split(";");
-                // Aceptar líneas con al menos 5 campos (índice 4 contiene el precio)
-                if(partes.length >= 5){
-                        try{
-                            total = total + Double.parseDouble(partes[4]);
-                        } catch(NumberFormatException ex){
-                            // Ignorar líneas con formato numérico inválido
-                        }
+                if(partes.length==5){
+                        total = total + Double.parseDouble(partes[5]);
                     }
             }
             System.out.println("El total ganado es de: " + total + "euros");

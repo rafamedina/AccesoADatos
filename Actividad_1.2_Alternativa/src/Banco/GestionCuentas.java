@@ -22,28 +22,18 @@ public class GestionCuentas {
         // Crear carpeta "datos" si no existe
         File carpeta = new File("datos");
         if (!carpeta.exists()) {
-            boolean creada = carpeta.mkdir();
-            if (!creada) {
-                // Aviso pero no detenemos la ejecución (posible problema de permisos)
-                System.out.println("Aviso: no se pudo crear la carpeta 'datos'. Comprueba permisos.");
-            }
+            carpeta.mkdir();
         }
 
         // Crear archivos si no existen
         try {
             File cuenta = new File("datos/cuentas.txt");
             if (!cuenta.exists()) {
-                boolean creadoCuenta = cuenta.createNewFile();
-                if (creadoCuenta) {
-                    System.out.println("Archivo 'cuentas.txt' creado.");
-                }
+                cuenta.createNewFile();
             }
             File movimientos = new File("datos/movimientos.txt");
             if (!movimientos.exists()) {
-                boolean creadoMov = movimientos.createNewFile();
-                if (creadoMov) {
-                    System.out.println("Archivo 'movimientos.txt' creado.");
-                }
+                movimientos.createNewFile();
             }
         } catch (IOException e) {
             System.out.println("Error creando archivos: " + e.getMessage());
@@ -145,6 +135,8 @@ public class GestionCuentas {
         System.out.print("Dime un dni: ");
         String dni_metido = sc.nextLine();
 
+        boolean encontrado = false;
+
         try (Scanner scanner = new Scanner(new File("datos/cuentas.txt"))) {
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine();
@@ -159,14 +151,16 @@ public class GestionCuentas {
                         // Crea el cliente en memoria y asigna saldo
                         cliente = new Cliente(dni, numeroCuenta, nombreCompleto);
                         cliente.setSaldo(saldo);
+                        encontrado = true;
                         System.out.println("Sesion iniciada bienvenido: " + nombreCompleto);
                         return true;
                     }
                 }
             }
-            // Si recorremos todo el fichero y no hemos hecho return, el dni no existe
-            System.out.println("Dni no encontrado.");
-            return false;
+            if (!encontrado) {
+                System.out.println("Dni no encontrado.");
+                return false;
+            }
         } catch (Exception e) {
             System.out.println("Error al iniciar sesión: " + e.getMessage());
         }
@@ -261,8 +255,7 @@ public class GestionCuentas {
             System.out.println("El saldo total es de : " + total);
 
         } catch (FileNotFoundException e){
-            // Mostrar el mensaje de excepción para ayudar al debug
-            System.out.println(e.getMessage());
+            e.getMessage();
         }
     }
 
