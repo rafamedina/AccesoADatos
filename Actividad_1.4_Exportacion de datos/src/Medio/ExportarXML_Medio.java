@@ -64,7 +64,7 @@ public class ExportarXML_Medio {
      * Exporta libros agrupados por categoría, ordenando categorías y títulos,
      * con subtotales por categoría y totales globales.
      */
-    public static void escribirXmlLibros(List<Libro> libros) {
+    public static void exportarXML(List<Libro> libros) {
         try {
             String nombreArchivo = crearNombreArchivo(ARCHIVO_LIBROS);
 

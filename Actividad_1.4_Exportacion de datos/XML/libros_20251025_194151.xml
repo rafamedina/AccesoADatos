@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalogo>
+    <metadata>
+        <fecha>20251025_194151</fecha>
+    </metadata>
+    <categorias>
+        <categoria nombre="Clásico">
+            <libros>
+                <libro>
+                    <isbn>978-84-123456-1</isbn>
+                    <titulo>Don Quijote de la Mancha</titulo>
+                    <autor>Miguel de Cervantes</autor>
+                    <anioPublicacion>1605</anioPublicacion>
+                    <paginas>863</paginas>
+                    <disponible>true</disponible>
+                    <prestamos>150</prestamos>
+                </libro>
+            </libros>
+            <subtotal>
+                <totalLibros>1</totalLibros>
+                <totalPrestamos>150</totalPrestamos>
+            </subtotal>
+        </categoria>
+        <categoria nombre="Distopía">
+            <libros>
+                <libro>
+                    <isbn>978-84-123456-3</isbn>
+                    <titulo>1984</titulo>
+                    <autor>George Orwell</autor>
+                    <anioPublicacion>1949</anioPublicacion>
+                    <paginas>328</paginas>
+                    <disponible>true</disponible>
+                    <prestamos>120</prestamos>
+                </libro>
+            </libros>
+            <subtotal>
+                <totalLibros>1</totalLibros>
+                <totalPrestamos>120</totalPrestamos>
+            </subtotal>
+        </categoria>
+        <categoria nombre="Fantasía">
+            <libros>
+                <libro>
+                    <isbn>978-84-123456-5</isbn>
+                    <titulo>Harry Potter y la Piedra Filosofal</titulo>
+                    <autor>J.K. Rowling</autor>
+                    <anioPublicacion>1997</anioPublicacion>
+                    <paginas>223</paginas>
+                    <disponible>true</disponible>
+                    <prestamos>500</prestamos>
+                </libro>
+            </libros>
+            <subtotal>
+                <totalLibros>1</totalLibros>
+                <totalPrestamos>500</totalPrestamos>
+            </subtotal>
+        </categoria>
+        <categoria nombre="Ficción">
+            <libros>
+                <libro>
+                    <isbn>978-84-123456-2</isbn>
+                    <titulo>Cien Años de Soledad</titulo>
+                    <autor>Gabriel García Márquez</autor>
+                    <anioPublicacion>1967</anioPublicacion>
+                    <paginas>471</paginas>
+                    <disponible>false</disponible>
+                    <prestamos>200</prestamos>
+                </libro>
+            </libros>
+            <subtotal>
+                <totalLibros>1</totalLibros>
+                <totalPrestamos>200</totalPrestamos>
+            </subtotal>
+        </categoria>
+        <categoria nombre="Épica">
+            <libros>
+                <libro>
+                    <isbn>978-84-123456-4</isbn>
+                    <titulo>La Odisea</titulo>
+                    <autor>Homero</autor>
+                    <anioPublicacion>-800</anioPublicacion>
+                    <paginas>350</paginas>
+                    <disponible>true</disponible>
+                    <prestamos>90</prestamos>
+                </libro>
+            </libros>
+            <subtotal>
+                <totalLibros>1</totalLibros>
+                <totalPrestamos>90</totalPrestamos>
+            </subtotal>
+        </categoria>
+    </categorias>
+    <resumenGlobal>
+        <totalLibros>5</totalLibros>
+        <totalPrestamos>1060</totalPrestamos>
+    </resumenGlobal>
+</catalogo>

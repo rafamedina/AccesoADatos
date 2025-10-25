@@ -1,19 +1,14 @@
 package Fácil;
 
-import Medio.Libro;
-
-import java.io.*;
-import java.text.Collator;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ExportarCSV {
-
     static final String archivo = "csv/estudiantes_";
 
     private static final String separador = ";";
@@ -47,14 +42,14 @@ public class ExportarCSV {
         return texto;
     }
 
-    public static void exportarCSV(List<Libro> libros) {
+    public static void exportarCSV(List<Estudiante> estudiantes) {
 
         DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+                DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String timestamp = LocalDateTime.now().format(formatter);
         String nombreArchivo = archivo + timestamp + ".csv";
 
-        if (libros == null || libros.isEmpty()) {
+        if (estudiantes == null || estudiantes.isEmpty()) {
             System.out.println("ERROR: No hay productos para exportar.");
             return;
         }
@@ -65,83 +60,45 @@ public class ExportarCSV {
             return;
         }
 
-        if(crearCarpeta()) {
-            Map<String, List<Libro>> porCategoria = new HashMap<>();
-            for (Libro lb : libros) {
-                String categoria = (lb.getCategoria() == null || lb.getCategoria().isBlank())
-                        ? "Sin categoría"
-                        : lb.getCategoria().trim();
-
-                porCategoria.computeIfAbsent(categoria, k -> new ArrayList<>()).add(lb);
-            }
-
-            // Obtener lista de categorías y ordenarlas alfabéticamente
-            List<String> categoriasOrdenadas = new ArrayList<>(porCategoria.keySet());
-
-            categoriasOrdenadas.sort(String::compareToIgnoreCase);
+        if(crearCarpeta()){
             try (BufferedWriter bf = new BufferedWriter(new FileWriter(nombreArchivo))) {
-                bf.write("# BIBLIOTECA MUNICIPAL - CATÁLOGO DE LIBROS");
-                bf.newLine();
-
-                String header = String.join(separador,
-                        "ISBN", "Título", "Autor", "Año", "Páginas", "Disponible", "Préstamos", "Categoría");
+                String header = String.join(separador, "ID", "Nombre", "Apellidos", "Edad", "Nota");
                 bf.write(header);
                 bf.newLine();
 
-                int totalLibros = 0;
-                int totalPrestamos = 0;
 
-                for (String categoria : categoriasOrdenadas) {
-                    List<Libro> lista = porCategoria.get(categoria);
+                double nota = 0;
+                int contador = 0;
+                double notaFinal = 0;
+                String linea;
+                for (Estudiante estu : estudiantes) {
+                    contador += 1;
+                    linea = estu.getId() + separador +
 
-                    // Ordenar los libros dentro de cada categoría por título
-                    lista.sort((a, b) -> a.getTitulo().compareToIgnoreCase(b.getTitulo()));
+                            escaparCSV(estu.getNombre()) + separador +
 
-                    bf.newLine();
-                    bf.write("# Categoría: " + categoria);
-                    bf.newLine();
+                            escaparCSV(estu.getApellido()) + separador +
 
-                    int contadorCat = 0;
-                    int prestamosCat = 0;
+                            estu.getEdad() + separador +
 
-                    for (Libro lb : lista) {
-                        String linea = escaparCSV(lb.getIsbn()) + separador
-                                + escaparCSV(lb.getTitulo()) + separador
-                                + escaparCSV(lb.getAutor()) + separador
-                                + lb.getAñoPublicacion() + separador
-                                + lb.getNumPaginas() + separador
-                                + (lb.isDisponible() ? "Disponible" : "No disponible") + separador
-                                + lb.getPrestamos() + separador
-                                + escaparCSV(categoria);
-
-                        bf.write(linea);
-                        bf.newLine();
-
-                        contadorCat++;
-                        prestamosCat += lb.getPrestamos();
-                    }
-
-                    // Subtotal por categoría
-                    bf.write("Subtotal" + separador + separador + separador + separador + separador
-                            + separador + prestamosCat + separador + categoria + " (" + contadorCat + " libros)");
+                            estu.getNota();
+                    bf.write(linea);
                     bf.newLine();
 
-                    totalLibros += contadorCat;
-                    totalPrestamos += prestamosCat;
+                    nota += estu.getNota();
+                    notaFinal = nota / contador;
                 }
 
-                // Totales generales
                 bf.newLine();
-                bf.write("# Totales");
                 bf.newLine();
-                bf.write("Total Libros" + separador + totalLibros);
-                bf.newLine();
-                bf.write("Total Préstamos" + separador + totalPrestamos);
-                bf.newLine();
+                bf.write("# Nota media;" + String.format("%.2f", notaFinal));
+
+
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
+        }
 
-        }}}
 
-
+    }
+}

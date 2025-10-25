@@ -73,7 +73,7 @@ public class ExportarJSON {
      * <p>
      * estudiantes: lista de objetos Fácil.Estudiante (debe existir la clase Fácil.Estudiante con getters usados)
      */
-    public static void escribirJsonExacto(List<Estudiante> estudiantes) {
+    public static void exportarJSON(List<Estudiante> estudiantes) {
         try {
             String nombreArchivo = crearNombreArchivo();
 

@@ -92,7 +92,7 @@ public class ExportarJSON_Medio {
          *   }
          * }
          */
-        public static void escribirJsonLibrosExacto(List<Libro> libros) {
+        public static void exportarJSON(List<Libro> libros) {
             try {
                 String nombreArchivo = crearNombreArchivo();
 

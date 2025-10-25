@@ -94,7 +94,7 @@ public class ExportarXML {
         return ARCHIVO + fecha + EXTENSION;
     }
 
-    public static void escribirXmlExacto(List<Estudiante> estudiantes) {
+    public static void exportarXML(List<Estudiante> estudiantes) {
         try {
 
 
