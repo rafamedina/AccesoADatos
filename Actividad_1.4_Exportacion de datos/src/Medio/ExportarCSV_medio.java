@@ -1,11 +1,17 @@
-import java.io.*;
+package Medio;
+
+import Fácil.Estudiante;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class ExportarCSV {
-
-    final String archivo = "csv/estudiantes_";
+public class ExportarCSV_medio {
+    static final String archivo = "csv/estudiantes_";
 
     private static final String separador = ";";
     private static final String CARPETA = "csv"; // NOMBRE CARPETA
@@ -38,10 +44,10 @@ public class ExportarCSV {
         return texto;
     }
 
-    public void exportarCSV(List<Estudiante> estudiantes) {
+    public static void exportarCSV(List<Estudiante> estudiantes) {
 
         DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+                DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String timestamp = LocalDateTime.now().format(formatter);
         String nombreArchivo = archivo + timestamp + ".csv";
 

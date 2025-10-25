@@ -1,3 +1,5 @@
+package Fácil;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,7 +71,7 @@ public class ExportarJSON {
      * Sobrescribe el archivo recién creado (se crea con timestamp) con una estructura JSON
      * bien formada que incluye metadata, la lista de estudiantes y un resumen de notas.
      * <p>
-     * estudiantes: lista de objetos Estudiante (debe existir la clase Estudiante con getters usados)
+     * estudiantes: lista de objetos Fácil.Estudiante (debe existir la clase Fácil.Estudiante con getters usados)
      */
     public static void escribirJsonExacto(List<Estudiante> estudiantes) {
         try {
