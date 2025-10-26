@@ -70,28 +70,6 @@ public class ExportarJSON_Medio {
             return LocalDateTime.now().format(out);
         }
 
-        /**
-         * Exporta a json/libros_YYYYMMDD_HHMMSS.json una estructura anidada:
-         *
-         * {
-         *   "biblioteca": {
-         *     "informacion": {...},
-         *     "categorias": {
-         *       "CategoriaA": {
-         *         "totalLibros": n,
-         *         "libros": [ {...}, ... ],
-         *         "estadisticas": {
-         *           "totalPrestamos": x,
-         *           "prestamosMedio": y,
-         *           "libroMasPrestado": "..."
-         *         }
-         *       },
-         *       ...
-         *     },
-         *     "resumenGlobal": { ... }
-         *   }
-         * }
-         */
         public static void exportarJSON(List<Libro> libros) {
             try {
                 String nombreArchivo = crearNombreArchivo();

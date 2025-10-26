@@ -16,8 +16,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        //exportarFacil();
-        //exportarDificil();
+        exportarFacil();
+        exportarDificil();
         exportarMedio();
 
 
