@@ -38,9 +38,29 @@ public class GestionCuenta implements Serializable {
                 saltoLinea();
                 break;
             case 5:
-                exportarCSV(cuenta);
-                escribirJsonExacto(cuenta);
-                escribirXmlExacto(cuenta);
+                int eleccionMenu2 = 1;
+                while(eleccionMenu2 != 0){
+                    eleccionMenu2 = MenuExportaciones();
+                    switch (eleccionMenu2){
+                        case 1:
+                            exportarCSV(cuenta);
+                            saltoLinea();
+                            break;
+                        case 2:
+                            escribirXmlExacto(cuenta);
+                            saltoLinea();
+                            break;
+                        case 3:
+                            escribirJsonExacto(cuenta);
+                            saltoLinea();
+                            break;
+                        case 0:
+                            System.out.println("Volviendo al Menu principal...");
+                            break;
+                        default:
+                            System.out.println("Opción no válida");
+                    }
+                }
                 break;
 
             case 0:
@@ -62,6 +82,15 @@ public class GestionCuenta implements Serializable {
         System.out.println("3. Mostrar Saldo");
         System.out.println("4. Mostrar Movimientos");
         System.out.println("0. Salir");
+        return pedirInt();
+    }
+
+    public int MenuExportaciones(){
+        System.out.println("-----Menu-----");
+        System.out.println("1. Exportar CSV");
+        System.out.println("2. Exportar XML");
+        System.out.println("3. Exportar JSON");
+        System.out.println("0. Volver");
         return pedirInt();
     }
 

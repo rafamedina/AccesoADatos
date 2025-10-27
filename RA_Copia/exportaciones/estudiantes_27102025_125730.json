@@ -1,0 +1,31 @@
+{
+    "cuenta": {
+        "metadata": {
+            "fecha": "27102025_125730",
+            "totalMovimientos": 2
+        },
+        "propietarios": [
+            {
+                "dni": "45R",
+                "nombre": "Rafa",
+                "apellidos": "Medina",
+                "numeroCuenta":"ES1234",
+                "saldo": 925.0
+            }
+        ],
+        "movimientos": [
+            {
+                "tipo": "INGRESO",
+                "fecha": "24-10-2025",
+                "cantidad": "1000.0",
+                "concepto":"prueba1"
+            },
+            {
+                "tipo": "RETIRADA",
+                "fecha": "24-10-2025",
+                "cantidad": "-75.0",
+                "concepto":"prueba2"
+            }
+        ]
+    }
+}
