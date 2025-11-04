@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cuenta>
+    <metadata>
+        <fecha>27102025_125705</fecha>
+        <totalMovimientos>2</totalMovimientos>
+    </metadata>
+    <Propietarios>
+        <Propietario>
+            <dni>45R</dni>
+            <nombre>Rafa</nombre>
+            <apellidos>Medina</apellidos>
+            <Numero_Cuenta>ES1234</Numero_Cuenta>
+            <Saldo>925,00</Saldo>
+        </Propietario>
+    </Propietarios>
+    <Movimientos>
+        <Movimiento>
+            <Tipo>INGRESO</Tipo>
+            <Fecha>24-10-2025</Fecha>
+            <Cantidad>1000.0</Cantidad>
+            <Concepto>prueba1</Concepto>
+        </Movimiento>
+        <Movimiento>
+            <Tipo>RETIRADA</Tipo>
+            <Fecha>24-10-2025</Fecha>
+            <Cantidad>-75.0</Cantidad>
+            <Concepto>prueba2</Concepto>
+        </Movimiento>
+    </Movimientos>
+</cuenta>

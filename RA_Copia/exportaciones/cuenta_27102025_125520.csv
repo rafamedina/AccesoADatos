@@ -1,0 +1,6 @@
+DNI;Nombre;Apellidos;Numero Cuenta;Saldo
+45R;Rafa;Medina;ES1234;925.0
+
+Tipo;Fecha;Cantidad;Concepto
+INGRESO;24-10-2025;1000.0;prueba1
+RETIRADA;24-10-2025;-75.0;prueba2

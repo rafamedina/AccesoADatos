@@ -1,0 +1,26 @@
+# BIBLIOTECA MUNICIPAL - CATÁLOGO DE LIBROS
+ISBN;Título;Autor;Año;Páginas;Disponible;Préstamos;Categoría
+
+# Categoría: Clásico
+978-84-123456-1;Don Quijote de la Mancha;Miguel de Cervantes;1605;863;Disponible;150;Clásico
+Subtotal;;;;;;150;Clásico (1 libros)
+
+# Categoría: Distopía
+978-84-123456-3;1984;George Orwell;1949;328;Disponible;120;Distopía
+Subtotal;;;;;;120;Distopía (1 libros)
+
+# Categoría: Fantasía
+978-84-123456-5;Harry Potter y la Piedra Filosofal;J.K. Rowling;1997;223;Disponible;500;Fantasía
+Subtotal;;;;;;500;Fantasía (1 libros)
+
+# Categoría: Ficción
+978-84-123456-2;Cien Años de Soledad;Gabriel García Márquez;1967;471;No disponible;200;Ficción
+Subtotal;;;;;;200;Ficción (1 libros)
+
+# Categoría: Épica
+978-84-123456-4;La Odisea;Homero;-800;350;Disponible;90;Épica
+Subtotal;;;;;;90;Épica (1 libros)
+
+# Totales
+Total Libros;5
+Total Préstamos;1060

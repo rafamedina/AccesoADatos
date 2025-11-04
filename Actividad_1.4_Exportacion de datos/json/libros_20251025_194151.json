@@ -1,0 +1,113 @@
+{
+    "biblioteca": {
+        "informacion": {
+            "nombre": "Biblioteca Municipal",
+            "fecha": "25/10/2025",
+            "totalLibros": 5
+        },
+        "categorias": {
+            "Clásico": {
+                "totalLibros": 1,
+                "libros": [
+                    {
+                        "isbn": "978-84-123456-1",
+                        "titulo": "Don Quijote de la Mancha",
+                        "autor": "Miguel de Cervantes",
+                        "año": 1605,
+                        "paginas": 863,
+                        "disponible": true,
+                        "prestamos": 150
+                    }
+                ],
+                "estadisticas": {
+                    "totalPrestamos": 150,
+                    "prestamosMedio": 150.00,
+                    "libroMasPrestado": "Don Quijote de la Mancha"
+                }
+            },
+            "Distopía": {
+                "totalLibros": 1,
+                "libros": [
+                    {
+                        "isbn": "978-84-123456-3",
+                        "titulo": "1984",
+                        "autor": "George Orwell",
+                        "año": 1949,
+                        "paginas": 328,
+                        "disponible": true,
+                        "prestamos": 120
+                    }
+                ],
+                "estadisticas": {
+                    "totalPrestamos": 120,
+                    "prestamosMedio": 120.00,
+                    "libroMasPrestado": "1984"
+                }
+            },
+            "Fantasía": {
+                "totalLibros": 1,
+                "libros": [
+                    {
+                        "isbn": "978-84-123456-5",
+                        "titulo": "Harry Potter y la Piedra Filosofal",
+                        "autor": "J.K. Rowling",
+                        "año": 1997,
+                        "paginas": 223,
+                        "disponible": true,
+                        "prestamos": 500
+                    }
+                ],
+                "estadisticas": {
+                    "totalPrestamos": 500,
+                    "prestamosMedio": 500.00,
+                    "libroMasPrestado": "Harry Potter y la Piedra Filosofal"
+                }
+            },
+            "Ficción": {
+                "totalLibros": 1,
+                "libros": [
+                    {
+                        "isbn": "978-84-123456-2",
+                        "titulo": "Cien Años de Soledad",
+                        "autor": "Gabriel García Márquez",
+                        "año": 1967,
+                        "paginas": 471,
+                        "disponible": false,
+                        "prestamos": 200
+                    }
+                ],
+                "estadisticas": {
+                    "totalPrestamos": 200,
+                    "prestamosMedio": 200.00,
+                    "libroMasPrestado": "Cien Años de Soledad"
+                }
+            },
+            "Épica": {
+                "totalLibros": 1,
+                "libros": [
+                    {
+                        "isbn": "978-84-123456-4",
+                        "titulo": "La Odisea",
+                        "autor": "Homero",
+                        "año": -800,
+                        "paginas": 350,
+                        "disponible": true,
+                        "prestamos": 90
+                    }
+                ],
+                "estadisticas": {
+                    "totalPrestamos": 90,
+                    "prestamosMedio": 90.00,
+                    "libroMasPrestado": "La Odisea"
+                }
+            }
+        },
+        "resumenGlobal": {
+            "totalCategorias": 5,
+            "totalLibros": 5,
+            "librosDisponibles": 4,
+            "librosPrestados": 1,
+            "totalPrestamosHistorico": 1060
+        }
+    }
+}

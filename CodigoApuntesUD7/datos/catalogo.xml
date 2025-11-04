@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalogo>
+    <producto id="1">
+        <nombre>Laptop</nombre>
+        <precio>850.00</precio>
+        <categoria>Computadoras</categoria>
+    </producto>
+
+    <producto id="2">
+        <nombre>Tablet</nombre>
+        <precio>250.00</precio>
+        <categoria>Dispositivos móviles</categoria>
+    </producto>
+
+    <producto id="3">
+        <nombre>Mouse</nombre>
+        <precio>25.00</precio>
+        <categoria>Accesorios</categoria>
+    </producto>
+
+    <producto id="4">
+        <nombre>Monitor</nombre>
+        <precio>180.00</precio>
+        <categoria>Periféricos</categoria>
+    </producto>
+
+    <producto id="5">
+        <nombre>Teclado</nombre>
+        <precio>45.00</precio>
+        <categoria>Accesorios</categoria>
+    </producto>
+</catalogo>

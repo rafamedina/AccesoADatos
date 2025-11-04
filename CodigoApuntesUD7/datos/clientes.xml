@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clientes>
+    <cliente id="1">
+        <nombre>Juan Pérez</nombre>
+        <email>juan.perez@example.com</email>
+        <telefono>555-1234</telefono>
+    </cliente>
+    <cliente id="2">
+        <nombre>María Gómez</nombre>
+        <email>maria.gomez@example.com</email>
+        <telefono>555-5678</telefono>
+    </cliente>
+    <cliente id="3">
+        <nombre>Carlos López</nombre>
+        <email>carlos.lopez@example.com</email>
+        <telefono>555-9012</telefono>
+    </cliente>
+</clientes>
