@@ -4,6 +4,7 @@ import static conexion.UtilesConexion.*;
 import java.sql.*;
 
 public class Consultas {
+
     private static String url;
     private static String user;
     private static String password;
