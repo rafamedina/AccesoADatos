@@ -9,3 +9,12 @@ CREATE TABLE empleados (
 
 INSERT INTO empleados (nombre, salario)
 VALUES ('Ana', 25000), ('Luis', 28000), ('Marta', 32000);
+
+DELIMITER //
+CREATE PROCEDURE obtener_empleado(IN empId INT)
+BEGIN
+    SELECT id, nombre FROM empleados WHERE id = empId;
+END //
+DELIMITER ;
+
+call obtener_empleado(2);
