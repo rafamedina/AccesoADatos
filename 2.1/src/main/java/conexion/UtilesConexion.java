@@ -6,6 +6,7 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class UtilesConexion {
+
     private static String url;
     private static String user;
     private static String password;

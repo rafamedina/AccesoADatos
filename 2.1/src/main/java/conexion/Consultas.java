@@ -54,7 +54,6 @@ public class Consultas {
         if(!encontrado){
             System.out.println("El id no existe en nuestra base de datos.");
         }
-
     }
 
 
@@ -65,7 +64,6 @@ public class Consultas {
             cs.setInt(1, id);
             ResultSet rs = cs.executeQuery();
             while (rs.next()) {
-
                 System.out.println("---------------Empleado " + rs.getString("nombre") + "---------------");
                 System.out.printf("ID: %d | Nombre: %s\n",
                 rs.getInt("id"), rs.getString("nombre"));

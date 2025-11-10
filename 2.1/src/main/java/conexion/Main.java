@@ -11,7 +11,6 @@ public class Main {
 //        int id = sc.nextInt();
 //        consultas.buscarPorId(id);
 //        saltolinea();
-
         System.out.println("Que empleado quieres buscar:");
         int id2 = sc.nextInt();
         consultas.llamarProcedimiento(id2);
