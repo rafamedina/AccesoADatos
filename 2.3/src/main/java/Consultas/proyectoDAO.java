@@ -28,10 +28,9 @@ public class proyectoDAO {
             } else {
                 System.out.println("Problema con la conexión");
             }
+
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
-        } finally{
-            cerrarPool();
         }
     }
 
@@ -90,8 +89,6 @@ public class proyectoDAO {
             }
         }catch (RuntimeException | SQLException e){
             e.getMessage();
-        } finally {
-            cerrarPool();
         }
     }
 
@@ -118,8 +115,6 @@ public class proyectoDAO {
 
         } catch (RuntimeException | SQLException e){
             e.getMessage();
-        } finally {
-            cerrarPool();
         }
     }
 
@@ -136,8 +131,6 @@ public class proyectoDAO {
 
         } catch (RuntimeException | SQLException e){
         e.getMessage();
-    } finally {
-        cerrarPool();
     }
     }
 }
