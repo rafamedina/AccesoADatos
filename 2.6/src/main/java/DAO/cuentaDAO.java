@@ -92,8 +92,7 @@ public class cuentaDAO {
             // LOG 2: abono correcto (si falla, conservamos LOG1 y la transferencia)
             log.setString(1, "Abonado 500€ en la cuenta 2");
 
-            // Simula un fallo aquí si quieres probar el savepoint:
-            // if (true) throw new SQLException("Fallo simulado en el segundo log");
+
 
             log.executeUpdate();
 
@@ -102,7 +101,7 @@ public class cuentaDAO {
             con.commit();
             System.out.println("Transacción y logs completados.");
 
-            // Cierres (en tu mismo estilo)
+            // Cierres
             retirar.close();
             ingresar.close();
             log.close();
