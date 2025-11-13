@@ -6,12 +6,13 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Properties;
 import java.util.Scanner;
 
 public class utilesConexion {
     private static HikariDataSource dataSource;
-    public static Scanner sc = new Scanner(System.in);
+
     static  {
         // Configuración del pool
         try {
@@ -63,9 +64,6 @@ public class utilesConexion {
         }
     }
 
-    public static void saltolinea(){
-        System.out.println("Pulsa enter para seguir");
-        new Scanner(System.in).nextLine();
-    }
+
 
 }

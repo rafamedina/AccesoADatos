@@ -3,7 +3,7 @@ package DAO;
 import java.sql.*;
 
 import static Utiles.utilesConexion.getConexion;
-import static Utiles.utilesConexion.sc;
+import static Utiles.Utiles.*;
 
 public class daoProyectos {
 
@@ -50,4 +50,5 @@ public class daoProyectos {
             throw new RuntimeException(e.getMessage());
         }
     }
+
 }

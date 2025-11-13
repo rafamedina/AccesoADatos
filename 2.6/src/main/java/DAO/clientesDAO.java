@@ -124,6 +124,46 @@ public class clientesDAO {
         }
     }
 
+    public void transcacion() {
+        try (Connection con = getConexion()) {
+            // Desactiva el auto-commit para manejar la transacción manualmente
 
+            con.setAutoCommit(false);
+
+            // PreparedStatement para retirar dinero: resta saldo a la cuenta indicada
+            PreparedStatement retirar = con.prepareStatement("UPDATE proyectos SET presupuesto = presupuesto - ? WHERE id = ?");
+            // PreparedStatement para ingresar dinero: suma saldo a la cuenta indicada
+            PreparedStatement ingresar = con.prepareStatement("UPDATE empleados SET saldo = saldo + ? WHERE id = ?");
+
+            // Configura el primer parámetro (cantidad) y el segundo (id) para la primera actualización
+            retirar.setDouble(1, 500);
+            retirar.setInt(2, 1);
+            // Ejecuta la actualización que retira dinero de la cuenta 1
+            retirar.executeUpdate();
+
+            // Configura los parámetros para la segunda actualización
+            ingresar.setDouble(1, 500);
+            ingresar.setInt(2, 2);
+            // Ejecuta la actualización que ingresa dinero en la cuenta 2
+            ingresar.executeUpdate();
+
+            // Confirma la transacción: ambas actualizaciones se hacen permanentes
+            con.commit();
+            System.out.println("Transacción realizada con éxito.");
+
+        } catch (Exception e) {
+            // Si ocurre cualquier excepción, imprime la traza
+            e.printStackTrace();
+            try {
+                // Nota: aquí se llama a ConexionBD.getConexion().rollback()
+                // Esto obtiene una nueva conexión y llama rollback en ella, lo cual no revierte
+                // la transacción de la conexión original. Se mantiene la lógica original sin cambiarla.
+                getConexion().rollback();
+            } catch (Exception ex) {
+                // Imprime la traza si el rollback falla
+                ex.printStackTrace();
+            }
+        }
+    }
 
 }
