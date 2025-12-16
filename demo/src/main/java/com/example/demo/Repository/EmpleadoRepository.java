@@ -12,10 +12,10 @@ import java.util.Optional;
 @Repository
 public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
 
-    @Query(value = "SELECT * FROM Empleado",nativeQuery = true)
+    @Query(value = "SELECT * FROM empleado",nativeQuery = true)
     List<Empleado> getAll();
 
-    @Query(value = "SELECT * FROM Empleado where id_empleado = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM empleado where id_empleado = ?1", nativeQuery = true)
     Optional<Empleado> getEmpleadoById(Long id);
 
 }

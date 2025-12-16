@@ -1,9 +1,6 @@
 package com.example.demo.Models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class Tarea {
     @Id
     @Column(name = "id_tarea")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "id_empleado")
@@ -23,6 +21,11 @@ public class Tarea {
     private Long idProyecto;
 
     @Column(name = "horas")
-    private int horas;
+    private double horas;
 
+    public Tarea(Long idEmpleado, Long idProyecto, double horas) {
+        this.idEmpleado = idEmpleado;
+        this.idProyecto = idProyecto;
+        this.horas = horas;
+    }
 }
