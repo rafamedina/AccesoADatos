@@ -66,16 +66,12 @@ public class UsuarioController implements CommandLineRunner {
            }
         }
     }
-
-
     public boolean menuSesion() {
-
         boolean encontrado = false;
-
         while (!encontrado) {
             System.out.println("\n--- Inicio Sesion ---");
-            String correo = pedirNombre("Dime tu correo: ");
-
+            System.out.println("Dime tu correo: ");
+            String correo = sc.nextLine();
             try {
                 if (!correo.contains("@")) {
                     throw new IllegalStateException("El correo debe contener un @");
@@ -84,12 +80,11 @@ public class UsuarioController implements CommandLineRunner {
                     throw new IllegalStateException("El correo no existe");
                 }
 
-                String password = pedirNombre("Dime tu contraseña: ");
-
+                System.out.println("Dime tu contraseña: ");
+                String password = sc.nextLine();
                 if (!StringUtils.hasText(password)) {
                     throw new IllegalStateException("La contraseña no puede estar vacía");
                 }
-
                 if (!usuarioService.comprobarPassword(password, correo)) {
                     throw new IllegalStateException("Contraseña incorrecta");
                 }

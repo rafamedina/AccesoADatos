@@ -20,7 +20,7 @@ public class UsuarioService {
 
     public boolean verificarEmail(String email){
         if(StringUtils.hasText(email)){
-            if(usuarioRepository.findByEmail(email)){
+            if(usuarioRepository.existsByEmail(email)){
                 System.out.println("Ya existe un usuario con ese correo");
                 return false;
             } else {
@@ -49,7 +49,8 @@ public class UsuarioService {
     }
 
     public Usuario obtenerUsuarioEmail(String email){
-        return usuarioRepository.getUsuarioByEmail(email);
+        Usuario usuario = usuarioRepository.getUsuarioByEmail(email);
+        return usuario;
     }
 
     public boolean eliminarUsuario(Long id){
@@ -78,7 +79,7 @@ public class UsuarioService {
     }
 
     public boolean existeEmail(String email){
-    return usuarioRepository.searchUsuarioByEmail(email);
+    return usuarioRepository.existsByEmail(email);
     }
 
 }

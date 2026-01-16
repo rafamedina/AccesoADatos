@@ -13,5 +13,9 @@ CREATE TABLE usuario(
                         password varchar(200) not null
 );
 
+insert into usuario ( nombre, apellidos, email, password) values (
+                                                                  'Rafa', 'Medina Ayuso', 'rafa@gmail.com', '$2a$12$CzdU7n41SWsBnlPVerrdu.rAHZGeeYxXqkZYyyraM0YxrT6ry4b.2'
+                                                                 )
+
 
 

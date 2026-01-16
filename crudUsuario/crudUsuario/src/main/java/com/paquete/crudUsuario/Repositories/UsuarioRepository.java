@@ -10,8 +10,6 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 
-    boolean findByEmail(String email);
-
 
     boolean deleteUsuarioById(Long id);
 
@@ -19,9 +17,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query(value = "SELECT * from usuario", nativeQuery = true)
     ArrayList<Usuario> searchAll();
 
+
+    @Query(value = "SELECT * from usuario where id = :id", nativeQuery = true)
     Optional<Usuario> searchUsuarioById(Long id);
 
-    boolean searchUsuarioByEmail(String email);
+    boolean existsByEmail(String email);
+
+
+    @Query(value = "SELECT * from usuario where email = :email", nativeQuery = true)
     Usuario getUsuarioByEmail(String email);
 }
 
