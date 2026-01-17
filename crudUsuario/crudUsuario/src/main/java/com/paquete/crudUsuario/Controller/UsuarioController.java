@@ -7,7 +7,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
 
 import static com.paquete.crudUsuario.Utils.Utiles.*;
 
@@ -17,6 +20,13 @@ import static com.paquete.crudUsuario.Utils.Utiles.*;
 public class UsuarioController implements CommandLineRunner {
     private UsuarioSesionDTO usuarioLogueado;
     private final UsuarioService usuarioService;
+    public enum DatosUsuario  {
+        NOMBRE,
+        APELLIDOS,
+        USERNAME,
+        EMAIL,
+        PASSWORD
+    }
 
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
@@ -48,19 +58,18 @@ public class UsuarioController implements CommandLineRunner {
                        break;
                    case "2":
                        crearUsuario();
-
                        break;
                    case "3":
                        listarUsuarios();
                        break;
                    case "4":
-
+                       buscarUsuarioPorUsername();
                        break;
                    case "5":
-
+                       actualizarUsuario();
                        break;
                    case "6":
-
+                        borradoLogico();
                        break;
                    case "7":
 
@@ -125,9 +134,11 @@ public class UsuarioController implements CommandLineRunner {
             System.out.println("Perfecto, el correo esta disponible procedemos a la creación");
             String nombre = pedirNombre("Dime el nombre: ");
             String apellidos = pedirNombre("Dime los apellidos: ");
+            System.out.println("Que Nombre de usuario quieres asignarle: ");
+            String nombreusuario = sc.nextLine();
             System.out.println("Que contraseña quieres asignarle: ");
             String password = sc.nextLine();
-            Usuario usuario = new Usuario(nombre,apellidos,correo,password);
+            Usuario usuario = new Usuario(nombre,apellidos,nombreusuario,correo,password);
             Usuario usuarioCreado = usuarioService.crearUsuario(usuario);
             if(usuarioCreado != null){
                 System.out.println("Usuario creado con exito, el numero de su id es: " + usuarioCreado.getId());
@@ -149,7 +160,7 @@ public class UsuarioController implements CommandLineRunner {
             System.out.println("↪LISTA DE USUARIOS REGISTRADOS↩");
             for(Usuario usuario : lista){
 
-                String linea = "↪Nombre: " + usuario.getNombre() + "| Apellidos: " + usuario.getApellidos() + " | Correo: " + usuario.getEmail() + " | Estado: " + (usuario.isActivo() ? "Está activo" : "No está activo");
+                String linea = "↪Nombre: " + usuario.getNombre() + "| Apellidos: " + usuario.getApellidos() + " | Nombre de usuario: " + usuario.getNombreusuario() + " | Correo: " + usuario.getEmail() + " | Estado: " + (usuario.isActivo() ? "Está activo" : "No está activo");
 
                 System.out.println(linea);
 
@@ -158,7 +169,132 @@ public class UsuarioController implements CommandLineRunner {
         } catch (IllegalStateException e){
             System.out.println(e.getMessage());
         }
+    }
 
+    public void buscarUsuarioPorUsername(){
+        try{
+            System.out.println("Dime que usuario quieres buscar");
+            String username = sc.nextLine();
+            Optional<Usuario> usuario = usuarioService.buscarPorUsername(username);
+            if(usuario.isEmpty()){
+            throw new IllegalStateException("El usuario no existe");
+            }
+            String linea = "↪Nombre: " + usuario.get().getNombre() + "| Apellidos: " + usuario.get().getApellidos() + " | Nombre de usuario: " + usuario.get().getNombreusuario() + " | Correo: " + usuario.get().getEmail() + " | Estado: " + (usuario.get().isActivo() ? "Está activo" : "No está activo");
+            System.out.println(linea);
+        } catch (IllegalStateException | IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void actualizarUsuario(){
+        System.out.println("Vamos a proceder con la edición de un usuario");
+        System.out.println("Primero introduce el correo");
+        String correo = sc.nextLine();
+        try{
+            if (!correo.contains("@")) {
+                throw new IllegalStateException("El correo debe contener un @");
+            }
+            if(!usuarioService.existeEmail(correo)){
+                throw new IllegalStateException("El correo no existe");
+            }
+            Usuario usuario = usuarioService.obtenerUsuarioEmail(correo);
+            System.out.println("Perfecto, el correo existe");
+            System.out.println("Estos son los datos de ese usuario: ");
+            String linea = "↪Nombre: " + usuario.getNombre() + "| Apellidos: " + usuario.getApellidos() + " | Nombre de usuario: " + usuario.getNombreusuario() + " | Correo: " + usuario.getEmail() + " | Estado: " + (usuario.isActivo() ? "Está activo" : "No está activo");
+            System.out.println(linea);
+            System.out.println("procedemos a la edición");
+            System.out.println("¿Qué quieres editar? Opciones: " + Arrays.toString(DatosUsuario.values()));
+            String datos = sc.nextLine();
+            DatosUsuario opcion = DatosUsuario.valueOf(datos.toUpperCase());
+
+            switch (opcion){
+
+                case NOMBRE :
+                System.out.println("Dime el nuevo nombre");
+                String nombreNuevo = sc.nextLine();
+                usuario.setNombre(nombreNuevo);
+                break;
+
+                case APELLIDOS :
+                System.out.println("Dime los nuevos apellidos");
+                String apellidosNuevos = sc.nextLine();
+                usuario.setApellidos(apellidosNuevos);
+                break;
+
+                case USERNAME :
+                System.out.println("Dime el nuevo nombre de usuario");
+                String usernameNuevo = sc.nextLine();
+                usuario.setNombreusuario(usernameNuevo);
+                break;
+
+                case EMAIL :
+                System.out.println("Dime el nuevo correo");
+                String emailNuevo = sc.nextLine();
+                usuario.setEmail(emailNuevo);
+                break;
+
+                case PASSWORD :
+                System.out.println("Dime la nueva contraseña");
+                String passwordNueva = sc.nextLine();
+                usuario.setPassword(passwordNueva);
+                break;
+            }
+            Usuario usuarioactualizado = usuarioService.actualizarUsuario(usuario);
+            if(usuarioactualizado != null){
+                System.out.println("Usuario actualizado");
+                String linea2 = "↪Nombre: " + usuarioactualizado.getNombre() + "| Apellidos: " + usuarioactualizado.getApellidos() + " | Nombre de usuario: " + usuarioactualizado.getNombreusuario() + " | Correo: " + usuarioactualizado.getEmail() + " | Estado: " + (usuarioactualizado.isActivo() ? "Está activo" : "No está activo");
+                System.out.println(linea2);
+            }
+        } catch (IllegalStateException | IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void borradoLogico() {
+
+        System.out.println("Vamos a proceder con la desactivación de un usuario");
+        System.out.println("Primero introduce el correo");
+        String correo = sc.nextLine();
+        try {
+            if (!correo.contains("@")) {
+                throw new IllegalStateException("El correo debe contener un @");
+            }
+            if (!usuarioService.existeEmail(correo)) {
+                throw new IllegalStateException("El correo no existe");
+            }
+
+            Usuario usuario = usuarioService.desactivarUsuario(correo);
+            if (usuario == null) {
+                throw new IllegalStateException("Problemas al cambiar el estado");
+            }
+
+            System.out.println("Estado cambiado a desactivado");
+            String linea = "↪Nombre: " + usuario.getNombre() + "| Apellidos: " + usuario.getApellidos() + " | Nombre de usuario: " + usuario.getNombreusuario() + " | Correo: " + usuario.getEmail() + " | Estado: " + (usuario.isActivo() ? "Está activo" : "No está activo");
+            System.out.println(linea);
+
+
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void eliminarUsuario() {
+        System.out.println("Vamos a proceder con la eliminación de un usuario");
+        System.out.println("Primero introduce el correo");
+        String correo = sc.nextLine();
+        try {
+            if (!correo.contains("@")) {
+                throw new IllegalStateException("El correo debe contener un @");
+            }
+            if (!usuarioService.existeEmail(correo)) {
+                throw new IllegalStateException("El correo no existe");
+            }
+            if (usuarioService.eliminarUsuario(correo)) {
+                System.out.println("Usuario Eliminado correctamente");
+            }
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 

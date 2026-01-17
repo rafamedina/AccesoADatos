@@ -55,17 +55,14 @@ public class UsuarioService {
     }
 
     @Transactional
-    public boolean eliminarUsuario(Long id){
-        return usuarioRepository.deleteUsuarioById(id);
+    public boolean eliminarUsuario(String email){
+        return usuarioRepository.deleteUsuarioById(email);
     }
 
     public ArrayList<Usuario> mostrarUsuarios(){
         return usuarioRepository.searchAll();
     }
 
-    public Optional<Usuario> mostarUsuarioId(Long id){
-        return usuarioRepository.searchUsuarioById(id);
-    }
 
 
     @Transactional
@@ -77,12 +74,44 @@ public class UsuarioService {
 
         if(existe.isEmpty()) throw new IllegalStateException("El usuario no existe");
 
+        if (usuario.getPassword().equals(existe.get().getPassword())) {
+            return usuarioRepository.save(usuario);
+        }
+
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return usuarioRepository.save(usuario);
 
     }
 
     public boolean existeEmail(String email){
     return usuarioRepository.existsByEmail(email);
+    }
+
+    public Optional<Usuario> buscarPorUsername(String username){
+        if(StringUtils.hasText(username)){
+            Optional<Usuario> usuario = usuarioRepository.searchUsuarioByNombreusuario(username);
+
+            return usuario;
+        } else {
+            throw new IllegalArgumentException("username no introducido");
+        }
+
+    }
+
+    public Usuario desactivarUsuario(String email){
+        Usuario usuario = null;
+        if(StringUtils.hasText(email)){
+            if(!existeEmail(email)){
+                throw new IllegalStateException("El correo no existe");
+            }
+             usuario = obtenerUsuarioEmail(email);
+            if(usuario.isActivo()){
+                usuario.setActivo(false);
+            } else {
+                throw new IllegalStateException("El usuario ya esta inactivo");
+            }
+        }
+        return  usuarioRepository.save(usuario);
     }
 
 }

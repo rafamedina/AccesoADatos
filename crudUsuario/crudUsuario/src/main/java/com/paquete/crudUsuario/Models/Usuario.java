@@ -23,6 +23,9 @@ public class Usuario {
     @Column(name = "apellidos", length = 200)
     private String apellidos;
 
+    @Column (name = "nombre_usuario", length = 100, nullable = false)
+    private String nombreusuario;
+
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
@@ -32,9 +35,10 @@ public class Usuario {
     @Column(name = "activo")
     private boolean activo;
 
-    public Usuario(String nombre, String apellidos, String email, String password) {
+    public Usuario(String nombre, String apellidos,String nombreusuario, String email, String password) {
         this.nombre = nombre;
         this.apellidos = apellidos;
+        this.nombreusuario = nombreusuario;
         this.email = email;
         this.password = password;
     }
