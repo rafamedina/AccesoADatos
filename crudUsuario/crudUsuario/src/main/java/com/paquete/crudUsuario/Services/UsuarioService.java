@@ -2,6 +2,7 @@ package com.paquete.crudUsuario.Services;
 
 import com.paquete.crudUsuario.Models.Usuario;
 import com.paquete.crudUsuario.Repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,11 +54,12 @@ public class UsuarioService {
         return usuario;
     }
 
+    @Transactional
     public boolean eliminarUsuario(Long id){
         return usuarioRepository.deleteUsuarioById(id);
     }
 
-    public ArrayList<Usuario> mostrarUsuario(){
+    public ArrayList<Usuario> mostrarUsuarios(){
         return usuarioRepository.searchAll();
     }
 
@@ -66,6 +68,7 @@ public class UsuarioService {
     }
 
 
+    @Transactional
     public Usuario actualizarUsuario(Usuario usuario){
 
         if(usuario == null) throw new IllegalArgumentException("Usuario nulo");
