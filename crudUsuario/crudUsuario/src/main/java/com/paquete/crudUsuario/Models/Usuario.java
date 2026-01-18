@@ -44,7 +44,7 @@ public class Usuario {
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
 
-    @Column(name = "ultimoLogin")
+    @Column(name = "ultimo_login")
     private LocalDateTime ultimoLogin;
 
 
