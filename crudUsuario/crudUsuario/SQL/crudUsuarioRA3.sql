@@ -35,3 +35,7 @@ insert into usuario ( nombre, apellidos, nombre_usuario, email, password) values
 
 SELECT * FROM usuario;
 
+UPDATE usuario
+SET contador_intentos = 0,
+    estado = 1
+WHERE email = 'rafa@gmail.com';

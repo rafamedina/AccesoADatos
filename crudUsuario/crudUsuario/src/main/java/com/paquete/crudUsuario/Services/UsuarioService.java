@@ -41,6 +41,7 @@ public class UsuarioService {
 
     @Transactional
     public void ultimoLogin(Usuario usuario){
+        usuario.setContadorIntentos(0);
       usuarioRepository.save(usuario);
     }
 
