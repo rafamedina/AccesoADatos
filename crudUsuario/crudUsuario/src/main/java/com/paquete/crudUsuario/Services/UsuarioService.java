@@ -45,6 +45,7 @@ public class UsuarioService {
       usuarioRepository.save(usuario);
     }
 
+    @Transactional
     public Usuario crearUsuario(Usuario usuario){
     if(usuario == null) {
         throw new IllegalArgumentException("Usuario nulo");
@@ -63,6 +64,7 @@ public class UsuarioService {
         return passwordEncoder.matches(password, usuario.getPassword());
     }
 
+    @Transactional
     public boolean comprobarPasswordCambioContador(String password, String email){
         Usuario usuario = usuarioRepository.getUsuarioByEmail(email);
         if( passwordEncoder.matches(password, usuario.getPassword())){
@@ -145,7 +147,7 @@ public class UsuarioService {
         return  usuarioRepository.save(usuario);
     }
 
-
+    @Transactional
     public boolean cambioDePassword(String passwordNueva, String correo){
         Usuario usuario = usuarioRepository.getUsuarioByEmail(correo);
         String viejaPass = usuario.getPassword();

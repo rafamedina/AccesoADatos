@@ -20,8 +20,8 @@ activo TINYINT(1) DEFAULT 1
 );
 
 insert into usuario ( nombre, apellidos, nombre_usuario, email, password) values (
-                                                                  'Rafa', 'Medina Ayuso', 'ikran','rafa@gmail.com', '$2a$12$CzdU7n41SWsBnlPVerrdu.rAHZGeeYxXqkZYyyraM0YxrT6ry4b.2'
-                                                                 );
+'Rafa', 'Medina Ayuso', 'ikran','rafa@gmail.com', '$2a$12$CzdU7n41SWsBnlPVerrdu.rAHZGeeYxXqkZYyyraM0YxrT6ry4b.2'
+);
 
 SELECT * FROM usuario;
 
