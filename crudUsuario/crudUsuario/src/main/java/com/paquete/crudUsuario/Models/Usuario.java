@@ -33,7 +33,7 @@ public class Usuario {
     private String password;
 
     @Column(name = "activo")
-    private boolean activo;
+    private boolean activo = true;
 
     public Usuario(String nombre, String apellidos,String nombreusuario, String email, String password) {
         this.nombre = nombre;

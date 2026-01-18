@@ -60,7 +60,7 @@ public class UsuarioService {
     }
 
     public ArrayList<Usuario> mostrarUsuarios(){
-        return usuarioRepository.searchAll();
+        return usuarioRepository.findAll();
     }
 
 
@@ -70,7 +70,7 @@ public class UsuarioService {
 
         if(usuario == null) throw new IllegalArgumentException("Usuario nulo");
 
-        Optional<Usuario> existe = usuarioRepository.searchUsuarioById(usuario.getId());
+        Optional<Usuario> existe = usuarioRepository.findUsuarioById(usuario.getId());
 
         if(existe.isEmpty()) throw new IllegalStateException("El usuario no existe");
 
@@ -89,7 +89,7 @@ public class UsuarioService {
 
     public Optional<Usuario> buscarPorUsername(String username){
         if(StringUtils.hasText(username)){
-            Optional<Usuario> usuario = usuarioRepository.searchUsuarioByNombreusuario(username);
+            Optional<Usuario> usuario = usuarioRepository.findUsuarioByNombreusuario(username);
 
             return usuario;
         } else {
