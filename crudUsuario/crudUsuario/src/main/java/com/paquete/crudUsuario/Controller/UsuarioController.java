@@ -28,6 +28,8 @@ public class UsuarioController implements CommandLineRunner {
         PASSWORD
     }
 
+    //Iris bigotuda
+
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
