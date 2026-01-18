@@ -112,17 +112,18 @@ public class UsuarioController implements CommandLineRunner {
                 if (!usuarioService.existeEmail(correo)) {
                     throw new IllegalStateException("El correo no existe");
                 }
-
+                Usuario usuario = usuarioService.obtenerUsuarioEmail(correo);
+                if(!usuario.isEstado())throw new IllegalStateException("Cuenta bloqueada, contacta con el administrador");
                 System.out.println("Dime tu contraseña: ");
                 String password = sc.nextLine();
                 if (!StringUtils.hasText(password)) {
                     throw new IllegalStateException("La contraseña no puede estar vacía");
                 }
-                if (!usuarioService.comprobarPassword(password, correo)) {
+                if (!usuarioService.comprobarPasswordCambioContador(password, correo)) {
                     throw new IllegalStateException("Contraseña incorrecta");
                 }
                 encontrado = true;
-                Usuario usuario = usuarioService.obtenerUsuarioEmail(correo);
+
                 usuario.setUltimoLogin(LocalDateTime.now());
                 usuarioService.ultimoLogin(usuario);
                 usuarioLogueado = new UsuarioSesionDTO(usuario.getId(), usuario.getNombre(), usuario.getEmail());

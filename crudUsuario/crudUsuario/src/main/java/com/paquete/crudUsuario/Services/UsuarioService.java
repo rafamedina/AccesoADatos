@@ -62,6 +62,22 @@ public class UsuarioService {
         return passwordEncoder.matches(password, usuario.getPassword());
     }
 
+    public boolean comprobarPasswordCambioContador(String password, String email){
+        Usuario usuario = usuarioRepository.getUsuarioByEmail(email);
+        if( passwordEncoder.matches(password, usuario.getPassword())){
+            return true;
+        } else{
+           int nuevofallos = usuario.getContadorIntentos() + 1 ;
+           usuario.setContadorIntentos(nuevofallos);
+           if(usuario.getContadorIntentos()==3){
+               usuario.setEstado(false);
+           }
+           usuarioRepository.save(usuario);
+           return false;
+        }
+    }
+
+
     public Usuario obtenerUsuarioEmail(String email){
         Usuario usuario = usuarioRepository.getUsuarioByEmail(email);
         return usuario;

@@ -47,6 +47,12 @@ public class Usuario {
     @Column(name = "ultimo_login")
     private LocalDateTime ultimoLogin;
 
+    @Column(name = "contador_intentos", nullable = false)
+    private int contadorIntentos = 0;
+
+    @Column(name = "estado", nullable = false)
+    private boolean estado = true;
+
 
 
     // ========================================

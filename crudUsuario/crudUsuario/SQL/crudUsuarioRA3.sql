@@ -21,9 +21,11 @@ fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
 fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-ultimo_login  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+ultimo_login  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
+contador_intentos int default 0 not null ,
 
+estado TINYINT(1) default 1 not null
 
 );
 
