@@ -126,4 +126,22 @@ public class UsuarioService {
         return  usuarioRepository.save(usuario);
     }
 
+
+    public boolean cambioDePassword(String passwordNueva, String correo){
+        Usuario usuario = usuarioRepository.getUsuarioByEmail(correo);
+        String viejaPass = usuario.getPassword();
+       usuario.setPassword(passwordEncoder.encode(passwordNueva));
+        String nuevaPassHash = usuario.getPassword();
+        usuarioRepository.save(usuario);
+
+        if(viejaPass.equals(nuevaPassHash)){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+
+
 }

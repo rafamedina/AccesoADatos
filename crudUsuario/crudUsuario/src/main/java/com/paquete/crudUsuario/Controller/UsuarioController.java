@@ -26,7 +26,7 @@ public class UsuarioController implements CommandLineRunner {
         APELLIDOS,
         USERNAME,
         EMAIL,
-        PASSWORD
+//        PASSWORD
     }
     
 
@@ -49,6 +49,7 @@ public class UsuarioController implements CommandLineRunner {
                System.out.println("5. Actualizar Usuario");
                System.out.println("6. Desactivar usuario (borrado lógico)");
                System.out.println("7. Eliminar usuario (borrado físico)");
+               System.out.println("8. Cambio de contraseña");
                System.out.println("0. Salir");
                System.out.print("Elige una opción: ");
 
@@ -76,6 +77,11 @@ public class UsuarioController implements CommandLineRunner {
                    case "7":
                        eliminarUsuario();
                        break;
+
+                   case "8":
+                       cambioContraseña();
+                       break;
+
                    case "0":
                        System.out.println("Vuelve pronto.");
                        System.exit(0);
@@ -237,11 +243,11 @@ public class UsuarioController implements CommandLineRunner {
                 usuario.setEmail(emailNuevo);
                 break;
 
-                case PASSWORD :
-                System.out.println("Dime la nueva contraseña");
-                String passwordNueva = sc.nextLine();
-                usuario.setPassword(passwordNueva);
-                break;
+//                case PASSWORD :
+//                System.out.println("Dime la nueva contraseña");
+//                String passwordNueva = sc.nextLine();
+//                usuario.setPassword(passwordNueva);
+//                break;
 
             }
             Usuario usuarioactualizado = usuarioService.actualizarUsuario(usuario);
@@ -305,6 +311,29 @@ public class UsuarioController implements CommandLineRunner {
         } catch (IllegalStateException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
+
+    }
+
+    public void cambioContraseña(){
+        System.out.println("Vamos a proceder con el cambio de contraseña");
+        System.out.println("Primero introduce la contraseña actual: ");
+        String password = sc.nextLine();
+        try{
+            if(!usuarioService.comprobarPassword(password, usuarioLogueado.getEmail())) throw new IllegalStateException("Las contraseñas no coinciden");
+
+            System.out.println("Usuario verificado correctamente");
+            System.out.println("Dime la nueva contraseña: ");
+            String passwordNueva = sc.nextLine();
+            if(usuarioService.cambioDePassword(passwordNueva, usuarioLogueado.getEmail())){
+                System.out.println("Contraseña actualizada correctamente");
+            } else {
+                System.out.println("Ha habido un problema con el cambio de contraseña");
+            }
+
+        } catch (IllegalStateException e){
+            System.out.println(e.getMessage());
+        }
+
 
     }
 
