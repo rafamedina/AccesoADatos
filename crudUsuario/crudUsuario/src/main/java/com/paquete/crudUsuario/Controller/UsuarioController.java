@@ -72,7 +72,7 @@ public class UsuarioController implements CommandLineRunner {
                         borradoLogico();
                        break;
                    case "7":
-
+                       eliminarUsuario();
                        break;
                    case "0":
                        System.out.println("Vuelve pronto.");
@@ -238,6 +238,7 @@ public class UsuarioController implements CommandLineRunner {
                 String passwordNueva = sc.nextLine();
                 usuario.setPassword(passwordNueva);
                 break;
+
             }
             Usuario usuarioactualizado = usuarioService.actualizarUsuario(usuario);
             if(usuarioactualizado != null){
@@ -289,8 +290,13 @@ public class UsuarioController implements CommandLineRunner {
             if (!usuarioService.existeEmail(correo)) {
                 throw new IllegalStateException("El correo no existe");
             }
-            if (usuarioService.eliminarUsuario(correo)) {
+            Usuario usuario = usuarioService.obtenerUsuarioEmail(correo);
+            usuarioService.eliminarUsuario(usuario);
+
+            if(!usuarioService.existeEmail(correo)){
                 System.out.println("Usuario Eliminado correctamente");
+            } else{
+                System.out.println("El usuario no se ha podido eliminar");
             }
         } catch (IllegalStateException | IllegalArgumentException e) {
             System.out.println(e.getMessage());

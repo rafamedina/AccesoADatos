@@ -3,6 +3,8 @@ package com.paquete.crudUsuario.Services;
 import com.paquete.crudUsuario.Models.Usuario;
 import com.paquete.crudUsuario.Repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,11 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Optional;
 
+
 @Service
+@Transactional
+@Slf4j
+@RequiredArgsConstructor
 public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
@@ -55,8 +61,9 @@ public class UsuarioService {
     }
 
     @Transactional
-    public boolean eliminarUsuario(String email){
-        return usuarioRepository.deleteUsuarioById(email);
+    public void eliminarUsuario(Usuario usuario)
+    {
+         usuarioRepository.delete(usuario);
     }
 
     public ArrayList<Usuario> mostrarUsuarios(){

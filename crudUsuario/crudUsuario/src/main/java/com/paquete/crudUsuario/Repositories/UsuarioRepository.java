@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    boolean deleteUsuarioById(String email);
 
     @Query(value = "SELECT * from usuario", nativeQuery = true)
     ArrayList<Usuario> findAll();
