@@ -37,6 +37,11 @@ public class UsuarioService {
         return false;
     }
 
+    @Transactional
+    public void ultimoLogin(Usuario usuario){
+      usuarioRepository.save(usuario);
+    }
+
     public Usuario crearUsuario(Usuario usuario){
     if(usuario == null) {
         throw new IllegalArgumentException("Usuario nulo");

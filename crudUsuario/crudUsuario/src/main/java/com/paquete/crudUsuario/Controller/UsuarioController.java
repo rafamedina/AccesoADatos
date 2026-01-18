@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLOutput;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -27,8 +28,7 @@ public class UsuarioController implements CommandLineRunner {
         EMAIL,
         PASSWORD
     }
-
-    //Iris bigotuda
+    
 
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
@@ -109,6 +109,8 @@ public class UsuarioController implements CommandLineRunner {
                 }
                 encontrado = true;
                 Usuario usuario = usuarioService.obtenerUsuarioEmail(correo);
+                usuario.setUltimoLogin(LocalDateTime.now());
+                usuarioService.ultimoLogin(usuario);
                 usuarioLogueado = new UsuarioSesionDTO(usuario.getId(), usuario.getNombre(), usuario.getEmail());
             } catch (IllegalStateException e) {
                 System.out.println("Error: " + e.getMessage());
