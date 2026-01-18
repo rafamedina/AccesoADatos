@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -140,6 +142,11 @@ public class UsuarioService {
             return true;
         }
 
+    }
+
+
+    public Page<Usuario> listarUsuariosPaginados(Pageable pageable) {
+        return usuarioRepository.findAll(pageable);
     }
 
 

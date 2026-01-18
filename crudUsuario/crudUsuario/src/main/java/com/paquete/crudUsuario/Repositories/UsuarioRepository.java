@@ -1,8 +1,12 @@
 package com.paquete.crudUsuario.Repositories;
 
 import com.paquete.crudUsuario.Models.Usuario;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -21,6 +25,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Usuario getUsuarioByEmail(String email);
     Optional<Usuario> findUsuarioByNombreusuario(String nombreusuario);
+
+    Page<Usuario> findAll(Pageable pageable);
 }
 
 

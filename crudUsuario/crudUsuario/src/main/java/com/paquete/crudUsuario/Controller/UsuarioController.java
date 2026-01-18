@@ -4,6 +4,8 @@ import com.paquete.crudUsuario.DTO.UsuarioSesionDTO;
 import com.paquete.crudUsuario.Models.Usuario;
 import com.paquete.crudUsuario.Services.UsuarioService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -50,6 +52,7 @@ public class UsuarioController implements CommandLineRunner {
                System.out.println("6. Desactivar usuario (borrado lógico)");
                System.out.println("7. Eliminar usuario (borrado físico)");
                System.out.println("8. Cambio de contraseña");
+               System.out.println("9. Paginacion");
                System.out.println("0. Salir");
                System.out.print("Elige una opción: ");
 
@@ -81,6 +84,11 @@ public class UsuarioController implements CommandLineRunner {
                    case "8":
                        cambioContraseña();
                        break;
+
+                   case "9":
+                       listarUsuariosPaginados();
+                       break;
+
 
                    case "0":
                        System.out.println("Vuelve pronto.");
@@ -335,6 +343,63 @@ public class UsuarioController implements CommandLineRunner {
         }
 
 
+    }
+
+    public void listarUsuariosPaginados() {
+
+        int pagina = 0;
+        int tamanio = 5; // usuarios por página
+        boolean salir = false;
+
+        while (!salir) {
+
+            Page<Usuario> page = usuarioService
+                    .listarUsuariosPaginados(PageRequest.of(pagina, tamanio));
+
+            if (page.isEmpty()) {
+                System.out.println("No hay usuarios para mostrar.");
+                return;
+            }
+
+            System.out.println("\n--- Página " + (pagina + 1) +
+                    " de " + page.getTotalPages() + " ---");
+
+            page.getContent().forEach(u -> {
+                String linea = "↪ " + u.getId() +
+                        " | " + u.getNombre() +
+                        " | " + u.getEmail() +
+                        " | " + (u.isActivo() ? "Activo" : "Inactivo");
+                System.out.println(linea);
+            });
+
+            System.out.println("\n[n] Siguiente | [p] Anterior | [q] Salir");
+            String opcion = sc.nextLine().toLowerCase();
+
+            switch (opcion) {
+                case "n":
+                    if (pagina + 1 < page.getTotalPages()) {
+                        pagina++;
+                    } else {
+                        System.out.println("Ya estás en la última página.");
+                    }
+                    break;
+
+                case "p":
+                    if (pagina > 0) {
+                        pagina--;
+                    } else {
+                        System.out.println("Ya estás en la primera página.");
+                    }
+                    break;
+
+                case "q":
+                    salir = true;
+                    break;
+
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        }
     }
 
 }
