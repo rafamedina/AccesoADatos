@@ -1,6 +1,6 @@
 package com.paquete.crudUsuario.Services;
 
-import com.paquete.crudUsuario.Models.Usuario;
+import com.paquete.crudUsuario.Entity.Usuario;
 import com.paquete.crudUsuario.Repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

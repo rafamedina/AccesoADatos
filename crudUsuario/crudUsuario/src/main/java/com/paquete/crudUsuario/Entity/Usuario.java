@@ -1,4 +1,4 @@
-package com.paquete.crudUsuario.Models;
+package com.paquete.crudUsuario.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

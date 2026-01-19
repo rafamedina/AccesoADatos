@@ -1,6 +1,6 @@
 package com.paquete.crudUsuario.Repositories;
 
-import com.paquete.crudUsuario.Models.Usuario;
+import com.paquete.crudUsuario.Entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
