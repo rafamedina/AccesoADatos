@@ -70,6 +70,12 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    public Optional<Usuario> buscarPorCorreo(String correo){
+        Usuario usuario = new Usuario();
+
+        return usuarioRepository.findUsuarioByEmail(correo);
+    }
+
 
 
     @Transactional

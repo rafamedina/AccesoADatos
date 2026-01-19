@@ -49,6 +49,13 @@ insert into roles( nombre_rol) values ('user');
 insert into usuario_roles(id_usuario, id_rol) VALUEs (1,1);
 insert into usuario_roles(id_usuario, id_rol) VALUEs (2,2);
 
-
+# CREATE TABLE SPRING_SESSION (
+#                                 SESSION_ID VARCHAR(36) NOT NULL PRIMARY KEY,
+#                                 EXPIRY_TIME BIGINT NOT NULL,
+#                                 MAX_INACTIVE_INTERVAL INT NOT NULL,
+#                                 PRINCIPAL_NAME VARCHAR(100),
+#                                 CREATION_TIME BIGINT NOT NULL,
+#                                 LAST_ACCESS_TIME BIGINT NOT NULL
+# );
 SELECT * FROM usuario;
 
