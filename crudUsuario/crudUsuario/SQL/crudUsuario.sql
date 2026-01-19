@@ -15,7 +15,11 @@ email varchar(100) unique not null,
 
 password varchar(200) not null,
 
-activo TINYINT(1) DEFAULT 1
+activo TINYINT(1) DEFAULT 1,
+
+fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 
