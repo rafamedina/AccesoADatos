@@ -17,9 +17,14 @@ import static com.paquete.crudUsuario.Utils.Utiles.*;
 
 
 @Component
-public class UsuarioController implements CommandLineRunner {
+public class UsuarioController {//implements CommandLineRunner {
     private UsuarioSesionDTO usuarioLogueado;
     private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
     public enum DatosUsuario  {
         NOMBRE,
         APELLIDOS,
@@ -28,61 +33,61 @@ public class UsuarioController implements CommandLineRunner {
         PASSWORD
     }
 
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-
-
-       if(menuSesion()){
-           while (true) {
-
-               System.out.println("\n--- MENU USUARIO ---");
-               System.out.println("1. Test de conexión");
-               System.out.println("2. Crear usuario");
-               System.out.println("3. Listar usuarios ");
-               System.out.println("4. Buscar por username");
-               System.out.println("5. Actualizar Usuario");
-               System.out.println("6. Desactivar usuario (borrado lógico)");
-               System.out.println("7. Eliminar usuario (borrado físico)");
-               System.out.println("0. Salir");
-               System.out.print("Elige una opción: ");
-
-               String opcion = sc.nextLine();
-
-               switch (opcion) {
-                   case "1":
-
-                       break;
-                   case "2":
-                       crearUsuario();
-                       break;
-                   case "3":
-                       listarUsuarios();
-                       break;
-                   case "4":
-                       buscarUsuarioPorUsername();
-                       break;
-                   case "5":
-                       actualizarUsuario();
-                       break;
-                   case "6":
-                        borradoLogico();
-                       break;
-                   case "7":
-                       eliminarUsuario();
-                       break;
-                   case "0":
-                       System.out.println("Vuelve pronto.");
-                       System.exit(0);
-                   default:
-                       System.out.println("Opción no válida.");
-               }
-           }
-        }
-    }
+//    public UsuarioController(UsuarioService usuarioService) {
+//        this.usuarioService = usuarioService;
+//    }
+//
+//    @Override
+//    public void run(String... args) throws Exception {
+//
+//
+//       if(menuSesion()){
+//           while (true) {
+//
+//               System.out.println("\n--- MENU USUARIO ---");
+//               System.out.println("1. Test de conexión");
+//               System.out.println("2. Crear usuario");
+//               System.out.println("3. Listar usuarios ");
+//               System.out.println("4. Buscar por username");
+//               System.out.println("5. Actualizar Usuario");
+//               System.out.println("6. Desactivar usuario (borrado lógico)");
+//               System.out.println("7. Eliminar usuario (borrado físico)");
+//               System.out.println("0. Salir");
+//               System.out.print("Elige una opción: ");
+//
+//               String opcion = sc.nextLine();
+//
+//               switch (opcion) {
+//                   case "1":
+//
+//                       break;
+//                   case "2":
+//                       crearUsuario();
+//                       break;
+//                   case "3":
+//                       listarUsuarios();
+//                       break;
+//                   case "4":
+//                       buscarUsuarioPorUsername();
+//                       break;
+//                   case "5":
+//                       actualizarUsuario();
+//                       break;
+//                   case "6":
+//                        borradoLogico();
+//                       break;
+//                   case "7":
+//                       eliminarUsuario();
+//                       break;
+//                   case "0":
+//                       System.out.println("Vuelve pronto.");
+//                       System.exit(0);
+//                   default:
+//                       System.out.println("Opción no válida.");
+//               }
+//           }
+//        }
+//    }
     public boolean menuSesion() {
         boolean encontrado = false;
         while (!encontrado) {
