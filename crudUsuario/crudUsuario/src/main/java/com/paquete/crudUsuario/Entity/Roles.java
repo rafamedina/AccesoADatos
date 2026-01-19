@@ -1,10 +1,7 @@
 package com.paquete.crudUsuario.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +23,8 @@ public class Roles {
     private String nombreRol;
 
     @ManyToMany(mappedBy = "roles")
+    @ToString.Exclude            // <--- IMPORTANTE
+    @EqualsAndHashCode.Exclude   // <--- IMPORTANTE
     private Set<Usuario> usuarios = new HashSet<>();
 
 }

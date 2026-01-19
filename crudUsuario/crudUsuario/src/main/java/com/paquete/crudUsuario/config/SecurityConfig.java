@@ -13,15 +13,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // 1. Este es el objeto que usaremos para hashear
+        // 1. Este es el objeto que usaremos para hashear
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();
+        }
 
-        http
-                // 1) Rutas públicas
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/").permitAll()  // Acceso sin login a la ruta principal
-                        .anyRequest().authenticated()    // Resto de rutas requieren autenticación
-                );
+        // 2. Configuración temporal para permitir TODO (evita que te pida login por ahora)
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            http
+                    .csrf(csrf -> csrf.disable()) // Deshabilitar protección CSRF para pruebas
+                    .authorizeHttpRequests(auth -> auth
+                            .anyRequest().permitAll() // Permitir entrar a todos lados sin login
+                    );
+            return http.build();
+
+        }
+        //      http
+//                // 1) Rutas públicas
+//                .authorizeHttpRequests(authz -> authz
+//                        .requestMatchers("/").permitAll()  // Acceso sin login a la ruta principal
+//                        .anyRequest().authenticated()    // Resto de rutas requieren autenticación
+//                );
 
 //                // 2) Configuración de login en "/"
 //                .formLogin(form -> form
@@ -45,11 +62,10 @@ public class SecurityConfig {
 //                        .maxSessionsPreventsLogin(true)  // Previene que otro usuario inicie sesión si ya hay una activa
 //                );
 
-        return http.build();
-    }
+//        return http.build();
+//    }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
+
+
 }

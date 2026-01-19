@@ -9,6 +9,30 @@ html{
     background: linear-gradient(to right, #171717 0%, #C257F7 100%);
 
 }
+
+.toast {
+    /* --- LO QUE YA TENÍAS --- */
+    /* display: none;  <-- IMPORTANTE: Lo ocultamos por defecto aquí */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #ff4d4d; /* Un rojo un poco más suave y moderno */
+    color: white; /* Mejor blanco sobre rojo para leerse bien */
+
+    /* --- LO QUE FALTA PARA QUE FLOTE --- */
+    position: fixed; /* Esto lo saca del flujo normal */
+    top: 20px;       /* Distancia desde arriba */
+    right: 20px;     /* Distancia desde la derecha */
+    z-index: 1000;   /* Asegura que esté ENCIMA de todo lo demás */
+
+    /* --- ESTÉTICA EXTRA --- */
+    padding: 15px 25px;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombrita para dar profundidad */
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
 .login{
 
 }

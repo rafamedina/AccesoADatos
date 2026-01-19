@@ -55,6 +55,7 @@ public class UsuarioService {
         return passwordEncoder.matches(password, usuario.getPassword());
     }
 
+    @Transactional
     public Usuario obtenerUsuarioEmail(String email){
         Usuario usuario = usuarioRepository.getUsuarioByEmail(email);
         return usuario;
