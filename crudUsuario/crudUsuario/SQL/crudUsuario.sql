@@ -34,16 +34,21 @@ CREATE TABLE usuario_roles(
                                 id_rol int,
                                 FOREIGN KEY (id_usuario) references usuario(id),
                                 FOREIGN KEY (id_rol) references roles(id)
-
-
-
 );
-
-
 
 insert into usuario ( nombre, apellidos, nombre_usuario, email, password) values (
                                                                   'Rafa', 'Medina Ayuso', 'ikran','rafa@gmail.com', '$2a$12$CzdU7n41SWsBnlPVerrdu.rAHZGeeYxXqkZYyyraM0YxrT6ry4b.2'
                                                                  );
+
+insert into usuario ( nombre, apellidos, nombre_usuario, email, password) values (
+                                                                                     'Iker', 'Acevedo Donate', 'klan','iker@gmail.com', '$2a$12$CzdU7n41SWsBnlPVerrdu.rAHZGeeYxXqkZYyyraM0YxrT6ry4b.2'
+                                                                                 );
+
+insert into roles( nombre_rol) values ('admin');
+insert into roles( nombre_rol) values ('user');
+insert into usuario_roles(id_usuario, id_rol) VALUEs (1,1);
+insert into usuario_roles(id_usuario, id_rol) VALUEs (2,2);
+
 
 SELECT * FROM usuario;
 
