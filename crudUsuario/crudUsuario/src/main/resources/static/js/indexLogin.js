@@ -41,6 +41,7 @@ formulario.addEventListener('submit',(e)=> {
             // --- CASO ERROR (401, 500, o fallo de red) ---
             console.error("Fallo en login:", error);
 
+            toast.textContent = error;
             // Mostramos el Toast
             toast.style.display = "flex";
             // Opcional: Podrías poner el mensaje del error en el toast

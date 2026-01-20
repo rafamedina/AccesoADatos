@@ -46,7 +46,7 @@ public class Usuario {
     private LocalDateTime fechaActualizacion;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "roles_usuarios",
             joinColumns = @JoinColumn(name = "id_usuario"),

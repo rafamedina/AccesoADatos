@@ -3,9 +3,7 @@ package com.paquete.crudUsuario.WebController;
 
 import com.paquete.crudUsuario.DTO.LoginRequest;
 import com.paquete.crudUsuario.DTO.UsuarioSesionDTO;
-import com.paquete.crudUsuario.Entity.Roles;
 import com.paquete.crudUsuario.Entity.Usuario;
-import com.paquete.crudUsuario.Repositories.UsuarioRepository;
 import com.paquete.crudUsuario.Services.RolesService;
 import com.paquete.crudUsuario.Services.UsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -14,12 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-
 
 @Controller
 public class LoginController {

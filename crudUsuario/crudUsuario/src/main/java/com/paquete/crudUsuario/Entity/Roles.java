@@ -22,7 +22,7 @@ public class Roles {
     @Column(name = "nombre_rol", nullable = false, length = 100)
     private String nombreRol;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     @ToString.Exclude            // <--- IMPORTANTE
     @EqualsAndHashCode.Exclude   // <--- IMPORTANTE
     private Set<Usuario> usuarios = new HashSet<>();
