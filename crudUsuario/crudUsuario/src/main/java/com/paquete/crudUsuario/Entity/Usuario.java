@@ -89,4 +89,16 @@ public class Usuario {
         this.email = email;
         this.password = password;
     }
+
+
+    public Usuario(Long id, String nombre, String apellidos, String nombreusuario, String email, boolean activo, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.nombreusuario = nombreusuario;
+        this.email = email;
+        this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaActualizacion = fechaActualizacion;
+    }
 }

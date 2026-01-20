@@ -5,6 +5,7 @@ let password = document.getElementById("password");
 let btnRegistro = document.getElementById("btnRegistro");
 var toast = document.getElementById("toast")
 
+fetch('/killSession')
 
 formulario.addEventListener('submit',(e)=> {
     e.preventDefault();
@@ -35,7 +36,7 @@ formulario.addEventListener('submit',(e)=> {
         })
         .then((data)=>{
             console.log(data);
-           // window.location.href = '/control'
+            window.location.href = '/control'
         })
         .catch((error) => {
             // --- CASO ERROR (401, 500, o fallo de red) ---
