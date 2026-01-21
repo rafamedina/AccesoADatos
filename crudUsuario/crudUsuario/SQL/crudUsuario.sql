@@ -49,9 +49,9 @@ insert into roles( nombre_rol) values ('user');
 insert into roles_usuarios(id_usuario, id_rol) VALUES (1,1);
 insert into roles_usuarios(id_usuario, id_rol) VALUES (2,2);
 
+
 DROP TABLE IF EXISTS SPRING_SESSION_ATTRIBUTES;
 DROP TABLE IF EXISTS SPRING_SESSION;
-
 
 -- 2. Crear tabla principal de sesiones
 CREATE TABLE SPRING_SESSION (

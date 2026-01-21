@@ -1,5 +1,6 @@
 package com.paquete.crudUsuario.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +47,7 @@ public class Usuario {
     private LocalDateTime fechaActualizacion;
 
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "roles_usuarios",

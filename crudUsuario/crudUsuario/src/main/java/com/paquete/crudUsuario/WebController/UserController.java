@@ -23,7 +23,7 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/list") // Puedes cambiar la ruta a "/perfil" si quieres, pero "/list" funciona igual
-    public ResponseEntity<Usuario> pedirUsuario(HttpSession session) {
+    public ResponseEntity<UsuarioSesionDTO> pedirUsuario(HttpSession session) {
 
         UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
 
@@ -35,15 +35,9 @@ public class UserController {
 
         try {
             Usuario usuario = usuarioService.obtenerUsuarioEmail(usuarioSesionDTO.getEmail());
+            UsuarioSesionDTO usuarioMostrar = new UsuarioSesionDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getNombreusuario(), usuario.getEmail(), usuario.getRoles().iterator().next().getNombreRol(),usuario.getFechaCreacion(), usuario.isActivo());
 
-            // Limpiamos contraseña por seguridad
-            usuario.setPassword("");
-
-            // Opcional: Si usas una copia nueva para evitar problemas con Hibernate
-            // Usuario usuarioEnviado = new Usuario(...);
-
-            // 2. <--- AQUÍ ESTABA EL ERROR: Faltaba el 'return'
-            return ResponseEntity.ok(usuario);
+            return ResponseEntity.ok(usuarioMostrar);
 
         } catch (Exception e) {
             System.out.println("Error recuperando usuario: " + e.getMessage());

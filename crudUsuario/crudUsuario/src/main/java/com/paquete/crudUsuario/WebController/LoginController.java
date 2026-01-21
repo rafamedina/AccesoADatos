@@ -38,8 +38,8 @@ public class LoginController {
             if (passwordEncoder.matches(loginRequest.getPassword(), usuarioOpt.get().getPassword())) {
                 String rol = usuarioOpt.get().getRoles().iterator().next().getNombreRol();
                 UsuarioSesionDTO usuarioInfo = new UsuarioSesionDTO(usuarioOpt.get().getId(),
-                        usuarioOpt.get().getNombre(), usuarioOpt.get().getNombreusuario(),
-                        usuarioOpt.get().getEmail(), rol);
+                        usuarioOpt.get().getNombre(),usuarioOpt.get().getApellidos(), usuarioOpt.get().getNombreusuario(),
+                        usuarioOpt.get().getEmail(), rol, usuarioOpt.get().getFechaCreacion());
 
                 session.setAttribute("usuarioLogueado", usuarioInfo);
 
