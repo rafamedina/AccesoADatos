@@ -11,13 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller()
 @RequestMapping("/control")
 public class AccessController {
-
     @GetMapping()
     public String jugon(HttpSession session){
-
         UsuarioSesionDTO usuario = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
-
-
         if (usuario != null) {
             if(usuario.getRol().equalsIgnoreCase("admin")){
                 return "ADMIN/ControllerAdmin";
@@ -27,9 +23,7 @@ public class AccessController {
             }else{
                return "redirect:/killSession";
             }
-
         } else{
-
             return "redirect:/killSession";
         }
     }

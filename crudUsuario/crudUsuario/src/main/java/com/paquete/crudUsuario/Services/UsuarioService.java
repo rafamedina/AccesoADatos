@@ -62,6 +62,12 @@ public class UsuarioService {
     }
 
     @Transactional
+    public Optional<Usuario> obtenerUsuarioId(Long id){
+       Optional<Usuario> usuario = usuarioRepository.findUsuarioById(id);
+        return usuario;
+    }
+
+    @Transactional
     public void eliminarUsuario(Usuario usuario)
     {
          usuarioRepository.delete(usuario);
@@ -127,5 +133,7 @@ public class UsuarioService {
         }
         return  usuarioRepository.save(usuario);
     }
+
+
 
 }

@@ -83,7 +83,6 @@ public class Usuario {
     }
 
 
-
     public Usuario(String nombre, String apellidos,String nombreusuario, String email, String password) {
         this.nombre = nombre;
         this.apellidos = apellidos;

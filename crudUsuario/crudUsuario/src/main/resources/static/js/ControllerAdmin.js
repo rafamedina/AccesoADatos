@@ -1,146 +1,163 @@
+// ==========================================
 // 1. SELECTORES DE ELEMENTOS DEL DOM
+// ==========================================
 const btnsalir = document.getElementById("btnSalir");
 const btnVolver = document.getElementById("btnVolver");
 const btnVerUsuarios = document.getElementById("btnVerUsuarios");
+const btnCrearUsuario = document.getElementById("btnCrearUsuario"); // Botón NUEVO
 const datosUsuarios = document.getElementById("datosUsuarios");
 const modal = document.getElementById('miModal');
 const btnCerrar = document.getElementById('btnCerrar');
 const contenidoModal = document.getElementById('contenido-modal');
 
-// 2. VARIABLE GLOBAL PARA CACHÉ (Evita tener que volver a pedir datos al abrir el modal)
+// ==========================================
+// 2. VARIABLE GLOBAL PARA CACHÉ
+// ==========================================
 let usuariosCache = [];
 
-// 3. EVENT LISTENERS
+// ==========================================
+// 3. EVENT LISTENERS (BOTONES PRINCIPALES)
+// ==========================================
 
-// Botón Salir
+// --- Botón Salir ---
 btnsalir.addEventListener("click", () => {
     window.location.href = '/killSession';
 });
 
-// Botón Cerrar Modal
+// --- Botón Cerrar Modal ---
 btnCerrar.addEventListener('click', () => {
     modal.close();
 });
 
-// Botón Volver (Limpia la tabla y muestra el menú principal)
+// --- Botón Volver (Limpia la tabla) ---
 btnVolver.addEventListener("click", () => {
     datosUsuarios.innerHTML = "";
-    btnVerUsuarios.style.display = "flex";
+    btnVerUsuarios.style.display = "inline-block"; // Reaparece el botón ver
+    btnCrearUsuario.style.display = "inline-block"; // Reaparece el botón crear
     btnVolver.style.display = "none";
 });
 
-// Botón Ver Usuarios (Carga principal)
-btnVerUsuarios.addEventListener("click", () => {
-    // Ocultamos el botón de ver y mostramos carga (opcional)
-    btnVerUsuarios.style.display = "none";
+// --- Botón Crear Usuario (Abre Modal Vacío) ---
+if (btnCrearUsuario) {
+    btnCrearUsuario.addEventListener("click", () => {
+        mostrarModalCreacion();
+        modal.showModal();
+    });
+}
 
-    fetch("admin/cargarUsuarios") // Asegúrate que esta ruta coincide con tu Controller
+// --- Botón Ver Usuarios (Carga datos del servidor) ---
+btnVerUsuarios.addEventListener("click", () => {
+    // 1. Ocultamos botones principales
+    btnVerUsuarios.style.display = "none";
+    btnCrearUsuario.style.display = "none"; // También ocultamos este para limpiar la vista
+
+    fetch("admin/cargarUsuarios")
         .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(`Error ${response.status}: ${response.statusText}`);
-            }
+            if (response.ok) return response.json();
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
         })
         .then((data) => {
-            // A) Guardamos los datos en la variable global para usarlos al editar
-            usuariosCache = data;
+            usuariosCache = data; // Guardamos en caché
 
-            // B) Verificamos si hay datos
-            if (!data || data.length === 0) {
-                datosUsuarios.innerHTML = '<div class="alert alert-info">No hay usuarios registrados.</div>';
-                btnVolver.style.display = "flex"; // Mostramos botón volver aunque no haya datos
-                return;
-            }
-
-            // C) Construimos la cabecera de la tabla
-            let htmlTabla = `
-            <table class="table table-striped table-hover align-middle table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre Completo</th>
-                        <th>Usuario</th>
-                        <th>Email</th>
-                        <th>Rol</th>
-                        <th>Estado</th>
-                        <th>Fecha Creación</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
+            // 2. Cabecera y Título
+            let htmlContent = `
+                <div class="container fade-in">
+                    <h2 class="text-center mb-4" style="color: #3c096c; font-weight: 400;">Todos los Usuarios</h2>
             `;
 
-            // D) Iteramos sobre los datos
-            data.forEach(user => {
-                // Formateo de fecha
-                const fecha = user.fechaCreacion
-                    ? new Date(user.fechaCreacion).toLocaleDateString()
-                    : '-';
-
-                // Badge de estado (Usando user.estado del DTO)
-                const estadoBadge = user.estado
-                    ? '<span class="badge bg-success">Activo</span>'
-                    : '<span class="badge bg-danger">Inactivo</span>';
-
-                // Filas de la tabla
-                htmlTabla += `
-                    <tr>
-                        <td>${user.id}</td>
-                        <td>${user.nombre} ${user.apellidos}</td>
-                        <td>${user.username}</td> 
-                        <td>${user.email}</td>
-                        <td>${user.rol}</td>
-                        <td class="text-center">${estadoBadge}</td>
-                        <td>${fecha}</td>
-                        <td class="text-center">
-                            <button onclick="prepararEdicion(${user.id})" class="btn btn-warning btn-sm me-2">
-                                <i class="bi bi-pencil-square"></i> Actualizar
-                            </button>
-                            
-                            <button onclick="eliminarUsuario(${user.id})" class="btn btn-danger btn-sm">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </button>
-                        </td>
-                    </tr>
+            if (!data || data.length === 0) {
+                htmlContent += '<div class="alert alert-info text-center">No hay usuarios registrados.</div>';
+            } else {
+                // 3. Tabla
+                htmlContent += `
+                <table class="table table-striped table-hover align-middle shadow-sm">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Usuario</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Fecha Creación</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                 `;
-            });
 
-            htmlTabla += `</tbody></table>`;
+                // 4. Filas
+                data.forEach(user => {
+                    const fecha = user.fechaCreacion
+                        ? new Date(user.fechaCreacion).toLocaleDateString()
+                        : '-';
 
-            // E) Insertamos el HTML y mostramos el botón de volver
-            datosUsuarios.innerHTML = htmlTabla;
-            btnVolver.style.display = "flex";
+                    const estadoBadge = user.estado
+                        ? '<span class="badge bg-success rounded-pill">Activo</span>'
+                        : '<span class="badge bg-danger rounded-pill">Inactivo</span>';
+
+                    htmlContent += `
+                        <tr>
+                            <td>${user.id}</td>
+                            <td>${user.nombre} ${user.apellidos}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td>${user.rol}</td>
+                            <td class="text-center">${estadoBadge}</td>
+                            <td>${fecha}</td>
+                            <td class="text-center">
+                                <button onclick="prepararEdicion(${user.id})" class="btn btn-warning btn-sm me-2">
+                                    Actualizar
+                                </button>
+                                <button onclick="eliminarUsuario(${user.id})" class="btn btn-danger btn-sm">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                htmlContent += `</tbody></table>`;
+            }
+
+            htmlContent += `</div>`;
+            datosUsuarios.innerHTML = htmlContent;
+
+            // 5. Mostrar botón Volver y Salir
+            btnVolver.style.display = "inline-block";
+            if (btnsalir) btnsalir.style.display = "inline-block";
+
         })
         .catch(error => {
-            console.error("Error cargando usuarios:", error);
-            datosUsuarios.innerHTML = `<div class="alert alert-danger">Error al cargar usuarios: ${error.message}</div>`;
-            btnVolver.style.display = "flex";
+            console.error("Error:", error);
+            datosUsuarios.innerHTML = `<div class="alert alert-danger">Error cargando datos.</div>`;
+            // Si falla, mostramos volver para no quedar atrapados
+            btnVolver.style.display = "inline-block";
         });
 });
 
-// 4. FUNCIONES AUXILIARES (Globales para que el HTML onclick las vea)
+// ==========================================
+// 4. FUNCIONES DE LÓGICA (MODALES Y FETCH)
+// ==========================================
 
 /**
- * Busca el usuario en la caché y abre el modal
+ * MODO EDICIÓN: Busca el usuario y rellena el modal
  */
 function prepararEdicion(id) {
-    // Buscamos el objeto usuario completo en el array que guardamos antes
     const usuarioEncontrado = usuariosCache.find(u => u.id === id);
 
     if (usuarioEncontrado) {
         mostrarModalConDatos(usuarioEncontrado);
         modal.showModal();
     } else {
-        alert("Error: No se pudo cargar la información del usuario para editar.");
+        alert("Error: No se pudo cargar la información del usuario.");
     }
 }
 
 /**
- * Rellena el HTML del modal con los datos del usuario
+ * HTML DEL MODAL PARA EDITAR (Sin campo contraseña)
  */
 function mostrarModalConDatos(user) {
-    // Preseleccionar opciones del select
     const selectedActivo = user.estado ? 'selected' : '';
     const selectedInactivo = !user.estado ? 'selected' : '';
 
@@ -159,6 +176,11 @@ function mostrarModalConDatos(user) {
                     <label for="editApellidos" class="form-label">Apellidos</label>
                     <input type="text" class="form-control" id="editApellidos" value="${user.apellidos}">
                 </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="editUsername" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="editUsername" value="${user.username}"> 
             </div>
 
             <div class="mb-3">
@@ -183,7 +205,7 @@ function mostrarModalConDatos(user) {
             <div class="d-flex justify-content-end gap-2 mt-3">
                 <button type="button" class="btn btn-secondary" onclick="modal.close()">Cancelar</button>
                 <button type="button" class="btn btn-success" onclick="guardarCambiosUsuario()">
-                    <i class="bi bi-save"></i> Guardar Cambios
+                    Guardar Cambios
                 </button>
             </div>
         </form>
@@ -191,60 +213,151 @@ function mostrarModalConDatos(user) {
 }
 
 /**
- * Envía los datos modificados al servidor
+ * HTML DEL MODAL PARA CREAR (Con campo contraseña)
+ */
+function mostrarModalCreacion() {
+    contenidoModal.innerHTML = `
+        <h3 class="mb-4 text-primary">Crear Nuevo Usuario</h3>
+        
+        <form id="formCrearUsuario">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="newNombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="newNombre" placeholder="Nombre">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="newApellidos" class="form-label">Apellidos</label>
+                    <input type="text" class="form-control" id="newApellidos" placeholder="Apellidos">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="newUsername" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="newUsername" placeholder="Usuario único"> 
+            </div>
+
+            <div class="mb-3">
+                <label for="newPassword" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="newPassword" placeholder="******"> 
+            </div>
+
+            <div class="mb-3">
+                <label for="newEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="newEmail" placeholder="correo@ejemplo.com">
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <button type="button" class="btn btn-secondary" onclick="modal.close()">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="crearUsuario()">
+                    Crear Usuario
+                </button>
+            </div>
+        </form>
+    `;
+}
+
+// ==========================================
+// 5. PETICIONES AL SERVIDOR (PUT, POST, DELETE)
+// ==========================================
+
+/**
+ * PUT: Actualizar Usuario Existente
  */
 function guardarCambiosUsuario() {
-    // 1. Recoger datos del formulario
     const id = document.getElementById('editId').value;
 
     const usuarioActualizado = {
         id: id,
         nombre: document.getElementById('editNombre').value,
         apellidos: document.getElementById('editApellidos').value,
+        username: document.getElementById('editUsername').value,
         email: document.getElementById('editEmail').value,
         rol: document.getElementById('editRol').value,
-        estado: document.getElementById('editEstado').value === 'true' // Convertir string a boolean
+        estado: document.getElementById('editEstado').value === 'true'
     };
 
-    // 2. Enviar al backend (AJUSTA ESTA URL A TU CONTROLLER)
     fetch("/admin/actualizarUsuario", {
-        method: 'PUT', // O 'POST' si tu backend usa POST
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(usuarioActualizado)
     })
         .then(response => {
             if (response.ok) {
-                // Éxito: Cerramos modal y recargamos tabla
                 modal.close();
-                // Truco para recargar: Simular click en 'Volver' y luego en 'Ver Usuarios'
+                alert("Usuario actualizado correctamente.");
+                // Recargar tabla
                 btnVolver.click();
                 setTimeout(() => btnVerUsuarios.click(), 100);
-                alert("Usuario actualizado correctamente.");
             } else {
-                alert("Error al actualizar el usuario.");
+                return response.text().then(text => { throw new Error(text) });
             }
         })
         .catch(error => {
             console.error("Error:", error);
-            alert("Error de conexión al guardar.");
+            alert("Error al actualizar: " + error.message);
         });
 }
 
 /**
- * Elimina un usuario
+ * POST: Crear Nuevo Usuario
+ */
+function crearUsuario() {
+    const nuevoUsuario = {
+        nombre: document.getElementById('newNombre').value,
+        apellidos: document.getElementById('newApellidos').value,
+        // Asegúrate de que este nombre coincida con tu entidad Java (nombreusuario o username)
+        nombreusuario: document.getElementById('newUsername').value,
+        password: document.getElementById('newPassword').value,
+        email: document.getElementById('newEmail').value,
+        activo: true
+    };
+
+    // Validación 1: Campos vacíos
+    if(!nuevoUsuario.nombreusuario || !nuevoUsuario.password || !nuevoUsuario.email) {
+        alert("Usuario, Contraseña y Email son obligatorios.");
+        return;
+    }
+
+    // Validación 2: EL EMAIL (NUEVO)
+    if (!nuevoUsuario.email.includes("@")) {
+        alert("Por favor, introduce un correo electrónico válido (falta el '@').");
+        return; // Detenemos la función aquí
+    }
+
+    fetch("/admin/crearUsuario", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevoUsuario)
+    })
+        .then(response => {
+            if (response.ok) {
+                modal.close();
+                alert("Usuario creado con éxito.");
+                if (datosUsuarios.innerHTML !== "") {
+                    btnVolver.click();
+                    setTimeout(() => btnVerUsuarios.click(), 100);
+                }
+            } else {
+                return response.text().then(text => { throw new Error(text) });
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error al crear: " + error.message);
+        });
+}
+
+/**
+ * DELETE: Eliminar Usuario
  */
 function eliminarUsuario(id) {
     if(confirm("¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.")) {
-
-        // AJUSTA ESTA URL A TU CONTROLLER
         fetch(`/admin/eliminarUsuario/${id}`, {
             method: 'DELETE'
         })
             .then(response => {
                 if (response.ok) {
-                    // Éxito: Recargamos tabla
+                    // Recargar tabla
                     btnVolver.click();
                     setTimeout(() => btnVerUsuarios.click(), 100);
                 } else {

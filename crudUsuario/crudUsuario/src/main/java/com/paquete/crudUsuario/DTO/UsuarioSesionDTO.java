@@ -19,6 +19,7 @@ public class UsuarioSesionDTO implements Serializable {
     private String apellidos;
     private String username;
     private String email;
+//    private String password;
     private String rol;
     private LocalDateTime fechaCreacion;
     private boolean estado;

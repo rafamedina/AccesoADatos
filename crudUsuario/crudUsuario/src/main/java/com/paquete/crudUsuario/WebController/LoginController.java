@@ -51,9 +51,7 @@ public class LoginController {
 
     @GetMapping("/killSession" )
     public String matarSesion( HttpSession session) {
-
         session.invalidate();
-
         return "redirect:/";
     }
 }

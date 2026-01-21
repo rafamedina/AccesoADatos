@@ -1,38 +1,503 @@
-html{
-    width: 100%;
+/* =========================================
+   1. CONFIGURACIÓN BASE (TEMA GENGAR "DÍA")
+   ========================================= */
+html, body {
     height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    /* FONDO: Un lavanda muy pálido, limpio y legible */
+    background: linear-gradient(135deg, #f8f0fc 0%, #e0c3fc 100%);
+    color: #240046; /* Texto en morado muy oscuro (casi negro) para lectura fácil */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   2. OVERRIDES DE BOOTSTRAP (PERSONALIZACIÓN)
+   ========================================= */
+
+/* Barra de Navegación (La franja superior) */
+.navbar {
+    /* Púrpura Gengar Oscuro */
+    background-color: #3c096c !important;
+    box-shadow: 0 4px 12px rgba(60, 9, 108, 0.2) !important;
+}
+
+.navbar-brand, .navbar-text {
+    color: #e0aaff !important; /* Texto lila claro */
+}
+
+/* Botones Principales (Ver Usuarios, Guardar) */
+.btn-primary {
+    background-color: #7b2cbf !important; /* Púrpura vibrante */
+    border-color: #7b2cbf !important;
+    font-weight: 500;
+}
+.btn-primary:hover {
+    background-color: #5a189a !important; /* Un poco más oscuro al pasar mouse */
+    box-shadow: 0 0 10px rgba(123, 44, 191, 0.4);
+}
+
+/* Botones de Peligro/Salir (Ojos de Gengar) */
+.btn-danger {
+    background-color: #ff0054 !important; /* Rojo rosado intenso */
+    border-color: #ff0054 !important;
+}
+.btn-danger:hover {
+    background-color: #d00045 !important;
+    box-shadow: 0 0 10px rgba(255, 0, 84, 0.4);
+}
+
+/* Botones de Editar (Amarillo/Naranja -> Amatista brillante) */
+.btn-warning {
+    background-color: #ff9e00 !important; /* Naranja espectral */
+    color: white !important;
+    border: none;
+}
+
+/* =========================================
+   3. LAYOUT PRINCIPAL
+   ========================================= */
+.main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centrado vertical si hay poco contenido */
+    width: 100%;
+    padding: 20px;
+}
+
+.datosUsuarios {
+    width: 100%;
+    max-width: 1200px;
     display: flex;
     justify-content: center;
     align-items: center;
-
+    margin-bottom: 20px;
 }
 
-.datosUsuarios{
+.botones {
     width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 15px;
 }
 
-.botones{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Tarjeta de Bienvenida (La del icono grande) */
+.card {
+    background-color: rgba(255, 255, 255, 0.9) !important; /* Blanco casi puro */
+    border: 1px solid #e0aaff !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(123, 44, 191, 0.15) !important; /* Sombra morada suave */
 }
 
-/* Estilo del fondo oscuro */
+/* =========================================
+   4 ESTILOS DE LA VENTANA MODAL (DIALOG)
+   ========================================= */
+
+/* 1. EL FONDO (La capita transparente moradita) */
 dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.7); /* Negro al 70% de opacidad */
-    backdrop-filter: blur(3px); /* Opcional: desenfoca el fondo */
+    /* Usamos el morado oscuro (#3c096c) con 60% de opacidad */
+    background-color: rgba(60, 9, 108, 0.6);
+
+    /* Efecto de desenfoque (Neblina fantasma) */
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
 }
 
-/* Un poco de estilo para la caja */
+/* 2. LA CAJA DEL MODAL */
 dialog {
     border: none;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 20px; /* Bordes muy suaves */
+    padding: 0;
+
+    /* Borde brillante Amatista */
+    border: 2px solid #9d4edd;
+
+    /* Sombra resplandeciente (Glow) */
+    box-shadow: 0 0 30px rgba(157, 78, 221, 0.5);
+
+    margin: auto;
+    max-width: 600px;
+    width: 90%;
+    background-color: #ffffff; /* Fondo blanco puro para limpieza */
+    color: #3c096c; /* Texto morado oscuro */
 }
+
+/* Espaciado interno del contenido */
+.contenido-modal, #contenido-modal {
+    padding: 2.5rem;
+}
+
+/* 3. ANIMACIÓN DE ENTRADA (Flotar hacia arriba) */
+dialog[open] {
+    animation: ghostPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes ghostPop {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* =========================================
+  4 ELEMENTOS DENTRO DEL MODAL
+   ========================================= */
+
+/* Título del Modal */
+dialog h3 {
+    color: #7b2cbf !important; /* Púrpura vibrante */
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Inputs del formulario dentro del modal */
+dialog .form-control, dialog .form-select {
+    border-radius: 10px;
+    border: 1px solid #e0aaff;
+    background-color: #f8f0fc; /* Fondo lavanda muy suave */
+    color: #3c096c;
+}
+
+dialog .form-control:focus, dialog .form-select:focus {
+    background-color: #ffffff;
+    border-color: #7b2cbf;
+    box-shadow: 0 0 0 4px rgba(123, 44, 191, 0.15); /* Anillo de enfoque morado */
+}
+
+/* Etiquetas (Labels) */
+dialog .form-label {
+    font-weight: 600;
+    color: #5a189a;
+    font-size: 0.9rem;
+}
+
+/* Botones del Modal */
+dialog .btn-secondary {
+    background-color: #e0aaff !important;
+    border: none;
+    color: #3c096c;
+    font-weight: 600;
+}
+
+dialog .btn-success {
+    background-color: #7b2cbf !important; /* Botón Guardar Púrpura */
+    border: none;
+    box-shadow: 0 4px 10px rgba(123, 44, 191, 0.3);
+}
+
+dialog .btn-success:hover {
+    background-color: #5a189a !important;
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   5. ESTILOS DE LA TABLA (CLARA Y LEGIBLE)
+   ========================================= */
+
+.table-responsive, table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(60, 9, 108, 0.1); /* Sombra sutil */
+    background-color: white;
+    border: 1px solid #e9ecef;
+}
+
+/* Cabecera de la tabla: Púrpura Gengar */
+thead th {
+    background-color: #3c096c !important; /* Mismo color que navbar */
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-bottom: 3px solid #9d4edd !important; /* Línea de separación brillante */
+}
+
+/* Cuerpo de la tabla */
+tbody tr {
+    transition: all 0.2s;
+}
+
+/* Hover en las filas: Un toque lavanda muy suave */
+tbody tr:hover {
+    background-color: #f3e5f5 !important;
+    transform: scale(1.005); /* Efecto pop muy sutil */
+}
+
+/* Celdas */
+td {
+    vertical-align: middle;
+    color: #4a4a4a; /* Gris oscuro para el texto, muy legible */
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Badges (Estado) */
+.badge {
+    font-weight: 600;
+    padding: 0.6em 0.9em;
+    border-radius: 20px;
+}
+
+.bg-success {
+    background-color: #06d6a0 !important; /* Verde menta (combina bien con morado) */
+    color: #004d40;
+}
+.bg-danger {
+    background-color: #ef476f !important; /* Rosa rojizo */
+}
+
+/* =========================================
+   1. ESTILOS DE LA TABLA (Texto y Filas)
+   ========================================= */
+
+/* Cabecera: Morado Profundo (Ya lo tienes bien, pero aseguramos) */
+thead th {
+    background-color: #2e004f !important; /* Un morado aún más profundo */
+    color: #e0aaff; /* Texto lila claro para contraste */
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border: none;
+}
+
+/* Cuerpo de la tabla */
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+/* Filas Pares (Blanco) e Impares (Lavanda muy suave) */
+tbody tr:nth-of-type(odd) {
+    background-color: #ffffff !important;
+}
+tbody tr:nth-of-type(even) {
+    background-color: #f8f0fc !important; /* Lavanda casi blanco */
+}
+
+/* Hover: Al pasar el ratón */
+tbody tr:hover {
+    background-color: #eaddf5 !important; /* Un poco más oscuro al pasar el mouse */
+}
+
+/* CELDA (El color de la letra que pediste arreglar) */
+td {
+    color: #3c096c; /* Morado oscuro en lugar de negro puro. Mucho más elegante */
+    font-weight: 500; /* Un poco más gordita la letra para leerse mejor */
+    vertical-align: middle;
+    border-color: #e0aaff; /* Líneas de separación suaves */
+}
+
+/* =========================================
+   2. BOTONES DE LA TABLA (Actualizar / Eliminar)
+   ========================================= */
+
+/* Botón ACTUALIZAR (Antes amarillo, ahora Amatista) */
+.btn-warning {
+    background: linear-gradient(135deg, #9d4edd 0%, #7b2cbf 100%) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 2px 5px rgba(123, 44, 191, 0.3);
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    transition: transform 0.2s;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #bfa2db 0%, #9d4edd 100%) !important;
+    transform: translateY(-2px);
+    color: #fff !important;
+}
+
+/* Botón ELIMINAR (Rosa/Rojo Gengar) */
+.btn-danger {
+    background: linear-gradient(135deg, #ff0054 0%, #d00045 100%) !important;
+    border: none !important;
+    box-shadow: 0 2px 5px rgba(255, 0, 84, 0.3);
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #ff4d6d 0%, #ff0054 100%) !important;
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   3. BOTONES INFERIORES (Volver / Salir)
+   ========================================= */
+
+/* Botón VOLVER (Gris azulado -> Morado grisáceo) */
+#btnVolver {
+    background-color: #5a189a !important; /* Morado medio */
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 50px; /* Redondeado completo */
+    box-shadow: 0 4px 10px rgba(90, 24, 154, 0.3);
+    font-weight: 600;
+}
+
+#btnVolver:hover {
+    background-color: #7b2cbf !important;
+    transform: scale(1.05);
+}
+
+/* Botón SALIR (Mismo estilo rojo que eliminar pero más grande) */
+#btnSalir {
+    background: linear-gradient(135deg, #d00045 0%, #9d0208 100%) !important; /* Rojo oscuro */
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(208, 0, 69, 0.3);
+    font-weight: 600;
+}
+
+#btnSalir:hover {
+    background: linear-gradient(135deg, #ff0054 0%, #d00045 100%) !important;
+    transform: scale(1.05);
+}
+
+/* Botón CREAR (El verde que sale en tu código, ajustado al tema) */
+#btnCrearUsuario {
+    background: linear-gradient(135deg, #06d6a0 0%, #049f76 100%) !important; /* Verde menta */
+    border: none;
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(6, 214, 160, 0.3);
+}
+
+#btnCrearUsuario:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #09eec3 0%, #06d6a0 100%) !important;
+}
+
+/* Badges de estado (Activo/Inactivo) */
+.badge.bg-success {
+    background-color: #e0aaff !important; /* Fondo lila claro */
+    color: #3c096c !important; /* Texto morado oscuro */
+    border: 1px solid #9d4edd;
+}
+
+.badge.bg-danger {
+    background-color: #ffccd5 !important; /* Fondo rosa pálido */
+    color: #a4133c !important; /* Texto rojo oscuro */
+    border: 1px solid #ff4d6d;
+}
+
+/* =========================================
+   1. ARREGLO DEL TEXTO DE LA TABLA (NO MÁS NEGRO)
+   ========================================= */
+
+/* Forzamos el color en la tabla entera y en cada celda */
+.table, table, td, th {
+    color: #3c096c !important; /* Morado oscuro Gengar */
+}
+
+/* Un poco de 'peso' a la fuente para que el morado se lea bien */
+td {
+    font-weight: 600 !important;
+    vertical-align: middle;
+}
+
+/* Cabecera oscura (letras blancas) */
+thead th {
+    background-color: #240046 !important; /* Fondo casi negro/morado */
+    color: #e0aaff !important; /* Texto lila claro */
+    border-bottom: 3px solid #9d4edd !important;
+}
+
+/* =========================================
+   2. BOTONES DE LA TABLA (ADIÓS AMARILLO)
+   ========================================= */
+
+/* Botón ACTUALIZAR: De amarillo a Púrpura Brillante */
+.btn-warning {
+    background: #9d4edd !important; /* Amatista sólido */
+    background: linear-gradient(135deg, #9d4edd 0%, #7b2cbf 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 6px rgba(123, 44, 191, 0.2);
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #bfa2db 0%, #9d4edd 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(123, 44, 191, 0.3);
+}
+
+/* Botón ELIMINAR: Rojo/Rosa Gengar */
+.btn-danger {
+    background: #ff0054 !important;
+    background: linear-gradient(135deg, #ff0054 0%, #d00045 100%) !important;
+    border: none !important;
+    box-shadow: 0 4px 6px rgba(255, 0, 84, 0.2);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #ff4d6d 0%, #ff0054 100%) !important;
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   3. BOTONES INFERIORES (VOLVER / SALIR)
+   ========================================= */
+
+/* Botón VOLVER: Un morado grisáceo elegante */
+#btnVolver {
+    background-color: #5a189a !important;
+    color: white !important;
+    border-radius: 50px;
+    padding: 10px 30px;
+    font-weight: bold;
+    border: 2px solid transparent;
+}
+
+#btnVolver:hover {
+    background-color: #ffffff !important;
+    color: #5a189a !important;
+    border: 2px solid #5a189a;
+}
+
+/* Botón SALIR: Rojo degradado (igual que eliminar pero más grande) */
+#btnSalir {
+    background: linear-gradient(135deg, #d00045 0%, #9d0208 100%) !important;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 30px;
+    font-weight: bold;
+}
+
+/* Badges (Etiquetas de estado) */
+.badge {
+    /* Si es activo: fondo lila, letra morada */
+    background-color: #e0aaff !important;
+    color: #240046 !important;
+    border: 1px solid #7b2cbf;
+}
+
+/* Si usas bg-danger para inactivo en el HTML, lo cambiamos aquí */
+.bg-danger.badge {
+    background-color: #ffccd5 !important; /* Rosa pálido */
+    color: #a4133c !important; /* Rojo oscuro */
+    border: 1px solid #ff4d6d;
+}
+

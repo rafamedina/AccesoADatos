@@ -1,34 +1,146 @@
-html{
-    width: 100%;
+/* =========================================
+   1. CONFIGURACIÓN BASE (TEMA GENGAR "DÍA")
+   ========================================= */
+html, body {
     height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    /* FONDO: Lavanda pálido degradado */
+    background: linear-gradient(135deg, #f8f0fc 0%, #e0c3fc 100%);
+    color: #240046; /* Texto oscuro para lectura fácil */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Animación de entrada suave */
+.fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   2. NAVBAR Y TEXTOS
+   ========================================= */
+.navbar {
+    background-color: #3c096c !important; /* Púrpura Profundo */
+    box-shadow: 0 4px 12px rgba(60, 9, 108, 0.2) !important;
+}
+
+.navbar-brand {
+    color: #e0aaff !important; /* Lila claro */
+    font-weight: 600;
+}
+
+/* Estilo del título del saludo */
+#saludo {
+    color: #3c096c;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* =========================================
+   3. CONTENEDORES
+   ========================================= */
+.main-container {
+    flex: 1; /* Empuja el footer abajo */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.saludo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.datosUser {
+    width: 100%;
+    max-width: 1000px; /* Ancho máximo para que la tabla no se estire demasiado */
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
-
- .datosUser {
-     width: 100%;
-     height: 100%;
-     display: flex;
-     justify-content: center;
-     align-items: center;
- }
 
 .btnSalir {
-         width: 100%;
-         height: 100%;
-         display: flex;
-         justify-content: center;
-         align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
-.saludo{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content:center;
-    align-items: center;
+/* =========================================
+   4. ESTILOS DE TABLA (COHERENCIA CON ADMIN)
+   ========================================= */
+.table-responsive, table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(60, 9, 108, 0.1);
+    background-color: white;
+    border: 1px solid #e9ecef;
+}
 
+/* Cabecera Púrpura */
+thead th {
+    background-color: #3c096c !important;
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-bottom: 3px solid #9d4edd !important; /* Línea amatista */
+}
 
+tbody tr:hover {
+    background-color: #f3e5f5 !important; /* Hover lavanda suave */
+}
+
+td {
+    vertical-align: middle;
+    font-weight: 500;
+    color: #4a4a4a;
+}
+
+/* =========================================
+   5. BOTONES Y BADGES
+   ========================================= */
+/* El botón de salir usa el color de los ojos de Gengar (Rojo/Rosa) */
+.btn-danger {
+    background-color: #ff0054 !important;
+    border-color: #ff0054 !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #d00045 !important;
+    box-shadow: 0 0 15px rgba(255, 0, 84, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Spinner de carga (Color primario morado) */
+.text-primary {
+    color: #7b2cbf !important;
+}
+
+/* Badges de estado */
+.badge {
+    padding: 0.6em 0.9em;
+    border-radius: 20px;
+}
+.bg-success {
+    background-color: #06d6a0 !important; /* Verde menta */
+    color: #004d40;
+}
+.bg-danger { /* Para estado inactivo */
+    background-color: #ef476f !important;
 }
