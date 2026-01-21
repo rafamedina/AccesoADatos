@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{css/ControllerAdmin.css}">
 </head>
 <body>
 
-<div></div>
-pagina de admin
+<div class="d-grid gap-2 col-6 mx-auto">
+    <button id="btnVerUsuarios" class="btn btn-primary" type="button">Ver Usuarios</button>
+    <button id="btnSalir" class="btn btn-primary" type="button">salir</button>
+</div>
+
+
+<script th:src="@{js/ControllerAdmin.js}"></script>
 </body>
 </html>
