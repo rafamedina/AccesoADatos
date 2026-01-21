@@ -1,14 +1,10 @@
 tablaUser = document.getElementById("datosUser")
 btnsalir = document.getElementById("btnSalir")
+    saludo = document.getElementById("saludo")
 
 btnsalir.addEventListener("click",()=>{
     window.location.href = '/killSession'
 })
-
-
-
-
-
 
     fetch('/user/list', {
     })
@@ -65,6 +61,7 @@ btnsalir.addEventListener("click",()=>{
         </tbody>
     </table>
 `;
+        saludo.innerText = `Bienvenido ${user.nombre}, Aqui tienes tus datos`;
         })
         .catch(error => {
             console.error("Error:", error);
