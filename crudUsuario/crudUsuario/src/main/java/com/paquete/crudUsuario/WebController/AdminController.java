@@ -37,19 +37,38 @@ public class AdminController {
 
     }
 
-    @GetMapping("/listarUsuarios")
-    public String listarUsuarios(HttpSession session){
-        return "ADMIN/listarUsuariosAdmin";
-    }
 
     @GetMapping("/cargarUsuarios")
     @ResponseBody
-    public ArrayList<Usuario> crearListaUsuarios(){
+    public ArrayList<UsuarioSesionDTO> crearListaUsuarios() {
 
         ArrayList<Usuario> lista = usuarioService.mostrarUsuarios();
-        return lista;
-    }
 
+        // CORRECCIÓN: Inicializamos la lista para que exista en memoria
+        ArrayList<UsuarioSesionDTO> lista2 = new ArrayList<>();
+
+        for (Usuario usuario : lista) {
+
+            // PROTECCIÓN ADICIONAL: Evitamos error si el usuario no tiene roles asignados
+            String nombreRol = "Sin Rol";
+            if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
+                nombreRol = usuario.getRoles().iterator().next().getNombreRol();
+            }
+
+            lista2.add(new UsuarioSesionDTO(
+                    usuario.getId(),
+                    usuario.getNombre(),
+                    usuario.getApellidos(),
+                    usuario.getNombreusuario(),
+                    usuario.getEmail(),
+                    nombreRol, // Usamos la variable protegida
+                    usuario.getFechaCreacion(),
+                    usuario.isActivo() // Recuerda: en tu DTO se llama 'estado', asegúrate de que coincida
+            ));
+        }
+
+        return lista2;
+    }
 
 
 
