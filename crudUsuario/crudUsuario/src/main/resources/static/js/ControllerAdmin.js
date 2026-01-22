@@ -1,7 +1,7 @@
 // ==========================================
 // 1. SELECTORES DE ELEMENTOS DEL DOM
 // ==========================================
-const btnsalir = document.getElementById("btnSalir");
+let btnsalir = document.getElementById("btnSalir");
 const btnVolver = document.getElementById("btnVolver");
 const btnVerUsuarios = document.getElementById("btnVerUsuarios");
 const btnCrearUsuario = document.getElementById("btnCrearUsuario"); // Botón NUEVO

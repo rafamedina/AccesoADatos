@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -39,7 +40,6 @@ public class AdminController {
         if (!usuario.get().getRol().equalsIgnoreCase("admin")) {
             return "redirect:killSession";
         }
-
         return "ADMIN/ControllerAdmin";
 
     }
@@ -47,16 +47,21 @@ public class AdminController {
 
     @GetMapping("/cargarUsuarios")
     @ResponseBody
-    public ArrayList<UsuarioSesionDTO> crearListaUsuarios() {
+// MEJORA: Especificamos el tipo exacto en el ResponseEntity para mayor seguridad
+    public ResponseEntity<List<UsuarioSesionDTO>> crearListaUsuarios(HttpSession session) {
+        UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
 
-        ArrayList<Usuario> lista = usuarioService.mostrarUsuarios();
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"admin".equals(usuarioSesionDTO.getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-        // CORRECCIÓN: Inicializamos la lista para que exista en memoria
-        ArrayList<UsuarioSesionDTO> lista2 = new ArrayList<>();
+        // Es recomendable usar la interfaz List en la declaración
+        List<Usuario> lista = usuarioService.mostrarUsuarios();
+        List<UsuarioSesionDTO> lista2 = new ArrayList<>();
 
         for (Usuario usuario : lista) {
-
-            // PROTECCIÓN ADICIONAL: Evitamos error si el usuario no tiene roles asignados
+            // PROTECCIÓN ADICIONAL (Tu lógica original estaba bien aquí)
             String nombreRol = "Sin Rol";
             if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
                 nombreRol = usuario.getRoles().iterator().next().getNombreRol();
@@ -68,18 +73,27 @@ public class AdminController {
                     usuario.getApellidos(),
                     usuario.getNombreusuario(),
                     usuario.getEmail(),
-                    nombreRol, // Usamos la variable protegida
+                    nombreRol,
                     usuario.getFechaCreacion(),
-                    usuario.isActivo() // Recuerda: en tu DTO se llama 'estado', asegúrate de que coincida
+                    usuario.isActivo()
             ));
         }
 
-        return lista2;
+        // CORRECCIÓN: Envolvemos la lista en un ResponseEntity con estado 200 OK
+        return ResponseEntity.ok(lista2);
     }
 
     @PutMapping("/actualizarUsuario")
     @ResponseBody
-    public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioSesionDTO usuarioDTO) {
+    public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioSesionDTO usuarioDTO, HttpSession session) {
+
+        UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
+
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"admin".equals(usuarioSesionDTO.getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         try {
             if (usuarioDTO.getId() == null) {
                 return ResponseEntity.badRequest().body("El ID es obligatorio");
@@ -138,7 +152,13 @@ public class AdminController {
 // 2. Usa {id} (sin el símbolo $) para definir la variable de ruta
     @DeleteMapping("/eliminarUsuario/{id}")
     @ResponseBody
-    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id) { // 3. Usa @PathVariable para capturar el {id} de la URL
+    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id, HttpSession session) { // 3. Usa @PathVariable para capturar el {id} de la URL
+        UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
+
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"admin".equals(usuarioSesionDTO.getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         try {
             // Buscamos el usuario (Asumo que tu servicio devuelve Optional)
@@ -163,7 +183,14 @@ public class AdminController {
 
     @PostMapping("/crearUsuario")
     @ResponseBody
-    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario, HttpSession session) {
+
+        UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
+
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"admin".equals(usuarioSesionDTO.getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         try {
             // 1. Validaciones básicas (AÑADIMOS LA DEL EMAIL)
             if (usuario.getNombreusuario() == null || usuario.getNombreusuario().isEmpty() ||

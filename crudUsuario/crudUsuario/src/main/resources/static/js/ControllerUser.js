@@ -1,5 +1,5 @@
 tablaUser = document.getElementById("datosUser")
-btnsalir = document.getElementById("btnSalir")
+var btnsalir = document.getElementById("btnSalir")
     saludo = document.getElementById("saludo")
 
 btnsalir.addEventListener("click",()=>{
