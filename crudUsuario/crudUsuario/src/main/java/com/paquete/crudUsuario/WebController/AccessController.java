@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller()
 @RequestMapping("/control")
 public class AccessController {
+
     @GetMapping()
     public String jugon(HttpSession session){
         UsuarioSesionDTO usuario = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");

@@ -25,12 +25,12 @@ public class UserController {
     @GetMapping("/list") // Puedes cambiar la ruta a "/perfil" si quieres, pero "/list" funciona igual
     public ResponseEntity<UsuarioSesionDTO> pedirUsuario(HttpSession session) {
 
+
         UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
 
-        // 1. Si no hay sesión, error 401
-        if (usuarioSesionDTO == null) {
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"user".equals(usuarioSesionDTO.getRol())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
         }
 
         try {
