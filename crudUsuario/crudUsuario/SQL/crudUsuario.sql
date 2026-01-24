@@ -1,6 +1,12 @@
 drop database if exists crudUsuario;
 create database if not exists crudUsuario;
 use crudUsuario;
+
+CREATE TABLE departamentos(
+                              id int primary key auto_increment not null ,
+                              nombre_departamento varchar(100) not null
+);
+
 CREATE TABLE usuario(
 
 id int primary key auto_increment not null ,
@@ -19,7 +25,13 @@ activo TINYINT(1) DEFAULT 1,
 
 fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+id_departamento int,
+
+FOREIGN KEY (id_departamento) references departamentos(id) ON DELETE SET NULL
+    ON UPDATE CASCADE
+
 );
 
 
@@ -32,16 +44,20 @@ CREATE TABLE roles_usuarios(
                               id int primary key auto_increment not null ,
                                 id_usuario int,
                                 id_rol int,
-                                FOREIGN KEY (id_usuario) references usuario(id),
-                                FOREIGN KEY (id_rol) references roles(id)
+                                FOREIGN KEY (id_usuario) references usuario(id) ON DELETE CASCADE,
+                                FOREIGN KEY (id_rol) references roles(id) ON DELETE CASCADE
 );
 
-insert into usuario ( nombre, apellidos, nombre_usuario, email, password) values (
-                                                                  'Rafa', 'Medina Ayuso', 'ikran','rafa@gmail.com', '$2a$12$CzdU7n41SWsBnlPVerrdu.rAHZGeeYxXqkZYyyraM0YxrT6ry4b.2'
+
+insert into departamentos(nombre_departamento) values ('administracion');
+insert into departamentos(nombre_departamento) values ('seguridad');
+
+insert into usuario ( nombre, apellidos, nombre_usuario, email, password, id_departamento) values (
+                                                                  'Rafa', 'Medina Ayuso', 'ikran','rafa@gmail.com', '$2a$12$CzdU7n41SWsBnlPVerrdu.rAHZGeeYxXqkZYyyraM0YxrT6ry4b.2',1
                                                                  );
 
-insert into usuario ( nombre, apellidos, nombre_usuario, email, password) values (
-                                                                                     'Iker', 'Acevedo Donate', 'klan','iker@gmail.com', '$2a$12$CzdU7n41SWsBnlPVerrdu.rAHZGeeYxXqkZYyyraM0YxrT6ry4b.2'
+insert into usuario ( nombre, apellidos, nombre_usuario, email, password, id_departamento) values (
+                                                                                     'Iker', 'Acevedo Donate', 'klan','iker@gmail.com', '$2a$12$CzdU7n41SWsBnlPVerrdu.rAHZGeeYxXqkZYyyraM0YxrT6ry4b.2',2
                                                                                  );
 
 insert into roles( nombre_rol) values ('admin');

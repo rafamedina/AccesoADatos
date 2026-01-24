@@ -3,10 +3,7 @@ package com.paquete.crudUsuario.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -57,7 +54,11 @@ public class Usuario {
     )
     private Set<Roles> roles = new HashSet<>();
 
-
+    @ToString.Exclude            // <--- IMPORTANTE
+    @EqualsAndHashCode.Exclude   // <--- IMPORTANTE
+    @ManyToOne(fetch = FetchType.LAZY) // Lazy carga el departamento solo cuando lo pides
+    @JoinColumn(name = "id_departamento") // ESTA ES LA CLAVE FORÁNEA EN TU TABLA
+    private Departamento departamento;
 
     // ========================================
     // CALLBACKS DEL CICLO DE VIDA
