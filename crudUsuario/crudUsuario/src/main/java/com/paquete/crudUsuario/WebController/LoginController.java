@@ -39,7 +39,7 @@ public class LoginController {
                 String rol = usuarioOpt.get().getRoles().iterator().next().getNombreRol();
                 UsuarioSesionDTO usuarioInfo = new UsuarioSesionDTO(usuarioOpt.get().getId(),
                         usuarioOpt.get().getNombre(),usuarioOpt.get().getApellidos(), usuarioOpt.get().getNombreusuario(),
-                        usuarioOpt.get().getEmail(), rol, usuarioOpt.get().getFechaCreacion());
+                        usuarioOpt.get().getEmail(), rol, usuarioOpt.get().getFechaCreacion(), usuarioOpt.get().getDepartamento().getNombreDepartamento());
 
                 session.setAttribute("usuarioLogueado", usuarioInfo);
 

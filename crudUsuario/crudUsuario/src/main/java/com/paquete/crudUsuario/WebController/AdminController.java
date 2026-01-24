@@ -5,9 +5,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import com.paquete.crudUsuario.DTO.UsuarioSesionDTO;
+import com.paquete.crudUsuario.Entity.Departamento;
 import com.paquete.crudUsuario.Entity.Roles;
 import com.paquete.crudUsuario.Entity.Usuario;
 import com.paquete.crudUsuario.Exportadores.RespuestaExportacionDTO;
+import com.paquete.crudUsuario.Services.DepartamentoService;
 import com.paquete.crudUsuario.Services.RolesService;
 import com.paquete.crudUsuario.Services.UsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -35,6 +38,9 @@ public class AdminController {
     @Autowired
     RolesService rolesService;
 
+    @Autowired
+    DepartamentoService departamentoService;
+
     // Jackson (ObjectMapper) ya suele venir configurado en Spring,
     // pero aquí lo instanciamos para personalizarlo al vuelo.
     private ObjectMapper mapper = new ObjectMapper()
@@ -46,6 +52,11 @@ public class AdminController {
     public AdminController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
+
+
+
+
+
 
     @GetMapping()
     public String validarAdmin(HttpSession session) {
@@ -85,7 +96,8 @@ public class AdminController {
                     usuario.getEmail(),
                     nombreRol, // Usamos la variable protegida
                     usuario.getFechaCreacion(),
-                    usuario.isActivo() // Recuerda: en tu DTO se llama 'estado', asegúrate de que coincida
+                    usuario.isActivo(), // Recuerda: en tu DTO se llama 'estado', asegúrate de que coincida
+                    usuario.getDepartamento().getNombreDepartamento()
             ));
         }
 
@@ -137,6 +149,15 @@ public class AdminController {
                 }
             }
 
+            Optional<Departamento> departamentoBD = departamentoService.buscarDepartamentoPorNombre(usuarioDTO.getDepartamento());
+
+            if(departamentoBD.isEmpty()) { return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error con el departamento");}
+            if(departamentoBD.isPresent()){
+
+                usuarioExistente.get().setDepartamento(departamentoBD.get());
+            }
+
+
             // 4. Guardamos
             Usuario usuarioGuardado = usuarioService.actualizarUsuario(usuarioExistente.get());
 
@@ -178,7 +199,8 @@ public class AdminController {
 
     @PostMapping("/crearUsuario")
     @ResponseBody
-    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario,           // Viene en el JSON (Body)
+                                          @RequestParam String nombreDepartamento) {
 
         try {
             // 1. Validaciones básicas (AÑADIMOS LA DEL EMAIL)
@@ -204,6 +226,15 @@ public class AdminController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("Error: El rol 'USER' no existe en la base de datos.");
             }
+            Optional<Departamento> departamentoBD = departamentoService.buscarDepartamentoPorNombre(nombreDepartamento);
+
+            if(departamentoBD.isEmpty()) { return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error con el departamento");}
+            if(departamentoBD.isPresent()){
+
+                usuario.setDepartamento(departamentoBD.get());
+            }
+
+
 
             // 3. Estado y Guardado
             usuario.setActivo(true);
@@ -248,7 +279,8 @@ public class AdminController {
                         usuario.getEmail(),
                         nombreRol, // Usamos la variable protegida
                         usuario.getFechaCreacion(),
-                        usuario.isActivo()
+                        usuario.isActivo(),
+                       usuario.getDepartamento().getNombreDepartamento()
                        // Recuerda: en tu DTO se llama 'estado', asegúrate de que coincida
                 ));
             }
@@ -273,6 +305,4 @@ public class AdminController {
             return ResponseEntity.internalServerError().build();
         }
     }
-
-
-    }
+}

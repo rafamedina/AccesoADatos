@@ -32,7 +32,6 @@ public class Departamento {
     @ToString.Exclude // IMPORTANTE: Evita bucles infinitos al imprimir logs
     private List<Usuario> usuarios = new ArrayList<>();
 
-    // MÉTODO HELPER (Buenas prácticas)
     // Ayuda a mantener la coherencia en ambos lados de la relación
     public void agregarUsuario(Usuario usuario) {
         usuarios.add(usuario);

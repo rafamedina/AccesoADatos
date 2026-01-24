@@ -104,4 +104,13 @@ public class Usuario {
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
     }
+
+    public Usuario(String nombre, String apellidos, String nombreusuario, String email, String password, boolean activo) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.nombreusuario = nombreusuario;
+        this.email = email;
+        this.password = password;
+        this.activo = activo;
+    }
 }

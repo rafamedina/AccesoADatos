@@ -35,7 +35,7 @@ public class UserController {
 
         try {
             Usuario usuario = usuarioService.obtenerUsuarioEmail(usuarioSesionDTO.getEmail());
-            UsuarioSesionDTO usuarioMostrar = new UsuarioSesionDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getNombreusuario(), usuario.getEmail(), usuario.getRoles().iterator().next().getNombreRol(),usuario.getFechaCreacion(), usuario.isActivo());
+            UsuarioSesionDTO usuarioMostrar = new UsuarioSesionDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getNombreusuario(), usuario.getEmail(), usuario.getRoles().iterator().next().getNombreRol(),usuario.getFechaCreacion(), usuario.isActivo(),usuario.getDepartamento().getNombreDepartamento());
 
             return ResponseEntity.ok(usuarioMostrar);
 

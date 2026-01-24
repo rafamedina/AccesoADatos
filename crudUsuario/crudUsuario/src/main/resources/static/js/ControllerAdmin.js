@@ -43,6 +43,9 @@ btnVolver.addEventListener("click", () => {
     btnVolver.style.display = "none";
 });
 
+
+
+
 // --- Botón Crear Usuario (Abre Modal Vacío) ---
 if (btnCrearUsuario) {
     btnCrearUsuario.addEventListener("click", () => {
@@ -50,6 +53,8 @@ if (btnCrearUsuario) {
         modal.showModal();
     });
 }
+
+
 
 // --- Botón Ver Usuarios (Carga datos del servidor) ---
 btnVerUsuarios.addEventListener("click", () => {
@@ -83,6 +88,7 @@ btnVerUsuarios.addEventListener("click", () => {
                             <th>Nombre Completo</th>
                             <th>Usuario</th>
                             <th>Email</th>
+                            <th>Departamento</th>
                             <th>Rol</th>
                             <th>Estado</th>
                             <th>Fecha Creación</th>
@@ -108,6 +114,7 @@ btnVerUsuarios.addEventListener("click", () => {
                             <td>${user.nombre} ${user.apellidos}</td>
                             <td>${user.username}</td>
                             <td>${user.email}</td>
+                            <td>${user.departamento}</td>
                             <td>${user.rol}</td>
                             <td class="text-center">${estadoBadge}</td>
                             <td>${fecha}</td>
@@ -193,6 +200,11 @@ function mostrarModalConDatos(user) {
                 <label for="editEmail" class="form-label">Email</label>
                 <input type="email" class="form-control" id="editEmail" value="${user.email}">
             </div>
+            
+             <div class="mb-3">
+                <label for="editDepartamento" class="form-label">Departamento</label>
+                <input type="email" class="form-control" id="editDepartamento" value="${user.departamento}">
+            </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -222,6 +234,36 @@ function mostrarModalConDatos(user) {
  * HTML DEL MODAL PARA CREAR (Con campo contraseña)
  */
 function mostrarModalCreacion() {
+    // 1. Cierra el paréntesis del fetch aquí
+    fetch("/admin/departamentos")
+        .then((response) => {
+            if (response.ok) return response.json();
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        })
+        .then((data) => {
+            // Obtenemos el select del HTML (asegúrate de que existe en tu modal)
+            const selectDepartamentos = document.getElementById('newDepartamento');
+
+            // Limpiamos por si acaso y ponemos una opción por defecto
+            selectDepartamentos.innerHTML = '<option value="">Seleccione un departamento...</option>';
+
+            data.forEach(depa => {
+                // Creamos la opción HTML
+                const opcion = document.createElement('option');
+                opcion.value = depa.nombreDepartamento; // Lo que se enviará al servidor
+                opcion.textContent = depa.nombreDepartamento; // Lo que ve el usuario
+
+                // La añadimos al select
+                selectDepartamentos.appendChild(opcion);
+            });
+        })
+        .catch(error => {
+            console.error("Error cargando departamentos:", error);
+            alert("No se pudieron cargar los departamentos");
+        });
+
+
+    /////////////////
     contenidoModal.innerHTML = `
         <h3 class="mb-4 text-primary">Crear Nuevo Usuario</h3>
         
@@ -251,6 +293,11 @@ function mostrarModalCreacion() {
                 <label for="newEmail" class="form-label">Email</label>
                 <input type="email" class="form-control" id="newEmail" placeholder="correo@ejemplo.com">
             </div>
+            
+            <div class="mb-3">
+                <label for="newDepartamento" class="form-label">Departamento</label>
+                <input type="text" class="form-control" id="newDepartamento" placeholder="Nombre departamento">
+            </div>
 
             <div class="d-flex justify-content-end gap-2 mt-3">
                 <button type="button" class="btn btn-secondary" onclick="modal.close()">Cancelar</button>
@@ -278,6 +325,7 @@ function guardarCambiosUsuario() {
         apellidos: document.getElementById('editApellidos').value,
         username: document.getElementById('editUsername').value,
         email: document.getElementById('editEmail').value,
+        departamento: document.getElementById('editDepartamento').value,
         rol: document.getElementById('editRol').value,
         estado: document.getElementById('editEstado').value === 'true'
     };
@@ -308,10 +356,12 @@ function guardarCambiosUsuario() {
  * POST: Crear Nuevo Usuario
  */
 function crearUsuario() {
+    const nombreDept = document.getElementById('newDepartamento').value;
+
+    // 2. El objeto usuario SOLO lleva los datos del usuario (limpio, tal cual tu Entidad)
     const nuevoUsuario = {
         nombre: document.getElementById('newNombre').value,
         apellidos: document.getElementById('newApellidos').value,
-        // Asegúrate de que este nombre coincida con tu entidad Java (nombreusuario o username)
         nombreusuario: document.getElementById('newUsername').value,
         password: document.getElementById('newPassword').value,
         email: document.getElementById('newEmail').value,
@@ -329,11 +379,13 @@ function crearUsuario() {
         alert("Por favor, introduce un correo electrónico válido (falta el '@').");
         return; // Detenemos la función aquí
     }
-
-    fetch("/admin/crearUsuario", {
+    const url = `/admin/crearUsuario?nombreDepartamento=${encodeURIComponent(nombreDept)}`;
+    fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(nuevoUsuario)
+        body: JSON.stringify(nuevoUsuario), departamento: {
+
+        }
     })
         .then(response => {
             if (response.ok) {

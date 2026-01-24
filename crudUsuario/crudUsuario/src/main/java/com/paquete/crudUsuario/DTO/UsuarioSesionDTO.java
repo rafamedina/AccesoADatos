@@ -2,6 +2,7 @@ package com.paquete.crudUsuario.DTO;
 
 
 
+import com.paquete.crudUsuario.Entity.Departamento;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,9 @@ public class UsuarioSesionDTO implements Serializable {
     private String rol;
     private LocalDateTime fechaCreacion;
     private boolean estado;
+    private String departamento;
 
-    public UsuarioSesionDTO(Long id, String nombre, String apellidos, String username, String email, String rol, LocalDateTime fechaCreacion) {
+    public UsuarioSesionDTO(Long id, String nombre, String apellidos, String username, String email, String rol, LocalDateTime fechaCreacion, String departamento) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -32,6 +34,7 @@ public class UsuarioSesionDTO implements Serializable {
         this.email = email;
         this.rol = rol;
         this.fechaCreacion = fechaCreacion;
+        this.departamento = departamento;
     }
 }
 
