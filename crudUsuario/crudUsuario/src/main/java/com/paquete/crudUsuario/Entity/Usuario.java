@@ -1,5 +1,6 @@
 package com.paquete.crudUsuario.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,7 +40,7 @@ public class Usuario {
 
     @Column(name = "activo")
     private boolean activo = true;
-
+    @JsonFormat(pattern = "dd,MM,yyyy")
     @Column(name = "fecha_creacion", updatable = false)
     private LocalDateTime fechaCreacion;
 

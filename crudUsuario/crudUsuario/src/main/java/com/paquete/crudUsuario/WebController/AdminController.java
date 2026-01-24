@@ -1,17 +1,26 @@
 package com.paquete.crudUsuario.WebController;
+import com.fasterxml.jackson.databind.ObjectMapper;
+// Y para el módulo:
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import com.paquete.crudUsuario.DTO.UsuarioSesionDTO;
 import com.paquete.crudUsuario.Entity.Roles;
 import com.paquete.crudUsuario.Entity.Usuario;
+import com.paquete.crudUsuario.Exportadores.RespuestaExportacionDTO;
 import com.paquete.crudUsuario.Services.RolesService;
 import com.paquete.crudUsuario.Services.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
@@ -26,6 +35,14 @@ public class AdminController {
     @Autowired
     RolesService rolesService;
 
+    // Jackson (ObjectMapper) ya suele venir configurado en Spring,
+    // pero aquí lo instanciamos para personalizarlo al vuelo.
+    private ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            // ESTA ES LA LÍNEA MÁGICA:
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     public AdminController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
@@ -39,9 +56,7 @@ public class AdminController {
         if (!usuario.get().getRol().equalsIgnoreCase("admin")) {
             return "redirect:killSession";
         }
-
         return "ADMIN/ControllerAdmin";
-
     }
 
 
@@ -164,6 +179,7 @@ public class AdminController {
     @PostMapping("/crearUsuario")
     @ResponseBody
     public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
+
         try {
             // 1. Validaciones básicas (AÑADIMOS LA DEL EMAIL)
             if (usuario.getNombreusuario() == null || usuario.getNombreusuario().isEmpty() ||
@@ -200,4 +216,63 @@ public class AdminController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
-}
+
+    @RequestMapping("/exportarJSON")
+    @ResponseBody
+    public ResponseEntity<?> exportarJSON(HttpSession session){
+        UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
+
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"admin".equals(usuarioSesionDTO.getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        try {
+            // 1. Obtener datos
+            ArrayList<Usuario> listaUsuarios = usuarioService.mostrarUsuarios();
+
+            ArrayList<UsuarioSesionDTO> listadto = new ArrayList<>();
+
+            for (Usuario usuario : listaUsuarios) {
+
+                // PROTECCIÓN ADICIONAL: Evitamos error si el usuario no tiene roles asignados
+                String nombreRol = "Sin Rol";
+                if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
+                    nombreRol = usuario.getRoles().iterator().next().getNombreRol();
+                }
+
+                listadto.add(new UsuarioSesionDTO(
+                        usuario.getId(),
+                        usuario.getNombre(),
+                        usuario.getApellidos(),
+                        usuario.getNombreusuario(),
+                        usuario.getEmail(),
+                        nombreRol, // Usamos la variable protegida
+                        usuario.getFechaCreacion(),
+                        usuario.isActivo()
+                       // Recuerda: en tu DTO se llama 'estado', asegúrate de que coincida
+                ));
+            }
+            // 2. Empaquetarlos en nuestro DTO para que tenga la estructura que te gusta
+            // (Si solo quisieras la lista plana, pasarías 'listaUsuarios' directamente al mapper)
+            RespuestaExportacionDTO datosExportar = new RespuestaExportacionDTO(listadto);
+
+            // 3. LA MAGIA: Convertir Objeto Java -> Array de Bytes JSON
+            byte[] contenidoJson = mapper.writeValueAsBytes(datosExportar);
+
+            // 4. Nombre del archivo
+            String nombreArchivo = "usuarios_" + System.currentTimeMillis() + ".json";
+
+            // 5. Descargar
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + nombreArchivo + "\"")
+                    .body(contenidoJson);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+
+    }

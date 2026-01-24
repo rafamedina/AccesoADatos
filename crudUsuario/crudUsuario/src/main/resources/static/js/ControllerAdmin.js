@@ -5,6 +5,7 @@ let btnsalir = document.getElementById("btnSalir");
 const btnVolver = document.getElementById("btnVolver");
 const btnVerUsuarios = document.getElementById("btnVerUsuarios");
 const btnCrearUsuario = document.getElementById("btnCrearUsuario"); // Botón NUEVO
+const btnjson = document.getElementById("btnjson"); // Botón NUEVO
 const datosUsuarios = document.getElementById("datosUsuarios");
 const modal = document.getElementById('miModal');
 const btnCerrar = document.getElementById('btnCerrar');
@@ -18,6 +19,11 @@ let usuariosCache = [];
 // ==========================================
 // 3. EVENT LISTENERS (BOTONES PRINCIPALES)
 // ==========================================
+
+btnjson.addEventListener("click",()=>{
+    window.location.href = "admin/exportarJSON";
+})
+
 
 // --- Botón Salir ---
 btnsalir.addEventListener("click", () => {
