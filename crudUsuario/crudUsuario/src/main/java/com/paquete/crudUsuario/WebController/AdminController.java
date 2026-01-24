@@ -73,40 +73,57 @@ public class AdminController {
 
     @GetMapping("/cargarUsuarios")
     @ResponseBody
-    public ArrayList<UsuarioSesionDTO> crearListaUsuarios() {
+    public ResponseEntity<?> crearListaUsuarios(HttpSession session) {
+        UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
 
-        ArrayList<Usuario> lista = usuarioService.mostrarUsuarios();
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"admin".equals(usuarioSesionDTO.getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        try{
+            ArrayList<Usuario> lista = usuarioService.mostrarUsuarios();
 
-        // CORRECCIÓN: Inicializamos la lista para que exista en memoria
-        ArrayList<UsuarioSesionDTO> lista2 = new ArrayList<>();
+            // CORRECCIÓN: Inicializamos la lista para que exista en memoria
+            ArrayList<UsuarioSesionDTO> lista2 = new ArrayList<>();
 
-        for (Usuario usuario : lista) {
+            for (Usuario usuario : lista) {
 
-            // PROTECCIÓN ADICIONAL: Evitamos error si el usuario no tiene roles asignados
-            String nombreRol = "Sin Rol";
-            if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
-                nombreRol = usuario.getRoles().iterator().next().getNombreRol();
+                // PROTECCIÓN ADICIONAL: Evitamos error si el usuario no tiene roles asignados
+                String nombreRol = "Sin Rol";
+                if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
+                    nombreRol = usuario.getRoles().iterator().next().getNombreRol();
+                }
+
+                lista2.add(new UsuarioSesionDTO(
+                        usuario.getId(),
+                        usuario.getNombre(),
+                        usuario.getApellidos(),
+                        usuario.getNombreusuario(),
+                        usuario.getEmail(),
+                        nombreRol, // Usamos la variable protegida
+                        usuario.getFechaCreacion(),
+                        usuario.isActivo(), // Recuerda: en tu DTO se llama 'estado', asegúrate de que coincida
+                        usuario.getDepartamento().getNombreDepartamento()
+                ));
             }
 
-            lista2.add(new UsuarioSesionDTO(
-                    usuario.getId(),
-                    usuario.getNombre(),
-                    usuario.getApellidos(),
-                    usuario.getNombreusuario(),
-                    usuario.getEmail(),
-                    nombreRol, // Usamos la variable protegida
-                    usuario.getFechaCreacion(),
-                    usuario.isActivo(), // Recuerda: en tu DTO se llama 'estado', asegúrate de que coincida
-                    usuario.getDepartamento().getNombreDepartamento()
-            ));
+            return ResponseEntity.ok(lista2);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        return lista2;
     }
 
     @PutMapping("/actualizarUsuario")
     @ResponseBody
-    public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioSesionDTO usuarioDTO) {
+    public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioSesionDTO usuarioDTO,HttpSession session) {
+        UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
+
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"admin".equals(usuarioSesionDTO.getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         try {
             if (usuarioDTO.getId() == null) {
                 return ResponseEntity.badRequest().body("El ID es obligatorio");
@@ -174,8 +191,13 @@ public class AdminController {
 // 2. Usa {id} (sin el símbolo $) para definir la variable de ruta
     @DeleteMapping("/eliminarUsuario/{id}")
     @ResponseBody
-    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id) { // 3. Usa @PathVariable para capturar el {id} de la URL
+    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id,HttpSession session) { // 3. Usa @PathVariable para capturar el {id} de la URL
+        UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
 
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"admin".equals(usuarioSesionDTO.getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         try {
             // Buscamos el usuario (Asumo que tu servicio devuelve Optional)
             Optional<Usuario> usuario = usuarioService.obtenerUsuarioId(id);
@@ -200,8 +222,13 @@ public class AdminController {
     @PostMapping("/crearUsuario")
     @ResponseBody
     public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario,           // Viene en el JSON (Body)
-                                          @RequestParam String nombreDepartamento) {
+                                          @RequestParam String nombreDepartamento,HttpSession session) {
+        UsuarioSesionDTO usuarioSesionDTO = (UsuarioSesionDTO) session.getAttribute("usuarioLogueado");
 
+        // CORRECCIÓN: Null check previo y uso de .equals() para comparar el contenido del String
+        if (usuarioSesionDTO == null || !"admin".equals(usuarioSesionDTO.getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         try {
             // 1. Validaciones básicas (AÑADIMOS LA DEL EMAIL)
             if (usuario.getNombreusuario() == null || usuario.getNombreusuario().isEmpty() ||
