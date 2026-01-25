@@ -37,10 +37,23 @@ btnCerrar.addEventListener('click', () => {
 
 // --- Botón Volver (Limpia la tabla) ---
 btnVolver.addEventListener("click", () => {
+    btnjson.style.display = "inline-block";
     datosUsuarios.innerHTML = "";
     btnVerUsuarios.style.display = "inline-block"; // Reaparece el botón ver
     btnCrearUsuario.style.display = "inline-block"; // Reaparece el botón crear
     btnVolver.style.display = "none";
+    datosUsuarios.innerHTML=`
+     <div class="card text-center p-5 shadow-sm fade-in">
+            <div class="card-body">
+                <i class="bi bi-people-fill text-primary" style="font-size: 4rem;"></i>
+                <h2 class="card-title mt-3">Bienvenido al Gestor de Usuarios</h2>
+                <p class="card-text text-muted">
+                    Actualmente no hay datos cargados. Utiliza el panel de control inferior para visualizar,
+                    editar o eliminar los usuarios del sistema.
+                </p>
+            </div>
+        </div>`
+
 });
 
 
@@ -59,6 +72,7 @@ if (btnCrearUsuario) {
 // --- Botón Ver Usuarios (Carga datos del servidor) ---
 btnVerUsuarios.addEventListener("click", () => {
     // 1. Ocultamos botones principales
+    btnjson.style.display = "none";
     btnVerUsuarios.style.display = "none";
     btnCrearUsuario.style.display = "none"; // También ocultamos este para limpiar la vista
 
