@@ -162,7 +162,7 @@ public class AdminController {
                     usuarioExistente.get().getRoles().add(rolEncontrado.get());
                 } else {
                     // Opcional: Si el rol no existe, podrías devolver error
-                    System.out.println("Rol no encontrado en BBDD: " + rolNombre);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error con el Rol");
                 }
             }
 
